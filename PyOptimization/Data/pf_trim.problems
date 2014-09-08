@@ -1,0 +1,1 @@
+lambda nObjectives: pyotl.problem.real.DTLZ1(nObjectives, 0)	lambda problem: os.path.join(type(problem).__name__, '%u.csv' % problem.GetNumberOfObjectives())

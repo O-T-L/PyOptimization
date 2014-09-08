@@ -1,0 +1,4 @@
+optimizer	lambda s: s
+problem	lambda s: s
+objectives	lambda m: str(m) + ' Objectives'
+uuid	lambda s: s + '.pf'

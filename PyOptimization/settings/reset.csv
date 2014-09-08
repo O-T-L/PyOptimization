@@ -1,0 +1,50 @@
+uuid	TEXT	1
+problem	TEXT	1
+objectives	INTEGER	1
+evaluation	INTEGER
+decisions	INTEGER
+boundary	TEXT
+DTLZ4 bias	REAL
+DTLZ_I	INTEGER
+WFG PosDec	INTEGER
+city	TEXT
+cities	INTEGER
+MOTSP Correlate	REAL
+optimizer	TEXT	1
+iteration	INTEGER
+interval	REAL
+duration	REAL
+population	INTEGER
+ps	BLOB
+pf	BLOB
+inequality	BLOB
+equality	BLOB
+crossover	TEXT
+mutation	TEXT
+crossoverProbability	REAL
+mutationProbability	REAL
+SBX Distribution Index	REAL
+PM Distribution Index	REAL
+fitness	BLOB
+crowdingDistance	BLOB
+direction	TEXT
+epsilon	REAL
+territory	REAL
+degree	REAL
+degreeVector	TEXT
+rounds	INTEGER
+weightVectors	TEXT
+referencePoint	TEXT
+R-NSGA-II Threshold	REAL
+sample	INTEGER
+GD Type	TEXT
+GD	REAL
+IGD	REAL
+EPS	REAL
+SP	REAL
+MS	REAL
+MS1	REAL
+MS2	REAL
+DM Division	TEXT
+DM	REAL
+HV	REAL

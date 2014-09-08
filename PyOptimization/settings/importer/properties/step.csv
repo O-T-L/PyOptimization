@@ -1,0 +1,5 @@
+optimizer	lambda components: components[0]
+problem	lambda components: components[1]
+objectives	lambda components: int(components[2].split()[0])
+uuid	lambda components: os.path.splitext(components[-2])[0]
+generation	lambda components: int(os.path.splitext(components[-1])[0])
