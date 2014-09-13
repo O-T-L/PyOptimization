@@ -27,35 +27,35 @@ import pyotl.utility
 import pyotl.initial.real
 import pyotl.initial.integer
 import pyotl.initial.dynamic_bitset
-import pyotl.initial.permutation
+import pyotl.initial.index
 import pyotl.crossover.real
 import pyotl.crossover.integer
 import pyotl.crossover.dynamic_bitset
-import pyotl.crossover.permutation
+import pyotl.crossover.index
 import pyotl.mutation.real
 import pyotl.mutation.integer
 import pyotl.mutation.dynamic_bitset
-import pyotl.mutation.permutation
+import pyotl.mutation.index
 import pyotl.optimizer.real
 import pyotl.optimizer.integer
 import pyotl.optimizer.dynamic_bitset
-import pyotl.optimizer.permutation
+import pyotl.optimizer.index
 import pyotl.optimizer.couple.real
 import pyotl.optimizer.couple.integer
 import pyotl.optimizer.couple.dynamic_bitset
-import pyotl.optimizer.couple.permutation
+import pyotl.optimizer.couple.index
 import pyotl.optimizer.couple_couple.real
 import pyotl.optimizer.couple_couple.integer
 import pyotl.optimizer.couple_couple.dynamic_bitset
-import pyotl.optimizer.couple_couple.permutation
+import pyotl.optimizer.couple_couple.index
 import pyotl.optimizer.triple.real
 import pyotl.optimizer.triple.integer
 import pyotl.optimizer.triple.dynamic_bitset
-import pyotl.optimizer.triple.permutation
+import pyotl.optimizer.triple.index
 import pyotl.optimizer.xtriple.real
 import pyotl.optimizer.xtriple.integer
 import pyotl.optimizer.xtriple.dynamic_bitset
-import pyotl.optimizer.xtriple.permutation
+import pyotl.optimizer.xtriple.index
 import pyotl.optimizer.moea_d
 import pyoptimization.database
 import pyoptimization.indicator
@@ -741,11 +741,11 @@ def make_optimizer_real(config, executer, newProblem, **kwargs):
 	coding = 'real'
 	kwargs['initialGen'] = lambda random, problem, populationSize: pyotl.initial.real.PopulationUniform(random, problem.GetBoundary(), populationSize)
 	kwargs['crossoverGen'], kwargs['crossoverFetcher'] = {
-		'SimulatedBinaryCrossover': (lambda random, problem: pyotl.crossover.real.SimulatedBinaryCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem), problem.GetBoundary(), config.getfloat('simulated_binary_crossover', 'distribution_index')), pyoptimization.optimizer.fetcher.crossover.sbx),
+		'SimulatedBinaryCrossover': (lambda random, problem: pyotl.crossover.real.SimulatedBinaryCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem), problem.GetBoundary(), config.getfloat('simulated_binary_crossover', 'distribution_')), pyoptimization.optimizer.fetcher.crossover.sbx),
 		'DifferentialEvolution': (lambda random, problem: pyotl.crossover.real.DifferentialEvolution(random, eval(config.get(coding + '_crossover', 'probability'))(problem), problem.GetBoundary(), config.getfloat('differential_evolution', 'scaling_factor')), pyoptimization.optimizer.fetcher.crossover.std),
 	}[config.get(coding, 'crossover')]
 	kwargs['mutationGen'], kwargs['mutationFetcher'] = {
-		'PolynomialMutation': (lambda random, problem: pyotl.mutation.real.PolynomialMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem), problem.GetBoundary(), config.getfloat('polynomial_mutation', 'distribution_index')), pyoptimization.optimizer.fetcher.mutation.pm),
+		'PolynomialMutation': (lambda random, problem: pyotl.mutation.real.PolynomialMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem), problem.GetBoundary(), config.getfloat('polynomial_mutation', 'distribution_')), pyoptimization.optimizer.fetcher.mutation.pm),
 	}[config.get(coding, 'mutation')]
 	make_optimizer(config, executer, newProblem, coding, **kwargs)
 
@@ -772,19 +772,19 @@ def make_optimizer_dynamic_bitset(config, executer, newProblem, **kwargs):
 	}[config.get(coding, 'mutation')]
 	make_optimizer(config, executer, newProblem, coding, **kwargs)
 
-def make_optimizer_permutation(config, executer, newProblem, **kwargs):
-	coding = 'permutation'
-	kwargs['initialGen'] = lambda random, problem, populationSize: pyotl.initial.permutation.PopulationShuffle(random, problem.GetNumberOfCities(), populationSize)
+def make_optimizer_index(config, executer, newProblem, **kwargs):
+	coding = 'index'
+	kwargs['initialGen'] = lambda random, problem, populationSize: pyotl.initial.index.PopulationShuffle(random, problem.GetNumberOfCities(), populationSize)
 	kwargs['crossoverGen'], kwargs['crossoverFetcher'] = {
-		'OrderBasedCrossover': (lambda random, problem: pyotl.crossover.permutation.OrderBasedCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
-		'PartiallyMappedCrossover': (lambda random, problem: pyotl.crossover.permutation.PartiallyMappedCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
-		'PositionBasedCrossover': (lambda random, problem: pyotl.crossover.permutation.PositionBasedCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
+		'OrderBasedCrossover': (lambda random, problem: pyotl.crossover.index.OrderBasedCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
+		'PartiallyMappedCrossover': (lambda random, problem: pyotl.crossover.index.PartiallyMappedCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
+		'PositionBasedCrossover': (lambda random, problem: pyotl.crossover.index.PositionBasedCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
 	}[config.get(coding, 'crossover')]
 	kwargs['mutationGen'], kwargs['mutationFetcher'] = {
-		'DisplacementMutation': (lambda random, problem: pyotl.mutation.permutation.DisplacementMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
-		'ExchangeMutation': (lambda random, problem: pyotl.mutation.permutation.ExchangeMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
-		'InsertionMutation': (lambda random, problem: pyotl.mutation.permutation.InsertionMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
-		'InversionMutation': (lambda random, problem: pyotl.mutation.permutation.InversionMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
-		'SpreadMutation': (lambda random, problem: pyotl.mutation.permutation.SpreadMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+		'DisplacementMutation': (lambda random, problem: pyotl.mutation.index.DisplacementMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+		'ExchangeMutation': (lambda random, problem: pyotl.mutation.index.ExchangeMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+		'InsertionMutation': (lambda random, problem: pyotl.mutation.index.InsertionMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+		'InversionMutation': (lambda random, problem: pyotl.mutation.index.InversionMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+		'SpreadMutation': (lambda random, problem: pyotl.mutation.index.SpreadMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
 	}[config.get(coding, 'mutation')]
 	make_optimizer(config, executer, newProblem, coding, **kwargs)

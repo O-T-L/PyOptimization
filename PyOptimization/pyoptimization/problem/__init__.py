@@ -25,7 +25,8 @@ import numpy
 import pyotl.problem.real
 import pyotl.problem.integer
 import pyotl.problem.dynamic_bitset
-import pyotl.problem.permutation
+import pyotl.problem.index
+import pyotl.problem.community_discovery
 import pyoptimization.database
 import pyoptimization.optimizer
 import pyoptimization.problem.fetcher
@@ -91,6 +92,21 @@ def make_rotated_rectangle(config, executer, optimization):
 			lambda **kwargs: pyotl.problem.real.RotatedRectangle(boundary, boundaryOptimal, _direction),
 			fetcher = lambda optimizer: pyoptimization.problem.fetcher.rotated_rectangle(optimizer.GetProblem(), direction) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 		)
+
+def make_onl(config, executer, optimization):
+	module, function = config.get('onl', 'metrics').rsplit('.', 1)
+	module = importlib.import_module(module)
+	metrics = getattr(module, function)(config)
+	module, function = config.get('community_discovery', 'graphs').rsplit('.', 1)
+	module = importlib.import_module(module)
+	for graph in getattr(module, function)(config):
+		_graph = pyotl.utility.PyListList2BlasSymmetricMatrix_Real(graph.tolist())
+		for _metrics in metrics:
+			_metrics = pyotl.problem.community_discovery.PyList2Vector_Metric(_metrics)
+			optimization(config, executer,
+				lambda **kwargs: pyotl.problem.index.ONL(_graph, _metrics, kwargs['random']),
+				fetcher = lambda optimizer: pyoptimization.problem.fetcher.basic(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+			)
 
 def make_zdt_real(config, executer, optimization):
 	distDecisions = config.getint('zdt', 'dist_decisions')
@@ -424,7 +440,7 @@ def make_tsp(config, executer, optimization):
 	for matrix, city in getattr(module, function)(config):
 		matrix = pyotl.utility.PyListList2BlasSymmetricMatrix_Real(matrix.tolist())
 		optimization(config, executer,
-			lambda **kwargs: pyotl.problem.permutation.TSP(matrix),
+			lambda **kwargs: pyotl.problem.index.TSP(matrix),
 			fetcher = lambda optimizer: pyoptimization.problem.fetcher.tsp(optimizer.GetProblem(), city) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 		)
 
@@ -438,23 +454,25 @@ def make_motsp(config, executer, optimization):
 				_correlation = [correlation] * (len(matrics) - 1)
 				_correlation = pyotl.utility.PyList2Vector_Real(_correlation)
 				_matrics = pyotl.utility.PyListListList2VectorBlasSymmetricMatrix_Real(matrics)
-				pyotl.problem.permutation.CorrelateAdjacencyMatrics_Real(_correlation, _matrics)
+				pyotl.problem.index.CorrelateAdjacencyMatrics_Real(_correlation, _matrics)
 				optimization(config, executer,
-					lambda **kwargs: pyotl.problem.permutation.MOTSP(_matrics),
+					lambda **kwargs: pyotl.problem.index.MOTSP(_matrics),
 					fetcher = lambda optimizer: pyoptimization.problem.fetcher.correlation_motsp(optimizer.GetProblem(), city, correlation) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 				)
 		except configparser.NoOptionError:
 			_matrics = pyotl.utility.PyListListList2VectorBlasSymmetricMatrix_Real(matrics)
 			optimization(config, executer,
-				lambda **kwargs: pyotl.problem.permutation.MOTSP(_matrics),
+				lambda **kwargs: pyotl.problem.index.MOTSP(_matrics),
 				fetcher = lambda optimizer: pyoptimization.problem.fetcher.correlation_motsp(optimizer.GetProblem(), city, correlation) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 			)
 
-def make_problem_permutation(config, executer, optimization):
+def make_problem_index(config, executer, optimization):
 	if config.getboolean('problem_switch', 'tsp'):
 		make_tsp(config, executer, optimization)
 	if config.getboolean('problem_switch', 'motsp'):
 		make_motsp(config, executer, optimization)
+	if config.getboolean('problem_switch', 'onl'):
+		make_onl(config, executer, optimization)
 
 def generate_make_problem(coding):
 	return eval('make_problem_' + coding)
