@@ -93,21 +93,6 @@ def make_rotated_rectangle(config, executer, optimization):
 			fetcher = lambda optimizer: pyoptimization.problem.fetcher.rotated_rectangle(optimizer.GetProblem(), direction) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 		)
 
-def make_onl(config, executer, optimization):
-	module, function = config.get('onl', 'metrics').rsplit('.', 1)
-	module = importlib.import_module(module)
-	metrics = getattr(module, function)(config)
-	module, function = config.get('community_discovery', 'graphs').rsplit('.', 1)
-	module = importlib.import_module(module)
-	for graph in getattr(module, function)(config):
-		_graph = pyotl.utility.PyListList2BlasSymmetricMatrix_Real(graph.tolist())
-		for _metrics in metrics:
-			_metrics = pyotl.problem.community_discovery.PyList2Vector_Metric(_metrics)
-			optimization(config, executer,
-				lambda **kwargs: pyotl.problem.index.ONL(_graph, _metrics, kwargs['random']),
-				fetcher = lambda optimizer: pyoptimization.problem.fetcher.basic(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
-			)
-
 def make_zdt_real(config, executer, optimization):
 	distDecisions = config.getint('zdt', 'dist_decisions')
 	if config.getboolean('problem_switch', 'zdt1'):
@@ -442,6 +427,7 @@ def make_tsp(config, executer, optimization):
 		optimization(config, executer,
 			lambda **kwargs: pyotl.problem.index.TSP(matrix),
 			fetcher = lambda optimizer: pyoptimization.problem.fetcher.tsp(optimizer.GetProblem(), city) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+			type = 'tsp',
 		)
 
 def make_motsp(config, executer, optimization):
@@ -464,6 +450,23 @@ def make_motsp(config, executer, optimization):
 			optimization(config, executer,
 				lambda **kwargs: pyotl.problem.index.MOTSP(_matrics),
 				fetcher = lambda optimizer: pyoptimization.problem.fetcher.correlation_motsp(optimizer.GetProblem(), city, correlation) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+				type = 'tsp',
+			)
+
+def make_onl(config, executer, optimization):
+	module, function = config.get('onl', 'metrics').rsplit('.', 1)
+	module = importlib.import_module(module)
+	metrics = getattr(module, function)(config)
+	module, function = config.get('community_discovery', 'graphs').rsplit('.', 1)
+	module = importlib.import_module(module)
+	for graph in getattr(module, function)(config):
+		_graph = pyotl.utility.PyListList2BlasSymmetricMatrix_Real(graph.tolist())
+		for _metrics in metrics:
+			_metrics = pyotl.problem.community_discovery.PyList2Vector_Metric(_metrics)
+			optimization(config, executer,
+				lambda **kwargs: pyotl.problem.index.ONL(_graph, _metrics, kwargs['random']),
+				fetcher = lambda optimizer: pyoptimization.problem.fetcher.basic(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+				type = 'community_discovery',
 			)
 
 def make_problem_index(config, executer, optimization):

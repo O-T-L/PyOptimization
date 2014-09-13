@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 import os
+import inspect
 
 def read_config(config, path):
 	config.read(os.path.join(os.path.dirname(path), 'config.ini'))
@@ -26,7 +27,13 @@ def get_codings(prefix = 'pyotl.problem.'):
 	codings = []
 	for module in list(sys.modules.keys()):
 		if module.startswith(prefix):
-			codings.append(module[len(prefix):])
+			try:
+				_module = sys.modules[module]
+				names, _ = zip(*inspect.getmembers(_module, inspect.isclass))
+				if 'Problem'in names:
+					codings.append(module[len(prefix):])
+			except:
+				pass
 	return codings
 
 def get_pyoptimization_path(config):
