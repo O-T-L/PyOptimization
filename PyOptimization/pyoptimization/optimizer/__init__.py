@@ -741,11 +741,11 @@ def make_optimizer_real(config, executer, newProblem, **kwargs):
 	coding = 'real'
 	kwargs['initialGen'] = lambda random, problem, populationSize: pyotl.initial.real.PopulationUniform(random, problem.GetBoundary(), populationSize)
 	kwargs['crossoverGen'], kwargs['crossoverFetcher'] = {
-		'SimulatedBinaryCrossover': (lambda random, problem: pyotl.crossover.real.SimulatedBinaryCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem), problem.GetBoundary(), config.getfloat('simulated_binary_crossover', 'distribution_')), pyoptimization.optimizer.fetcher.crossover.sbx),
+		'SimulatedBinaryCrossover': (lambda random, problem: pyotl.crossover.real.SimulatedBinaryCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem), problem.GetBoundary(), config.getfloat('simulated_binary_crossover', 'distribution_index')), pyoptimization.optimizer.fetcher.crossover.sbx),
 		'DifferentialEvolution': (lambda random, problem: pyotl.crossover.real.DifferentialEvolution(random, eval(config.get(coding + '_crossover', 'probability'))(problem), problem.GetBoundary(), config.getfloat('differential_evolution', 'scaling_factor')), pyoptimization.optimizer.fetcher.crossover.std),
 	}[config.get(coding, 'crossover')]
 	kwargs['mutationGen'], kwargs['mutationFetcher'] = {
-		'PolynomialMutation': (lambda random, problem: pyotl.mutation.real.PolynomialMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem), problem.GetBoundary(), config.getfloat('polynomial_mutation', 'distribution_')), pyoptimization.optimizer.fetcher.mutation.pm),
+		'PolynomialMutation': (lambda random, problem: pyotl.mutation.real.PolynomialMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem), problem.GetBoundary(), config.getfloat('polynomial_mutation', 'distribution_index')), pyoptimization.optimizer.fetcher.mutation.pm),
 	}[config.get(coding, 'mutation')]
 	make_optimizer(config, executer, newProblem, coding, **kwargs)
 
