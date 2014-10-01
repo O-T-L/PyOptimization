@@ -34,26 +34,13 @@ def output(config, items):
 	cursor = conn.cursor()
 	cursor.execute(sql, rowData)
 
-class StepOutputJudgment:
-	def __init__(self):
-		self.step = -1
-	
-	def __call__(self, step):
-		if step != self.step:
-			self.step = step
-			return True
-		else:
-			self.step = step
-			return False
-
 class Optimization(pyotl.utility.Progress):
 	def __call__(self, config, optimizer, *args, **kwargs):
-		stepOutputJudgment = StepOutputJudgment()
 		fetcher = kwargs['fetcher']
 		try:
 			calculateStep = eval(config.get('output', 'step'))
 		except configparser.NoOptionError:
-			calculateStep = lambda optimizer, optimization: -1
+			calculateStep = lambda optimizer, optimization: False
 		try:
 			calculateProgress = eval(config.get('optimization', 'progress'))
 		except configparser.NoOptionError:
@@ -67,8 +54,7 @@ class Optimization(pyotl.utility.Progress):
 			self.interval = None
 		self.duration = 0
 		print(eval(config.get('print', 'initial'))(optimizer, self))
-		self.step = calculateStep(optimizer, self)
-		if stepOutputJudgment(self.step):
+		if calculateStep(optimizer, self):
 			print(stepInfo(optimizer, self))
 			output(config, [('uuid', self.uuid), ('iteration', self.iteration), ('interval', self.interval)] + fetcher(optimizer))
 		self.progress_ = calculateProgress(optimizer, self)
@@ -78,8 +64,7 @@ class Optimization(pyotl.utility.Progress):
 			self.interval = timer.timeit(1)
 			self.duration += self.interval
 			self.iteration += 1
-			step = calculateStep(optimizer, self)
-			if stepOutputJudgment(step):
+			if calculateStep(optimizer, self):
 				print(stepInfo(optimizer, self))
 				output(config, [('uuid', self.uuid), ('iteration', self.iteration), ('interval', self.interval)] + fetcher(optimizer))
 			self.progress_ = calculateProgress(optimizer, self)
