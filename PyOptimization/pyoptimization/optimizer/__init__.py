@@ -78,6 +78,40 @@ def get_optimizer_module(coding, crossover):
 	elif issubclass(type(crossover), module.XTripleCrossover):
 		return sys.modules['pyotl.optimizer.xtriple.' + coding]
 
+def make_elitism_ga(config, executer, newProblem, coding, **kwargs):
+	optimization = pyoptimization.optimizer.optimization.Optimization()
+	random = pyotl.utility.Random(pyotl.utility.Time())
+	problem = newProblem(random = random, progress = optimization)
+	module, function = config.get('optimizer', 'population').rsplit('.', 1)
+	module = importlib.import_module(module)
+	population = getattr(module, function)(config, problem)
+	initial = kwargs['initialGen'](random, problem, population)
+	crossover = kwargs['crossoverGen'](random, problem)
+	_crossover = pyoptimization.optimizer.crossover.adapter(coding, crossover, random)
+	mutation = kwargs['mutationGen'](random, problem)
+	module = eval('pyotl.optimizer.' + coding)
+	optimizer = module.ElitismGA(random, problem, initial, _crossover, mutation)
+	_kwargs = copy.copy(kwargs)
+	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.basic(optimizer, population) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
+	executer(optimization, config, optimizer, **_kwargs)
+
+def make_rwsga(config, executer, newProblem, coding, **kwargs):
+	optimization = pyoptimization.optimizer.optimization.Optimization()
+	random = pyotl.utility.Random(pyotl.utility.Time())
+	problem = newProblem(random = random, progress = optimization)
+	module, function = config.get('optimizer', 'population').rsplit('.', 1)
+	module = importlib.import_module(module)
+	population = getattr(module, function)(config, problem)
+	initial = kwargs['initialGen'](random, problem, population)
+	crossover = kwargs['crossoverGen'](random, problem)
+	_crossover = pyoptimization.optimizer.crossover.adapter(coding, crossover, random)
+	mutation = kwargs['mutationGen'](random, problem)
+	module = eval('pyotl.optimizer.' + coding)
+	optimizer = module.RWSGA(random, problem, initial, _crossover, mutation)
+	_kwargs = copy.copy(kwargs)
+	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.basic(optimizer, population) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
+	executer(optimization, config, optimizer, **_kwargs)
+
 def make_nsga_ii(config, executer, newProblem, coding, **kwargs):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
 	random = pyotl.utility.Random(pyotl.utility.Time())
@@ -680,6 +714,10 @@ def make_monte_carlo_hv_sms_emoa(config, executer, newProblem, coding, **kwargs)
 	executer(optimization, config, optimizer, **_kwargs)
 
 def make_optimizer(config, executer, newProblem, coding, **kwargs):
+	if config.getboolean('optimizer_switch', 'elitism_ga'):
+		make_elitism_ga(config, executer, newProblem, coding, **kwargs)
+	if config.getboolean('optimizer_switch', 'rwsga'):
+		make_rwsga(config, executer, newProblem, coding, **kwargs)
 	if config.getboolean('optimizer_switch', 'nsga_ii'):
 		make_nsga_ii(config, executer, newProblem, coding, **kwargs)
 	if config.getboolean('optimizer_switch', 'constrained_nsga_ii'):

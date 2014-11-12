@@ -15,15 +15,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-class ContexGenerator:
+class NewContex:
 	def __init__(self):
+		self._names = []
 		self._generators = []
 	
-	def append(self, name, generator):
-		self._generators.append([name, generator])
+	def set(self, name, generator):
+		try:
+			n = self._names.index(name)
+			self._generators[n] = generator
+		except ValueError:
+			self._names.append(name)
+			self._generators.append(generator)
 	
 	def __call__(self):
 		context = {}
-		for name, generator in self._generators:
+		for name, generator in zip(self._names, self._generators):
 			context[name] = generator(context)
 		return context
