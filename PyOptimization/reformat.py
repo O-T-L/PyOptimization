@@ -6,10 +6,10 @@ import sqlite3
 import configparser
 import pyoptimization.utility
 
-def reformat(cursor, table, path, reformat, delimiter = '\t'):
+def reformat(cursor, table, path, _reformat, delimiter = '\t'):
 	data = numpy.loadtxt(path, dtype = bytes, ndmin = 2).astype(str)
 	pathBase = os.path.splitext(path)[0]
-	for ext, _data in reformat(data):
+	for ext, _data in _reformat(data):
 		_path = pathBase + ext
 		numpy.savetxt(_path, _data, fmt = '%s', delimiter = delimiter)
 
@@ -19,7 +19,7 @@ def main():
 	name = os.path.splitext(os.path.basename(__file__))[0]
 	pathRoot = config.get(name, 'root.' + platform.system())
 	pattern = config.get(name, 'pattern')
-	reformat = eval(config.get(name, 'reformat'))
+	_reformat = eval(config.get(name, 'reformat'))
 	conn = sqlite3.connect(os.path.expandvars(config.get('database', 'file.' + platform.system())))
 	table = config.get('database', 'table')
 	cursor = conn.cursor()
@@ -31,7 +31,7 @@ def main():
 				paths.append(path)
 	for path in paths:
 		print(path)
-		reformat(cursor, table, path, reformat)
+		reformat(cursor, table, path, _reformat)
 	conn.commit()
 	print('Finished normally')
 
