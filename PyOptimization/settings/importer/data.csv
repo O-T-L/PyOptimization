@@ -1,2 +1,4 @@
-.pf	pf	lambda pf: bytes(pf, 'utf-8')
+.pf	pf	lambda text: bytes(text, 'utf-8')
 .duration	duration	lambda duration: float(duration)
+.fitness	fitness	lambda text: bytes(text, 'utf-8')
+.mark	mark	lambda text: bytes(text, 'utf-8')
