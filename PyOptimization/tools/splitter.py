@@ -2,7 +2,6 @@ import os
 import re
 import fnmatch
 import configparser
-import pyoptimization.utility
 
 def splite(path, ext):
 	f = open(path, 'r')
@@ -19,7 +18,7 @@ def splite(path, ext):
 
 def main():
 	config = configparser.ConfigParser()
-	pyoptimization.utility.read_config(config, __file__)
+	config.read(os.path.splitext(__file__)[0] + '.ini')
 	name = os.path.splitext(os.path.basename(__file__))[0]
 	pathRoot = config.get(name, 'root')
 	pattern = config.get(name, 'pattern')
