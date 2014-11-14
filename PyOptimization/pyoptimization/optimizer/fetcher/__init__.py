@@ -113,14 +113,15 @@ def isnps(optimizer, population):
 		('rounds', optimizer.GetRounds()),
 	]
 
-def npsea(optimizer, population):
-	return basic(optimizer, population) + [('rounds', optimizer.GetRounds())]
-
-def npsea_spd(optimizer, population):
-	return npsea(optimizer, population)# + [('NPSEA_SEPD Shift', optimizer.GetShift())]
-
-def npsea_is_epd(optimizer, population):
-	return npsea(optimizer, population) + [('degree', optimizer.GetAngle() * 180 / math.pi)]
+def grea(optimizer, population):
+	division = optimizer.GetDivision()
+	if len(numpy.unique(division)) == 1:
+		division = str(division[0])
+	else:
+		division = ' '.join(map(str, division))
+	return basic(optimizer, population) + [
+		('division', division),
+	]
 
 def cdas(optimizer, population):
 	return nsga_ii(optimizer, population) + [
