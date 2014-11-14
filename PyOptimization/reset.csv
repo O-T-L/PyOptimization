@@ -26,11 +26,12 @@ mutationProbability	REAL
 SBX Distribution Index	REAL
 PM Distribution Index	REAL
 fitness	BLOB
-mark	BLOB
+marker	BLOB
 crowdingDistance	BLOB
 direction	TEXT
 epsilon	REAL
 territory	REAL
+division	REAL
 degree	REAL
 degreeVector	TEXT
 rounds	INTEGER
