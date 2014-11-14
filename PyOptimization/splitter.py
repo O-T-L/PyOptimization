@@ -20,9 +20,10 @@ def splite(path, ext):
 def main():
 	config = configparser.ConfigParser()
 	pyoptimization.utility.read_config(config, __file__)
-	pathRoot = config.get('splitter', 'root')
-	pattern = config.get('splitter', 'pattern')
-	ext = config.get('splitter', 'ext')
+	name = os.path.splitext(os.path.basename(__file__))[0]
+	pathRoot = config.get(name, 'root')
+	pattern = config.get(name, 'pattern')
+	ext = config.get(name, 'ext')
 	paths = []
 	for pathParent, _, fileNames in os.walk(pathRoot):
 		for fileName in fileNames:
