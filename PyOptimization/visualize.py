@@ -195,24 +195,38 @@ class DataSelector(QtGui.QWidget):
 	def cache_data(self, dataDict):
 		try:
 			for column in self.config.get('cache', 'matrix').split():
-				data = dataDict[column]
-				if data:
-					f = io.BytesIO(data)
-					dataDict[column] = numpy.loadtxt(f, ndmin = 2)
-					f.close()
-				else:
-					del dataDict[column]
+				if column in dataDict:
+					data = dataDict[column]
+					if data:
+						f = io.BytesIO(data)
+						dataDict[column] = numpy.loadtxt(f, ndmin = 2)
+						f.close()
+					else:
+						del dataDict[column]
 		except configparser.NoOptionError:
 			pass
 		try:
 			for column in self.config.get('cache', 'vector').split():
-				data = dataDict[column]
-				if data:
-					f = io.BytesIO(data)
-					dataDict[column] = numpy.loadtxt(f)
-					f.close()
-				else:
-					del dataDict[column]
+				if column in dataDict:
+					data = dataDict[column]
+					if data:
+						f = io.BytesIO(data)
+						dataDict[column] = numpy.loadtxt(f)
+						f.close()
+					else:
+						del dataDict[column]
+		except configparser.NoOptionError:
+			pass
+		try:
+			for column in self.config.get('cache', 'string').split():
+				if column in dataDict:
+					data = dataDict[column]
+					if data:
+						f = io.BytesIO(data)
+						dataDict[column] = numpy.loadtxt(f, dtype = bytes).astype(str)
+						f.close()
+					else:
+						del dataDict[column]
 		except configparser.NoOptionError:
 			pass
 		return dataDict

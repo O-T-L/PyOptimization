@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+import itertools
 import numpy
 
 def relim(ax, data):
@@ -103,8 +104,26 @@ def scatter(ax, data, *args, **kwargs):
 	else:
 		return plot_parallel_coordinates(ax, data)
 
+def text(ax, point, text):
+	text = ax.text(point[0], point[1], text)
+	return lambda: text.remove()
+
 def draw(properties, ax, dataDict, data):
-	if 'fitness' in dataDict:
+	if 'fitness' in dataDict and 'marker' in dataDict:
+		fitness = dataDict['fitness']
+		markers = dataDict['marker']
+		population = [(point, _fitness, _marker) for point, _fitness, _marker in zip(data, fitness, markers)]
+		removers = []
+		for marker, _population in itertools.groupby(population, key = lambda individual: individual[-1]):
+			_population = list(_population)
+			_data = numpy.array([individual[0] for individual in _population])
+			_fitness = [individual[1] for individual in _population]
+			remover = scatter(ax, _data, c = _fitness, marker = marker)
+			removers.append(remover)
+			for point, f in zip(_data, _fitness):
+				remover = text(ax, point, str(f))
+				removers.append(remover)
+	elif 'fitness' in dataDict:
 		fitness = dataDict['fitness']
 		removers = [scatter(ax, data, c = fitness)]
 	elif 'crowdingDistance' in dataDict:
