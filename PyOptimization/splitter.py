@@ -1,5 +1,6 @@
 import os
 import re
+import platform
 import fnmatch
 import configparser
 
@@ -7,7 +8,8 @@ def splite(path, ext):
 	f = open(path, 'r')
 	text = f.read()
 	f.close()
-	for index, _text in enumerate(re.split('\n\s*\n', text)):
+	data = map(lambda _text: _text.strip(), re.split('[\r\n]\s*[\r\n]', text))
+	for index, _text in enumerate(filter(lambda _text: _text, data)):
 		parent = os.path.splitext(path)[0]
 		os.makedirs(parent, exist_ok = True)
 		_path = os.path.join(parent, str(index) + ext)
@@ -20,7 +22,7 @@ def main():
 	config = configparser.ConfigParser()
 	config.read(os.path.splitext(__file__)[0] + '.ini')
 	name = os.path.splitext(os.path.basename(__file__))[0]
-	pathRoot = config.get(name, 'root')
+	pathRoot = config.get(name, 'root.' + platform.system())
 	pattern = config.get(name, 'pattern')
 	ext = config.get(name, 'ext')
 	paths = []
