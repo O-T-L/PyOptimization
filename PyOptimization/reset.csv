@@ -26,6 +26,7 @@ mutationProbability	REAL
 SBX Distribution Index	REAL
 PM Distribution Index	REAL
 fitness	BLOB
+mark	BLOB
 crowdingDistance	BLOB
 direction	TEXT
 epsilon	REAL
