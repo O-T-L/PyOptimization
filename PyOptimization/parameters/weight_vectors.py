@@ -28,8 +28,8 @@ def sphere(config, count, dimension):
 	path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'PF_%u' % count)
 	return numpy.loadtxt(os.path.join(path, 'DTLZ2', str(dimension) + '.csv'), ndmin = 2)
 
-def normal_boundary_intersection_division(config, count, dimension):
-	return {
+def nbi_moea_d(config, count, dimension):
+	division = {
 		100:	{
 			2:	100,
 			3:	23,
@@ -40,7 +40,14 @@ def normal_boundary_intersection_division(config, count, dimension):
 			15:	2,
 		},
 	}[count][dimension]
+	return pyotl.utility.NormalBoundaryIntersection_Real(dimension, division)
 
-def normal_boundary_intersection(config, count, dimension):
-	division = normal_boundary_intersection_division(config, count, dimension)
+def nbi_nsga_iii(config, count, dimension):
+	division = {
+		100:	{
+			3:	12,
+			5:	6,
+			8:	3,
+		},
+	}[count][dimension]
 	return pyotl.utility.NormalBoundaryIntersection_Real(dimension, division)
