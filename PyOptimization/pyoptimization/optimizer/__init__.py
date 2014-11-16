@@ -415,15 +415,18 @@ def make_nsga_iii(config, executer, newProblem, coding, **kwargs):
 	module, function = config.get('optimizer', 'population').rsplit('.', 1)
 	module = importlib.import_module(module)
 	population = getattr(module, function)(config, problem)
-	initial = kwargs['initialGen'](random, problem, population)
-	crossover = kwargs['crossoverGen'](random, problem)
-	_crossover = pyoptimization.optimizer.crossover.adapter(coding, crossover, random)
-	mutation = kwargs['mutationGen'](random, problem)
 	module, function = config.get('nsga_iii', 'reference_set').rsplit('.', 1)
 	module = importlib.import_module(module)
 	referenceSet = getattr(module, function)(config, population, problem.GetNumberOfObjectives())
 	if isinstance(referenceSet, numpy.ndarray):
 		referenceSet = pyotl.utility.PyListList2VectorVector_Real(referenceSet.tolist())
+	_population = len(referenceSet)
+	while _population % 4:
+		_population += 1
+	initial = kwargs['initialGen'](random, problem, _population)
+	crossover = kwargs['crossoverGen'](random, problem)
+	_crossover = pyoptimization.optimizer.crossover.adapter(coding, crossover, random)
+	mutation = kwargs['mutationGen'](random, problem)
 	module = eval('pyotl.optimizer.' + coding)
 	optimizer = module.NSGA_III(random, problem, initial, _crossover, mutation, referenceSet)
 	_kwargs = copy.copy(kwargs)
