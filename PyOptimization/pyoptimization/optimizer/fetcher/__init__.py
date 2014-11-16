@@ -113,6 +113,16 @@ def isnps(optimizer, population):
 		('rounds', optimizer.GetRounds()),
 	]
 
+def nsga_iii(optimizer, population):
+	fitness = list(map(lambda solution: solution.minDistance_, optimizer.GetSolutionSet()))
+	f = io.BytesIO()
+	numpy.savetxt(f, fitness)
+	fitness = f.getvalue()
+	return basic(optimizer, population) + [
+		('fitness', fitness),
+		('epsilon', optimizer.GetEpsilon()),
+	]
+
 def grea(optimizer, population):
 	division = optimizer.GetDivision()
 	if len(numpy.unique(division)) == 1:

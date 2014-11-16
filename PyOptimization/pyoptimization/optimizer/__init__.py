@@ -427,7 +427,7 @@ def make_nsga_iii(config, executer, newProblem, coding, **kwargs):
 	module = eval('pyotl.optimizer.' + coding)
 	optimizer = module.NSGA_III(random, problem, initial, _crossover, mutation, referenceSet)
 	_kwargs = copy.copy(kwargs)
-	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.basic(optimizer, population) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
+	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.nsga_iii(optimizer, population) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
 	executer(optimization, config, optimizer, **_kwargs)
 
 def make_ar_dmo(config, executer, newProblem, coding, **kwargs):
