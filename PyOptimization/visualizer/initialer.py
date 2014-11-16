@@ -228,7 +228,7 @@ def _dtlz7(posDecision):
 	numberOfObjectives = len(posDecision) + 1
 	return d * (numberOfObjectives - sum([(math.sin(3 * math.pi * Decision) + 1) * Decision / d for Decision in posDecision]))
 
-def dtlz7(ax, dimension, resolution = 400, alpha = 0.2):
+def dtlz7(ax, dimension, resolution = 400, alpha = 0.7, cmap = 'jet'):
 	if dimension == 2:
 		x = numpy.linspace(0, 1, resolution)
 		y = [_dtlz7([_x]) for _x in x]
@@ -239,7 +239,7 @@ def dtlz7(ax, dimension, resolution = 400, alpha = 0.2):
 		x, y = numpy.mgrid[0 : 1 : resolution * 1j, 0 : 1 : resolution * 1j]
 		z = numpy.zeros(x.shape)
 		z.flat = [_dtlz7([_x, _y]) for _x, _y in zip(x.flat, y.flat)]
-		draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
+		draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
 		return lambda: draw.remove()
 
 def convex_concave(decision, nSegments, shape):
