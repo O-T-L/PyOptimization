@@ -32,7 +32,7 @@ def flat(ax, dimension, distance, alpha = 0.2, color = 'white'):
 		draw = ax.add_collection3d(polygon)
 		return lambda: draw.remove()
 
-def sphere(ax, dimension, radius, resolution = 100, alpha = 0.2, cmap = 'jet'):
+def sphere(ax, dimension, radius, resolution = 100, alpha = 0.2):
 	if dimension == 2:
 		u = numpy.linspace(0, numpy.pi / 2, resolution)
 		x = radius * numpy.cos(u)
@@ -45,7 +45,7 @@ def sphere(ax, dimension, radius, resolution = 100, alpha = 0.2, cmap = 'jet'):
 		x = radius * numpy.cos(u) * numpy.cos(v)
 		y = radius * numpy.cos(u) * numpy.sin(v)
 		z = radius * numpy.sin(u)
-		draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
+		draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 		return lambda: draw.remove()
 
 def circle(ax, dimension, radius, resolution = 100):
@@ -71,21 +71,21 @@ def xsinx(ax, resolution = 500):
 	draw = ax.plot(x, y)
 	return lambda: draw.remove()
 
-def camel(ax, resolution = (50, 10), alpha = 0.7, cmap = 'jet'):
+def camel(ax, resolution = (50, 10), alpha = 0.2):
 	x, y = numpy.mgrid[-100 : 100 : resolution[0] * 1j, -100 : 100 : resolution[1] * 1j]
 	xSquare = x * x
 	ySquare = y * y
 	z = (4 - 2.1 * xSquare + xSquare * xSquare / 3) * xSquare + x * y + (-4 + 4 * ySquare) * ySquare
-	draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
+	draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 	return lambda: draw.remove()
 
-def shaffer_f6(ax, resolution = 50, alpha = 0.7, cmap = 'jet'):
+def shaffer_f6(ax, resolution = 50, alpha = 0.2):
 	xy = numpy.power(numpy.linspace(0, 1, resolution), 4) * 200 - 100
 	x, y = numpy.meshgrid(xy, xy)
 	xSquare = x * x
 	ySquare = y * y
 	z = 0.5 - (numpy.power(numpy.sin(numpy.sqrt(xSquare + ySquare)), 2) - 0.5) / pow(1 + 0.001 * (xSquare + ySquare), 2)
-	draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
+	draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 	return lambda: draw.remove()
 
 def draw_cube_face(ax, points, **kwargs):
@@ -191,7 +191,7 @@ def uf5(ax, resolution = 100):
 	draw, = ax.plot(x, y)
 	return lambda: draw.remove()
 
-def convex_dtlz2(ax, dimension, radius, resolution = 100, alpha = 0.7, cmap = 'jet'):
+def convex_dtlz2(ax, dimension, radius, resolution = 100, alpha = 0.2):
 	if dimension == 2:
 		u = numpy.linspace(0, numpy.pi / 2, resolution)
 		x = numpy.power(radius * numpy.cos(u), 4)
@@ -204,10 +204,10 @@ def convex_dtlz2(ax, dimension, radius, resolution = 100, alpha = 0.7, cmap = 'j
 		x = numpy.power(radius * numpy.cos(u) * numpy.cos(v), 4)
 		y = numpy.power(radius * numpy.cos(u) * numpy.sin(v), 4)
 		z = numpy.power(radius * numpy.sin(u), 2)
-		draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
+		draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 		return lambda: draw.remove()
 
-def scaled_dtlz2(ax, dimension, radius, resolution = 100, alpha = 0.7, cmap = 'jet'):
+def scaled_dtlz2(ax, dimension, radius, resolution = 100, alpha = 0.2):
 	if dimension == 2:
 		u = numpy.linspace(0, numpy.pi / 2, resolution)
 		x = radius * numpy.cos(u)
@@ -220,7 +220,7 @@ def scaled_dtlz2(ax, dimension, radius, resolution = 100, alpha = 0.7, cmap = 'j
 		x = radius * numpy.cos(u) * numpy.cos(v)
 		y = 10 * radius * numpy.cos(u) * numpy.sin(v)
 		z = 100 * radius * numpy.sin(u)
-		draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
+		draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 		return lambda: draw.remove()
 
 def _dtlz7(posDecision):
@@ -228,7 +228,7 @@ def _dtlz7(posDecision):
 	numberOfObjectives = len(posDecision) + 1
 	return d * (numberOfObjectives - sum([(math.sin(3 * math.pi * Decision) + 1) * Decision / d for Decision in posDecision]))
 
-def dtlz7(ax, dimension, resolution = 400, alpha = 0.7, cmap = 'jet'):
+def dtlz7(ax, dimension, resolution = 400, alpha = 0.2):
 	if dimension == 2:
 		x = numpy.linspace(0, 1, resolution)
 		y = [_dtlz7([_x]) for _x in x]
@@ -239,7 +239,7 @@ def dtlz7(ax, dimension, resolution = 400, alpha = 0.7, cmap = 'jet'):
 		x, y = numpy.mgrid[0 : 1 : resolution * 1j, 0 : 1 : resolution * 1j]
 		z = numpy.zeros(x.shape)
 		z.flat = [_dtlz7([_x, _y]) for _x, _y in zip(x.flat, y.flat)]
-		draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
+		draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 		return lambda: draw.remove()
 
 def convex_concave(decision, nSegments, shape):
@@ -249,7 +249,7 @@ def convex_concave(decision, nSegments, shape):
 	tmp = 2 * nSegments * math.pi;
 	return numpy.power(1 - decision - numpy.cos(tmp * decision + numpy.pi / 2) / tmp, shape)
 
-def wfg1(ax, dimension, resolution = 400, alpha = 0.7, cmap = 'jet'):
+def wfg1(ax, dimension, resolution = 400, alpha = 0.2):
 	nSegments = 5
 	shape = 1
 	if dimension == 2:
@@ -267,7 +267,7 @@ def wfg1(ax, dimension, resolution = 400, alpha = 0.7, cmap = 'jet'):
 		x = (1 - numpy.cos(_u)) * (1 - numpy.cos(_v)) * 2
 		y = (1 - numpy.cos(_u)) * (1 - numpy.sin(_v)) * 4
 		z = convex_concave(u, nSegments, shape) * 6
-		draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
+		draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 		return lambda: draw.remove()
 
 def disconnected(decision, nRegions, shape, location):
@@ -278,7 +278,7 @@ def disconnected(decision, nRegions, shape, location):
 	tmp = nRegions * numpy.power(decision, location) * math.pi;
 	return 1 - numpy.power(decision, shape) * numpy.power(numpy.cos(tmp), 2)
 
-def wfg2(ax, dimension, resolution = 2500, alpha = 0.7, cmap = 'jet'):
+def wfg2(ax, dimension, resolution = 2500, alpha = 0.2):
 	nRegions = 5
 	shape = 1
 	location = 1
@@ -297,10 +297,10 @@ def wfg2(ax, dimension, resolution = 2500, alpha = 0.7, cmap = 'jet'):
 		x = (1 - numpy.cos(_u)) * (1 - numpy.cos(_v)) * 2
 		y = (1 - numpy.cos(_u)) * (1 - numpy.sin(_v)) * 4
 		z = disconnected(u, nRegions, shape, location) * 6
-		draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
+		draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 		return lambda: draw.remove()
 
-def wfg3(ax, dimension, alpha = 0.7, color = 'red'):
+def wfg3(ax, dimension, alpha = 0.2, color = 'red'):
 	if dimension == 2:
 		draw, = ax.plot([2, 0], [0, 4])
 		return lambda: draw.remove()
@@ -309,7 +309,7 @@ def wfg3(ax, dimension, alpha = 0.7, color = 'red'):
 		draw, = ax.plot(x, y, z)
 		return lambda: draw.remove()
 
-def wfg4(ax, dimension, resolution = 400, alpha = 0.7, cmap = 'jet'):
+def wfg4(ax, dimension, resolution = 400, alpha = 0.2):
 	if dimension == 2:
 		u = numpy.linspace(0, numpy.pi / 2, resolution)
 		x = numpy.sin(u) * 2
@@ -322,7 +322,7 @@ def wfg4(ax, dimension, resolution = 400, alpha = 0.7, cmap = 'jet'):
 		x = numpy.sin(u) * numpy.sin(v) * 2
 		y = numpy.sin(u) * numpy.cos(v) * 4
 		z = numpy.cos(u) * 6
-		draw = ax.plot_surface(x, y, z, rstride = 1, cstride = 1, alpha = alpha, cmap = matplotlib.cm.get_cmap(cmap), linewidth = 0)
+		draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 		return lambda: draw.remove()
 
 def __init__(name, properties):
