@@ -31,20 +31,20 @@ def evaluate_gd(config, rowID, columns, rowData):
 	properties = dict(zip(columns, rowData))
 	problem = rowData[columns.index('problem')]
 	if problem == 'DTLZ1':
-		indicator = pyotl.indicator.DTLZ1GD()
+		indicator = pyotl.indicator.real.DTLZ1GD()
 	elif re.match('DTLZ[2-6]', problem):
-		indicator = pyotl.indicator.DTLZ2GD()
+		indicator = pyotl.indicator.real.DTLZ2GD()
 	elif problem == 'WFG3':
-		indicator = pyotl.indicator.WFG3GD()
+		indicator = pyotl.indicator.real.WFG3GD()
 	elif re.match('WFG[4-9]', problem):
-		indicator = pyotl.indicator.WFG4GD()
+		indicator = pyotl.indicator.real.WFG4GD()
 	else:
 		module, function = config.get('data', 'pf').rsplit('.', 1)
 		module = importlib.import_module(module)
 		pfTrue = getattr(module, function)(config, properties)
 		assert(pfTrue.shape[1] == properties['objectives'])
 		pfTrue = pyotl.utility.PyListList2VectorVector_Real(pfTrue.tolist())
-		indicator = pyotl.indicator.FrontGD(pfTrue)
+		indicator = pyotl.indicator.real.FrontGD(pfTrue)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -60,7 +60,7 @@ def evaluate_igd(config, rowID, columns, rowData):
 	pfTrue = getattr(module, function)(config, properties)
 	assert(pfTrue.shape[1] == properties['objectives'])
 	pfTrue = pyotl.utility.PyListList2VectorVector_Real(pfTrue.tolist())
-	indicator = pyotl.indicator.InvertedGenerationalDistance(pfTrue)
+	indicator = pyotl.indicator.real.InvertedGenerationalDistance(pfTrue)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -78,9 +78,9 @@ def evaluate_eps(config, rowID, columns, rowData):
 	pfTrue = pyotl.utility.PyListList2VectorVector_Real(pfTrue.tolist())
 	method = config.get('eps', 'method')
 	if method == 'additive':
-		indicator = pyotl.indicator.AdditiveEpsilon(pfTrue)
+		indicator = pyotl.indicator.real.AdditiveEpsilon(pfTrue)
 	elif method == 'additive':
-		indicator = pyotl.indicator.MultiplicativeEpsilon(pfTrue)
+		indicator = pyotl.indicator.real.MultiplicativeEpsilon(pfTrue)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -90,7 +90,7 @@ def evaluate_eps(config, rowID, columns, rowData):
 	pyoptimization.indicator.utility.update_row(config, rowID, ['IGD'], [metric])
 
 def evaluate_sp(config, rowID, columns, rowData):
-	indicator = pyotl.indicator.Spacing()
+	indicator = pyotl.indicator.real.Spacing()
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -99,7 +99,7 @@ def evaluate_sp(config, rowID, columns, rowData):
 	pyoptimization.indicator.utility.update_row(config, rowID, ['SP'], [metric])
 
 def evaluate_ms(config, rowID, columns, rowData):
-	indicator = pyotl.indicator.MaximumSpread()
+	indicator = pyotl.indicator.real.MaximumSpread()
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -114,7 +114,7 @@ def evaluate_ms1(config, rowID, columns, rowData):
 	module = importlib.import_module(module)
 	boundary = getattr(module, function)(config, properties)
 	boundary = pyotl.utility.PyList2Boundary_Real(boundary.tolist())
-	indicator = pyotl.indicator.MaximumSpread1(boundary)
+	indicator = pyotl.indicator.real.MaximumSpread1(boundary)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -129,7 +129,7 @@ def evaluate_ms2(config, rowID, columns, rowData):
 	module = importlib.import_module(module)
 	boundary = getattr(module, function)(config, properties)
 	boundary = pyotl.utility.PyList2Boundary_Real(boundary.tolist())
-	indicator = pyotl.indicator.MaximumSpread2(boundary)
+	indicator = pyotl.indicator.real.MaximumSpread2(boundary)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -153,7 +153,7 @@ def evaluate_dm(config, rowID, columns, rowData):
 	pfTrue = getattr(module, function)(config, properties)
 	assert(pfTrue.shape[1] == properties['objectives'])
 	pfTrue = pyotl.utility.PyListList2VectorVector_Real(pfTrue.tolist())
-	indicator = pyotl.indicator.DiversityMetric(boundary, division, pfTrue)
+	indicator = pyotl.indicator.real.DiversityMetric(boundary, division, pfTrue)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -168,7 +168,7 @@ def evaluate_hv(config, rowID, columns, rowData):
 	module = importlib.import_module(module)
 	referencePoint = getattr(module, function)(config, properties)
 	referencePoint = pyotl.utility.PyList2Vector_Real(referencePoint)
-	indicator = pyotl.indicator.RecursiveHV(referencePoint)
+	indicator = pyotl.indicator.real.RecursiveHV(referencePoint)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -185,7 +185,7 @@ def evaluate_monte_carlo_hv(config, rowID, columns, rowData):
 	referencePoint = pyotl.utility.PyList2Vector_Real(referencePoint)
 	random = pyotl.utility.Random(pyotl.utility.Time())
 	sample = config.getint('monte_carlo_hv', 'sample')
-	indicator = pyotl.indicator.MonteCarloHV(referencePoint, random, sample)
+	indicator = pyotl.indicator.real.MonteCarloHV(referencePoint, random, sample)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
@@ -205,7 +205,7 @@ def evaluate_r2(config, rowID, columns, rowData):
 	weightVectors = getattr(module, function)(config, properties['population'], properties['objectives'])
 	assert(weightVectors.shape[1] == properties['objectives'])
 	weightVectors = pyotl.utility.PyListList2VectorVector_Real(weightVectors.tolist())
-	indicator = pyotl.indicator.R2(referencePoint, weightVectors)
+	indicator = pyotl.indicator.real.R2(referencePoint, weightVectors)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
