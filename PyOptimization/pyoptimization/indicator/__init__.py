@@ -30,12 +30,8 @@ import pyoptimization.indicator.utility
 def evaluate_gd(config, rowID, columns, rowData):
 	properties = dict(zip(columns, rowData))
 	problem = rowData[columns.index('problem')]
-	if problem == 'DTLZ1':
-		indicator = pyotl.indicator.real.DTLZ1GD()
-	elif re.match('DTLZ[2-6]', problem):
+	if re.match('DTLZ[2-6]', problem):
 		indicator = pyotl.indicator.real.DTLZ2GD()
-	elif problem == 'WFG3':
-		indicator = pyotl.indicator.real.WFG3GD()
 	elif re.match('WFG[4-9]', problem):
 		indicator = pyotl.indicator.real.WFG4GD()
 	else:
