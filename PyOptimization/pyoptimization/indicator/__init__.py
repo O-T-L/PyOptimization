@@ -22,7 +22,7 @@ import importlib
 import sqlite3
 import numpy
 import pyotl.utility
-import pyotl.indicator
+import pyotl.indicator.real
 import pyoptimization.database
 import pyoptimization.utility
 import pyoptimization.indicator.utility
