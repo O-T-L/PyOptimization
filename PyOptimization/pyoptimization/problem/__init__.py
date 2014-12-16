@@ -444,6 +444,7 @@ def make_motsp(config, executer, optimization):
 				optimization(config, executer,
 					lambda **kwargs: pyotl.problem.index.MOTSP(_matrics),
 					fetcher = lambda optimizer: pyoptimization.problem.fetcher.correlation_motsp(optimizer.GetProblem(), city, correlation) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+					type = 'tsp',
 				)
 		except configparser.NoOptionError:
 			_matrics = pyotl.utility.PyListListList2VectorBlasSymmetricMatrix_Real(matrics)
