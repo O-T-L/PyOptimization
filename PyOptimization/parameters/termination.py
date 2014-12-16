@@ -60,9 +60,10 @@ def iteration(config, optimizer):
 	elif type(optimizer.GetProblem()).__name__ == 'TSP':
 		return 300
 	elif type(optimizer.GetProblem()).__name__ == 'MOTSP':
-		return 300
+		return 1000
 	elif type(optimizer.GetProblem()).__name__ == 'ONL':
 		return 300
 
 def evaluation(config, optimizer):
+	return iteration(config, optimizer) * 100
 	return iteration(config, optimizer) * parameters.optimizer.population(config, optimizer.GetProblem())
