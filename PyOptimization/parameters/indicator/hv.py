@@ -35,3 +35,5 @@ def reference_point(config, properties):
 		}[properties['objectives']]
 	elif re.match('^WFG\d$', properties['problem']):
 		return [1 + (i + 1) * 2 for i in range(properties['objectives'])]
+	elif properties['problem'] == 'MOTSP':
+		return [22] * properties['objectives']
