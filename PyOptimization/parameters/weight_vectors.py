@@ -31,24 +31,24 @@ def sphere(config, count, dimension):
 def nbi_moea_d(config, count, dimension):
 	division = {
 		100:	{
-			2:	[12],
-			3:	[23] * (dimension - 1),
-			4:	[9] * (dimension - 1),
-			5:	[5] * (dimension - 1),
-			6:	[5] * (dimension - 1),
-			10:	[3] * (dimension - 1),
-			15:	[2] * (dimension - 1),
+			2:	12,
+			3:	23,
+			4:	9,
+			5:	5,
+			6:	5,
+			10:	3,
+			15:	2,
 		},
 	}[count][dimension]
-	return pyotl.utility.NormalBoundaryIntersection_Real(pyotl.utility.PyList2Vector_size_t(division))
+	return pyotl.utility.NormalBoundaryIntersection_Real(dimension, division)
 
 def nbi_nsga_iii(config, count, dimension):
 	division = {
 		100:	{
-			2:	[100],
-			3:	[12] * (dimension - 1),
-			5:	[6] * (dimension - 1),
-			8:	[3] * (dimension - 1),
+			2:	100,
+			3:	12,
+			5:	6,
+			8:	3,
 		},
 	}[count][dimension]
-	return pyotl.utility.NormalBoundaryIntersection_Real(pyotl.utility.PyList2Vector_size_t(division))
+	return pyotl.utility.NormalBoundaryIntersection_Real(dimension, division)
