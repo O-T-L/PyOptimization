@@ -18,14 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import re
 import numpy
 
+def enumerate_angle(config, problem):
+	resolution = 12
+	return numpy.linspace(0.2, 0.8, resolution) * numpy.pi
+
 def angle(config, problem):
-	dtlz2 = {
-		3:	0.5,
-		4:	0.5,
-		5:	0.5,
-		6:	0.5,
-		8:	0.5,
-		10:	0.5,
-	}
-	if re.match('^DTLZ[234]$', type(problem).__name__):
-		return numpy.array([dtlz2[problem.GetNumberOfObjectives()]] * problem.GetNumberOfObjectives()) * numpy.pi
+	if problem.GetNumberOfObjectives() == 2:
+		return [0.45] * problem.GetNumberOfObjectives()
+	elif problem.GetNumberOfObjectives() == 3:
+		return [0.45] * problem.GetNumberOfObjectives()

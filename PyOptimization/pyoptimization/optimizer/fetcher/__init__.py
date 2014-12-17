@@ -134,8 +134,13 @@ def grea(optimizer, population):
 	]
 
 def cdas(optimizer, population):
+	angle = optimizer.GetAngle()
+	if len(numpy.unique(angle)) == 1:
+		degree = str(angle[0] * 180 / math.pi)
+	else:
+		degree = ' '.join(map(lambda _angle: str(_angle * 180 / math.pi), angle))
 	return nsga_ii(optimizer, population) + [
-		('degreeVector', ' '.join(map(str, optimizer.GetAngle() * 180 / math.pi))),
+		('degreeVector', degree),
 	]
 
 def g_nsga_ii(optimizer, population):

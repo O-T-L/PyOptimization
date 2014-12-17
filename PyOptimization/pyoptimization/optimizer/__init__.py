@@ -468,12 +468,35 @@ def make_cdas(config, executer, newProblem, coding, **kwargs):
 	module, function = config.get('cdas', 'angle').rsplit('.', 1)
 	module = importlib.import_module(module)
 	angle = getattr(module, function)(config, problem)
-	angle = pyotl.utility.PyList2Vector_Real(angle.tolist())
+	angle = pyotl.utility.PyList2Vector_Real(angle)
 	module = eval('pyotl.optimizer.' + coding)
 	optimizer = module.CDAS(random, problem, initial, _crossover, mutation, angle)
 	_kwargs = copy.copy(kwargs)
 	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.cdas(optimizer, population) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
 	executer(optimization, config, optimizer, **_kwargs)
+
+def enumerate_cdas(config, executer, newProblem, coding, **kwargs):
+	optimization = pyoptimization.optimizer.optimization.Optimization()
+	random = pyotl.utility.Random(pyotl.utility.Time())
+	_problem = newProblem(random = random, progress = optimization)
+	module, function = config.get('cdas', 'enumerate_angle').rsplit('.', 1)
+	module = importlib.import_module(module)
+	angleList = getattr(module, function)(config, _problem)
+	for angle in angleList:
+		problem = newProblem(random = random, progress = optimization)
+		module, function = config.get('optimizer', 'population').rsplit('.', 1)
+		module = importlib.import_module(module)
+		population = getattr(module, function)(config, problem)
+		initial = kwargs['initialGen'](random, problem, population)
+		crossover = kwargs['crossoverGen'](random, problem)
+		_crossover = pyoptimization.optimizer.crossover.adapter(coding, crossover, random)
+		mutation = kwargs['mutationGen'](random, problem)
+		_angle = pyotl.utility.PyList2Vector_Real([angle] * problem.GetNumberOfObjectives())
+		module = eval('pyotl.optimizer.' + coding)
+		optimizer = module.CDAS(random, problem, initial, _crossover, mutation, _angle)
+		_kwargs = copy.copy(kwargs)
+		_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.cdas(optimizer, population) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
+		executer(optimization, config, optimizer, **_kwargs)
 
 def make_g_nsga_ii(config, executer, newProblem, coding, **kwargs):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -755,6 +778,8 @@ def make_optimizer(config, executer, newProblem, coding, **kwargs):
 		make_ar_dmo(config, executer, newProblem, coding, **kwargs)
 	if config.getboolean('optimizer_switch', 'cdas'):
 		make_cdas(config, executer, newProblem, coding, **kwargs)
+	if config.getboolean('optimizer_switch', 'enumerate_cdas'):
+		enumerate_cdas(config, executer, newProblem, coding, **kwargs)
 	if config.getboolean('optimizer_switch', 'g_nsga_ii'):
 		make_g_nsga_ii(config, executer, newProblem, coding, **kwargs)
 	if config.getboolean('optimizer_switch', 'r_nsga_ii'):
