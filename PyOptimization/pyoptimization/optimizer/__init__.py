@@ -581,7 +581,7 @@ def make_moea_d_tchebycheff(config, executer, newProblem, coding, **kwargs):
 	try:
 		adjust = config.getfloat('moea_d_tchebycheff', 'adjust')
 		for weight in weightVectors:
-			pyotl.optimizer.moea_d.AdjustWeight(weight, adjust)
+			pyotl.optimizer.moea_d.AdjustWeight_Real(weight, adjust)
 	except configparser.NoOptionError:
 		pass
 	initial = kwargs['initialGen'](random, problem, len(weightVectors))
@@ -609,7 +609,7 @@ def make_moea_d_norm_tchebycheff(config, executer, newProblem, coding, **kwargs)
 	try:
 		adjust = config.getfloat('moea_d_norm_tchebycheff', 'adjust')
 		for weight in weightVectors:
-			pyotl.optimizer.moea_d.AdjustWeight(weight, adjust)
+			pyotl.optimizer.moea_d.AdjustWeight_Real(weight, adjust)
 	except configparser.NoOptionError:
 		pass
 	initial = kwargs['initialGen'](random, problem, len(weightVectors))
@@ -636,7 +636,7 @@ def make_moea_d_pbi(config, executer, newProblem, coding, **kwargs):
 		weightVectors = pyotl.utility.PyListList2VectorVector_Real(weightVectors.tolist())
 	if config.getboolean('moea_d_pbi', 'normalize'):
 		for weight in weightVectors:
-			pyotl.optimizer.moea_d.NormalizeWeight(weight)
+			pyotl.optimizer.moea_d.NormalizeWeight_Real(weight)
 	initial = kwargs['initialGen'](random, problem, len(weightVectors))
 	crossover = kwargs['crossoverGen'](random, problem)
 	mutation = kwargs['mutationGen'](random, problem)

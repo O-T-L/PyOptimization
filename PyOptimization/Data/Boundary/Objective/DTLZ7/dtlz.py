@@ -22,14 +22,13 @@ import pyotl.utility
 import pyotl.initial.real
 import pyotl.crossover.real
 import pyotl.mutation.real
-import pyotl.optimizer.real
 import pyotl.optimizer.couple_couple.real
 
 def optimization(random, problem, weight):
 	weightVectors = [weight] * 100
 	weightVectors = pyotl.utility.PyListList2VectorVector_Real(weightVectors)
 	for weight in weightVectors:
-		pyotl.optimizer.moea_d.NormalizeWeight(weight)
+		pyotl.optimizer.moea_d.NormalizeWeight_Real(weight)
 	initial = pyotl.initial.real.PopulationUniform(random, problem.GetBoundary(), len(weightVectors))
 	crossover = pyotl.crossover.real.SimulatedBinaryCrossover(random, 1, problem.GetBoundary(), 20)
 	mutation = pyotl.mutation.real.PolynomialMutation(random, 1 / float(len(problem.GetBoundary())), problem.GetBoundary(), 20)
