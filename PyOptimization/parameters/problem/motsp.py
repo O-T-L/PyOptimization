@@ -23,7 +23,7 @@ def random(config):
 	path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'MOTSP')
 	results = []
 	city = 'Random30'
-	for objectives in [4, 5, 6, 10, 15]:
+	for objectives in map(int, config.get('motsp', 'objectives').split()):
 		matrics = [numpy.loadtxt(os.path.join(path, city, str(objectives), str(objective) + '.csv'), ndmin = 2) for objective in range(objectives)]
 		results.append([matrics, city])
 	return results

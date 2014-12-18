@@ -23,7 +23,7 @@ def random(config):
 	path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'Knapsack')
 	results = []
 	packs = 'Random500'
-	for objectives in [5, 10, 15]:
+	for objectives in map(int, config.get('knapsack', 'objectives').split()):
 		_path = os.path.join(path, packs, str(objectives))
 		price = numpy.loadtxt(os.path.join(_path, 'price.csv'), ndmin = 2)
 		weight = numpy.loadtxt(os.path.join(_path, 'weight.csv'), ndmin = 2)
