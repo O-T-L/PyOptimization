@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import numpy
-import pyotl.utility
 import pyoptimization.utility
 
 def flat(config, count, dimension):
@@ -27,28 +26,3 @@ def flat(config, count, dimension):
 def sphere(config, count, dimension):
 	path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'PF_%u' % count)
 	return numpy.loadtxt(os.path.join(path, 'DTLZ2', str(dimension) + '.csv'), ndmin = 2)
-
-def nbi_moea_d(config, count, dimension):
-	division = {
-		100:	{
-			2:	12,
-			3:	23,
-			4:	9,
-			5:	5,
-			6:	5,
-			10:	3,
-			15:	2,
-		},
-	}[count][dimension]
-	return pyotl.utility.NormalBoundaryIntersection_Real(dimension, division)
-
-def nbi_nsga_iii(config, count, dimension):
-	division = {
-		100:	{
-			2:	100,
-			3:	12,
-			5:	6,
-			8:	3,
-		},
-	}[count][dimension]
-	return pyotl.utility.NormalBoundaryIntersection_Real(dimension, division)
