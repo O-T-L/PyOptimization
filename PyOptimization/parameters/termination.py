@@ -48,7 +48,7 @@ def iteration(config, optimizer):
 	elif re.match('^(Convex|Scaled)?DTLZ[2457]I?$', type(optimizer.GetProblem()).__name__):
 		return 300
 	elif re.match('^WFG\d$', type(optimizer.GetProblem()).__name__):
-		return 750
+		return 300
 	elif re.match('^WFG[1]$', type(optimizer.GetProblem()).__name__):
 		return 1000
 	elif re.match('^WFG[2-9]$', type(optimizer.GetProblem()).__name__):
