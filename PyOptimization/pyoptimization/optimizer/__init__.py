@@ -843,17 +843,17 @@ def make_optimizer_index(config, executer, newProblem, **kwargs):
 	if kwargs['type'] == 'tsp':
 		kwargs['initialGen'] = lambda random, problem, populationSize: pyotl.initial.index.PopulationShuffle(random, problem.GetNumberOfCities(), populationSize)
 		kwargs['crossoverGen'], kwargs['crossoverFetcher'] = {
-			'OrderBasedCrossover': (lambda random, problem: pyotl.crossover.index.OrderBasedCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
-			'PartiallyMappedCrossover': (lambda random, problem: pyotl.crossover.index.PartiallyMappedCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
-			'PositionBasedCrossover': (lambda random, problem: pyotl.crossover.index.PositionBasedCrossover(random, eval(config.get(coding + '_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
-		}[config.get(coding, 'crossover')]
+			'OrderBasedCrossover': (lambda random, problem: pyotl.crossover.index.OrderBasedCrossover(random, eval(config.get('tsp_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
+			'PartiallyMappedCrossover': (lambda random, problem: pyotl.crossover.index.PartiallyMappedCrossover(random, eval(config.get('tsp_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
+			'PositionBasedCrossover': (lambda random, problem: pyotl.crossover.index.PositionBasedCrossover(random, eval(config.get('tsp_crossover', 'probability'))(problem)), pyoptimization.optimizer.fetcher.crossover.std),
+		}[config.get('tsp', 'crossover')]
 		kwargs['mutationGen'], kwargs['mutationFetcher'] = {
-			'DisplacementMutation': (lambda random, problem: pyotl.mutation.index.DisplacementMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
-			'ExchangeMutation': (lambda random, problem: pyotl.mutation.index.ExchangeMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
-			'InsertionMutation': (lambda random, problem: pyotl.mutation.index.InsertionMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
-			'InversionMutation': (lambda random, problem: pyotl.mutation.index.InversionMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
-			'SpreadMutation': (lambda random, problem: pyotl.mutation.index.SpreadMutation(random, eval(config.get(coding + '_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
-		}[config.get(coding, 'mutation')]
+			'DisplacementMutation': (lambda random, problem: pyotl.mutation.index.DisplacementMutation(random, eval(config.get('tsp_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+			'ExchangeMutation': (lambda random, problem: pyotl.mutation.index.ExchangeMutation(random, eval(config.get('tsp_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+			'InsertionMutation': (lambda random, problem: pyotl.mutation.index.InsertionMutation(random, eval(config.get('tsp_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+			'InversionMutation': (lambda random, problem: pyotl.mutation.index.InversionMutation(random, eval(config.get('tsp_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+			'SpreadMutation': (lambda random, problem: pyotl.mutation.index.SpreadMutation(random, eval(config.get('tsp_mutation', 'probability'))(problem)), pyoptimization.optimizer.fetcher.mutation.std),
+		}[config.get('tsp', 'mutation')]
 		make_optimizer(config, executer, newProblem, coding, **kwargs)
 	elif kwargs['type'] == 'community_discovery':
 		_coding = coding
