@@ -2,12 +2,12 @@ import os
 import fnmatch
 import configparser
 
-def merge_files(root, pattern, ext, sort):
+def merge_files(root, pattern, ext, lines, sort):
 	filenames = []
 	for filename in os.listdir(root):
 		path = os.path.join(root, filename)
 		if os.path.isdir(path):
-			merge_files(path, pattern, ext, sort)
+			merge_files(path, pattern, ext, lines, sort)
 		elif fnmatch.fnmatch(filename, pattern):
 			filenames.append(filename)
 	if filenames:
@@ -24,7 +24,7 @@ def merge_files(root, pattern, ext, sort):
 			f = open(path, 'r')
 			data = f.read()
 			f.close()
-			fMerge.write(data + '\n')
+			fMerge.write(data + ''.join(['\n'] * lines))
 		fMerge.close()
 
 def main():
@@ -35,6 +35,7 @@ def main():
 		config.get(name, 'root'),
 		config.get(name, 'pattern'),
 		config.get(name, 'ext'),
+		config.getint(name, 'lines'),
 		config.getboolean(name, 'sort'),
 	)
 
