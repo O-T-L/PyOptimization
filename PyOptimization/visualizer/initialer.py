@@ -339,7 +339,7 @@ def __init__(name, properties):
 			return lambda ax, dataDictList: uf5(ax)
 		elif properties['problem'] == 'DTLZ1':
 			return lambda ax, dataDictList: flat(ax, dataDictList[0]['pf'].shape[1], 0.5)
-		elif re.match('^DTLZ[2-4]$|^UF[89]$|^UF10$', properties['problem']):
+		elif re.match('^(Negative)?DTLZ[2-4]$|^UF[89]$|^UF10$', properties['problem']):
 			return lambda ax, dataDictList: sphere(ax, dataDictList[0]['pf'].shape[1], 1)
 		elif re.match('^DTLZ[56]$', properties['problem']):
 			return lambda ax, dataDictList: circle(ax, dataDictList[0]['pf'].shape[1], 1)
