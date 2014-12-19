@@ -288,6 +288,11 @@ def make_dtlz(config, executer, optimization):
 				lambda **kwargs: pyotl.problem.real.ScaledDTLZ2(nObjectives, distDecisions) if distDecisions >= 0 else pyotl.problem.real.ScaledDTLZ2(nObjectives),
 				fetcher = lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 			)
+		if config.getboolean('problem_switch', 'negative_dtlz2'):
+			optimization(config, executer,
+				lambda **kwargs: pyotl.problem.real.NegativeDTLZ2(nObjectives, distDecisions) if distDecisions >= 0 else pyotl.problem.real.NegativeDTLZ2(nObjectives),
+				fetcher = lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+			)
 
 def make_wfg(config, executer, optimization):
 	nPosGroups = config.getint('wfg', 'pos_groups')
