@@ -38,7 +38,9 @@ def nbi(config, count, dimension):
 	if dimension == 2:
 		return pyotl.utility.NormalBoundaryIntersection_Real(dimension, count)
 	if count == 100:
-		if dimension == 5:
+		if dimension == 3:
+			return pyotl.utility.NormalBoundaryIntersection_Real(dimension, 12)
+		elif dimension == 5:
 			return pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 4, 3)
 		elif dimension == 10:
 			return pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 1)
