@@ -96,3 +96,4 @@ def division(config, problem):
 			return [5] * problem.GetNumberOfObjectives()
 		elif problem.GetNumberOfObjectives() == 10:
 			return [4] * problem.GetNumberOfObjectives()
+	raise
