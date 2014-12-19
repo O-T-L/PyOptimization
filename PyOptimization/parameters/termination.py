@@ -19,7 +19,7 @@ import re
 import parameters.optimizer
 
 def iteration(config, optimizer):
-	if re.match('^(Convex|Scaled)?DTLZ\dI?$', type(optimizer.GetProblem()).__name__) and len(optimizer.GetProblem().GetBoundary()) == optimizer.GetProblem().GetNumberOfObjectives() - 1:
+	if re.match('^(Convex|Scaled|Negative)?DTLZ\dI?$', type(optimizer.GetProblem()).__name__) and len(optimizer.GetProblem().GetBoundary()) == optimizer.GetProblem().GetNumberOfObjectives() - 1:
 		return 100
 	elif re.match('^WFG\d$', type(optimizer.GetProblem()).__name__) and len(optimizer.GetProblem().GetBoundary()) == optimizer.GetProblem().GetPosDecisions():
 		return 100
@@ -43,9 +43,9 @@ def iteration(config, optimizer):
 		return 600
 	elif re.match('^UF\d+$', type(optimizer.GetProblem()).__name__):
 		return 300
-	elif re.match('^(Convex|Scaled)?DTLZ[136]I?$', type(optimizer.GetProblem()).__name__):
+	elif re.match('^(Convex|Scaled|Negative)?DTLZ[136]I?$', type(optimizer.GetProblem()).__name__):
 		return 1000
-	elif re.match('^(Convex|Scaled)?DTLZ[2457]I?$', type(optimizer.GetProblem()).__name__):
+	elif re.match('^(Convex|Scaled|Negative)?DTLZ[2457]I?$', type(optimizer.GetProblem()).__name__):
 		return 300
 	elif re.match('^WFG\d$', type(optimizer.GetProblem()).__name__):
 		return 300
