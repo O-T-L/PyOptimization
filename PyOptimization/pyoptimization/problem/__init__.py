@@ -250,16 +250,23 @@ def make_dtlz(config, executer, optimization):
 				fetcher = lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 			)
 		if config.getboolean('problem_switch', 'convex_dtlz4'):
-			try:
-				for baisFactor in map(float, config.get('dtlz4', 'bias_factor').split()):
+			fetcher = lambda optimizer: pyoptimization.problem.fetcher.dtlz4(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer)
+			if distDecisions >= 0:
+				try:
+					for baisFactor in map(float, config.get('dtlz4', 'bias_factor').split()):
+						optimization(config, executer,
+							lambda **kwargs: pyotl.problem.real.ConvexDTLZ4(nObjectives, distDecisions, baisFactor),
+							fetcher = fetcher,
+						)
+				except configparser.NoOptionError:
 					optimization(config, executer,
-						lambda **kwargs: pyotl.problem.real.ConvexDTLZ4(nObjectives, distDecisions) if distDecisions >= 0 else pyotl.problem.real.ConvexDTLZ4(nObjectives, baisFactor),
-						fetcher = lambda optimizer: pyoptimization.problem.fetcher.dtlz4(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+						lambda **kwargs: pyotl.problem.real.ConvexDTLZ4(nObjectives, distDecisions),
+						fetcher = fetcher,
 					)
-			except configparser.NoOptionError:
+			else:
 				optimization(config, executer,
-					lambda **kwargs: pyotl.problem.real.ConvexDTLZ4(nObjectives, distDecisions) if distDecisions >= 0 else pyotl.problem.real.ConvexDTLZ4(nObjectives),
-					fetcher = lambda optimizer: pyoptimization.problem.fetcher.dtlz4(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+					lambda **kwargs: pyotl.problem.real.ConvexDTLZ4(nObjectives),
+					fetcher = fetcher,
 				)
 		if config.getboolean('problem_switch', 'convex_dtlz5'):
 			optimization(config, executer,
