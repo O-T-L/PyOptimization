@@ -27,7 +27,7 @@ def random(config):
 		_path = os.path.join(path, packs, str(objectives))
 		price = numpy.loadtxt(os.path.join(_path, 'price.csv'), ndmin = 2)
 		weight = numpy.loadtxt(os.path.join(_path, 'weight.csv'), ndmin = 2)
-		capacity = numpy.loadtxt(os.path.join(_path, 'capacity.csv'))
+		capacity = [sum(_weight) / 2 for _weight in weight]
 		assert(objectives == len(price) == len(weight) == len(capacity))
 		assert(price.shape == weight.shape)
 		results.append([price, weight, capacity])

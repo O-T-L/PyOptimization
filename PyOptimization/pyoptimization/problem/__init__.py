@@ -407,7 +407,7 @@ def make_knapsack(config, executer, optimization):
 	for price, weight, capacity in getattr(module, function)(config):
 		price = pyotl.utility.PyListList2BlasMatrix_Real(price.tolist())
 		weight = pyotl.utility.PyListList2BlasMatrix_Real(weight.tolist())
-		capacity = pyotl.utility.PyList2Vector_Real(capacity.tolist())
+		capacity = pyotl.utility.PyList2Vector_Real(capacity)
 		optimization(config, executer,
 			lambda **kwargs: pyotl.problem.dynamic_bitset.Knapsack(price, weight, capacity),
 			fetcher = lambda optimizer: pyoptimization.problem.fetcher.basic(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.dynamic_bitset(config, optimizer),
@@ -419,7 +419,7 @@ def make_greedy_repair_knapsack(config, executer, optimization):
 	for price, weight, capacity in getattr(module, function)(config):
 		price = pyotl.utility.PyListList2BlasMatrix_Real(price.tolist())
 		weight = pyotl.utility.PyListList2BlasMatrix_Real(weight.tolist())
-		capacity = pyotl.utility.PyList2Vector_Real(capacity.tolist())
+		capacity = pyotl.utility.PyList2Vector_Real(capacity)
 		optimization(config, executer,
 			lambda **kwargs: pyotl.problem.dynamic_bitset.GreedyRepairKnapsack(price, weight, capacity),
 			fetcher = lambda optimizer: pyoptimization.problem.fetcher.basic(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.dynamic_bitset(config, optimizer),
