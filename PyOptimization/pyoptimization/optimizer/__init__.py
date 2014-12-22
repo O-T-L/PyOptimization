@@ -189,11 +189,10 @@ def make_gde3(config, executer, newProblem, coding, **kwargs):
 	population = getattr(module, function)(config, problem)
 	initial = kwargs['initialGen'](random, problem, population)
 	crossover = kwargs['crossoverGen'](random, problem)
-	mutation = kwargs['mutationGen'](random, problem)
 	module = sys.modules['pyotl.optimizer.xtriple.' + coding]
-	optimizer = module.GDE3(random, problem, initial, crossover, mutation)
+	optimizer = module.GDE3(random, problem, initial, crossover)
 	_kwargs = copy.copy(kwargs)
-	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.nsga_ii(optimizer, population) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
+	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.nsga_ii(optimizer, population) + kwargs['crossoverFetcher'](crossover)
 	executer(optimization, config, optimizer, **_kwargs)
 
 def make_ibea_epsilon(config, executer, newProblem, coding, **kwargs):
