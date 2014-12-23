@@ -66,4 +66,4 @@ def iteration(config, optimizer):
 
 def evaluation(config, optimizer):
 	return iteration(config, optimizer) * 100
-	return iteration(config, optimizer) * parameters.optimizer.population(config, optimizer.GetProblem())
+	return iteration(config, optimizer) * parameters.optimizer.solutions(config, optimizer.GetProblem())

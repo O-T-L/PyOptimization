@@ -20,7 +20,7 @@ import copy
 import numpy
 
 def basic(config, optimizer):
-	items = []
+	items = [('lines', len(optimizer.GetSolutionSet()))]
 	if config.getboolean('output', 'pf'):
 		solutionSet = optimizer.GetSolutionSet()
 		pf = list(map(lambda solution: copy.copy(solution.objective_), solutionSet))

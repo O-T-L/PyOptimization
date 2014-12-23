@@ -20,136 +20,136 @@ import math
 import numpy
 import pyotl.utility
 
-def basic(optimizer, population):
-	return [('optimizer', type(optimizer).__name__), ('population', population)]
+def basic(optimizer, solutions):
+	return [('optimizer', type(optimizer).__name__), ('solutions', solutions)]
 
-def nsga_ii(optimizer, population):
+def nsga_ii(optimizer, solutions):
 	crowdingDistance = list(map(lambda solution: solution.crowdingDistance_, optimizer.GetSolutionSet()))
 	f = io.BytesIO()
 	numpy.savetxt(f, crowdingDistance)
 	crowdingDistance = f.getvalue()
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('crowdingDistance', crowdingDistance),
 	]
 
-def spea2(optimizer, population):
+def spea2(optimizer, solutions):
 	fitness = list(map(lambda solution: solution.fitness_, optimizer.GetSolutionSet()))
 	f = io.BytesIO()
 	numpy.savetxt(f, fitness)
 	fitness = f.getvalue()
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('fitness', fitness),
 	]
 
-def moea_d(optimizer, population, config):
-	return basic(optimizer, population) + [
+def moea_d(optimizer, solutions, config):
+	return basic(optimizer, solutions) + [
 		('weightVectors', config.get('moea_d', 'weight_vectors')),
 	]
 
-def ibea(optimizer, population):
+def ibea(optimizer, solutions):
 	fitness = list(map(lambda solution: solution.fitness_, optimizer.GetSolutionSet()))
 	f = io.BytesIO()
 	numpy.savetxt(f, fitness)
 	fitness = f.getvalue()
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('fitness', fitness),
 	]
 
-def hype(optimizer, population):
+def hype(optimizer, solutions):
 	fitness = list(map(lambda solution: solution.fitness_, optimizer.GetSolutionSet()))
 	f = io.BytesIO()
 	numpy.savetxt(f, fitness)
 	fitness = f.getvalue()
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('fitness', fitness),
 	]
 
-def sms_emoa(optimizer, population):
+def sms_emoa(optimizer, solutions):
 	fitness = list(map(lambda solution: solution.hvContribution_, optimizer.GetSolutionSet()))
 	f = io.BytesIO()
 	numpy.savetxt(f, fitness)
 	fitness = f.getvalue()
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('fitness', fitness),
 	]
 
-def monte_carlo_sms_emoa(optimizer, population):
-	return sms_emoa(optimizer, population) + [
+def monte_carlo_sms_emoa(optimizer, solutions):
+	return sms_emoa(optimizer, solutions) + [
 		('sample', optimizer.GetSampleSize()),
 	]
 
-def ar(optimizer, population):
+def ar(optimizer, solutions):
 	fitness = list(map(lambda solution: solution.averageRank_, optimizer.GetSolutionSet()))
 	f = io.BytesIO()
 	numpy.savetxt(f, fitness)
 	fitness = f.getvalue()
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('fitness', fitness),
 	]
 
-def epsilon_moea(optimizer, population):
+def epsilon_moea(optimizer, solutions):
 	epsilon = optimizer.GetEpsilon()
 	if len(numpy.unique(epsilon)) == 1:
 		epsilon = str(epsilon[0])
 	else:
 		epsilon = ' '.join(map(str, epsilon))
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('epsilon', epsilon),
 	]
 
-def tdea(optimizer, population):
-	return basic(optimizer, population) + [
+def tdea(optimizer, solutions):
+	return basic(optimizer, solutions) + [
 		('territory', optimizer.GetTerritorySize()),
 	]
 
-def isnps(optimizer, population):
+def isnps(optimizer, solutions):
 	fitness = list(map(lambda solution: solution.convergence_, optimizer.GetSolutionSet()))
 	f = io.BytesIO()
 	numpy.savetxt(f, fitness)
 	fitness = f.getvalue()
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('fitness', fitness),
 		('degree', optimizer.GetAngle1() * 180 / math.pi),
 		('rounds', optimizer.GetRounds()),
 	]
 
-def nsga_iii(optimizer, population):
+def nsga_iii(optimizer, solutions):
 	fitness = list(map(lambda solution: solution.minDistance_, optimizer.GetSolutionSet()))
 	f = io.BytesIO()
 	numpy.savetxt(f, fitness)
 	fitness = f.getvalue()
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('fitness', fitness),
 		('epsilon', optimizer.GetEpsilon()),
 	]
 
-def grea(optimizer, population):
+def grea(optimizer, solutions):
 	division = optimizer.GetDivision()
 	if len(numpy.unique(division)) == 1:
 		division = str(division[0])
 	else:
 		division = ' '.join(map(str, division))
-	return basic(optimizer, population) + [
+	return basic(optimizer, solutions) + [
 		('division', division),
 	]
 
-def cdas(optimizer, population):
+def cdas(optimizer, solutions):
 	angle = optimizer.GetAngle()
 	if len(numpy.unique(angle)) == 1:
 		degree = str(angle[0] * 180 / math.pi)
 	else:
 		degree = ' '.join(map(lambda _angle: str(_angle * 180 / math.pi), angle))
-	return nsga_ii(optimizer, population) + [
+	return nsga_ii(optimizer, solutions) + [
 		('degreeVector', degree),
 	]
 
-def g_nsga_ii(optimizer, population):
-	return nsga_ii(optimizer, population) + [
+def g_nsga_ii(optimizer, solutions):
+	return nsga_ii(optimizer, solutions) + [
 		('referencePoint', ' '.join(map(str, optimizer.GetReferencePoint()))),
 	]
 
-def r_nsga_ii(optimizer, population):
-	return nsga_ii(optimizer, population) + [
+def r_nsga_ii(optimizer, solutions):
+	return nsga_ii(optimizer, solutions) + [
 		('referencePoint', ' '.join(map(str, optimizer.GetReferencePoint()))),
 		('R-NSGA-II Threshold', optimizer.GetThreshold()),
 	]

@@ -14,7 +14,8 @@ optimizer	TEXT	1
 iteration	INTEGER
 interval	REAL
 duration	REAL
-population	INTEGER
+solutions	INTEGER
+lines	INTEGER
 ps	BLOB
 pf	BLOB
 inequality	BLOB
