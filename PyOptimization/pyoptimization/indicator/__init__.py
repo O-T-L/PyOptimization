@@ -164,7 +164,7 @@ def evaluate_hv(config, rowID, columns, rowData):
 	module = importlib.import_module(module)
 	referencePoint = getattr(module, function)(config, properties)
 	referencePoint = pyotl.utility.PyList2Vector_Real(referencePoint)
-	indicator = pyotl.indicator.real.RecursiveHV(referencePoint)
+	indicator = pyotl.indicator.real.KMP_HV(referencePoint)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
 	uuidIndicator = rowData[columns.index('uuid')] + '.' + type(indicator).__name__
