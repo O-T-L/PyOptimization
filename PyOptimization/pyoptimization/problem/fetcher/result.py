@@ -20,9 +20,12 @@ import copy
 import numpy
 
 def basic(config, optimizer):
-	items = [('lines', len(optimizer.GetSolutionSet()))]
-	if config.getboolean('output', 'pf'):
+	if config.getboolean('output', 'feasible'):
+		solutionSet = list(filter(lambda solution: solution(), optimizer.GetSolutionSet()))
+	else:
 		solutionSet = optimizer.GetSolutionSet()
+	items = [('outputs', len(solutionSet))]
+	if config.getboolean('output', 'pf'):
 		pf = list(map(lambda solution: copy.copy(solution.objective_), solutionSet))
 		problem = optimizer.GetProblem()
 		for objective in pf:
@@ -31,13 +34,11 @@ def basic(config, optimizer):
 		numpy.savetxt(f, pf, delimiter = '\t')
 		items.append(('pf', f.getvalue()))
 	if config.getboolean('output', 'inequality'):
-		solutionSet = optimizer.GetSolutionSet()
 		inequality = list(map(lambda solution: solution.inequality_, solutionSet))
 		f = io.BytesIO()
 		numpy.savetxt(f, inequality, delimiter = '\t')
 		items.append(('inequality', f.getvalue()))
 	if config.getboolean('output', 'equality'):
-		solutionSet = optimizer.GetSolutionSet()
 		equality = list(map(lambda solution: solution.equality_, solutionSet))
 		f = io.BytesIO()
 		numpy.savetxt(f, equality, delimiter = '\t')

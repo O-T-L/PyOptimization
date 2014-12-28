@@ -15,7 +15,7 @@ iteration	INTEGER
 interval	REAL
 duration	REAL
 solutions	INTEGER
-lines	INTEGER
+outputs	INTEGER
 ps	BLOB
 pf	BLOB
 inequality	BLOB
