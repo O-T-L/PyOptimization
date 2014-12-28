@@ -197,8 +197,12 @@ class DataSelector(QtGui.QWidget):
 			for column in self.config.get('cache', 'matrix').split():
 				if column in dataDict:
 					data = dataDict[column]
-					if data:
+					if isinstance(data, bytes):
 						f = io.BytesIO(data)
+						dataDict[column] = numpy.loadtxt(f, ndmin = 2)
+						f.close()
+					elif isinstance(data, str):
+						f = io.StringIO(data)
 						dataDict[column] = numpy.loadtxt(f, ndmin = 2)
 						f.close()
 					else:
@@ -209,8 +213,12 @@ class DataSelector(QtGui.QWidget):
 			for column in self.config.get('cache', 'vector').split():
 				if column in dataDict:
 					data = dataDict[column]
-					if data:
+					if isinstance(data, bytes):
 						f = io.BytesIO(data)
+						dataDict[column] = numpy.loadtxt(f)
+						f.close()
+					elif isinstance(data, str):
+						f = io.StringIO(data)
 						dataDict[column] = numpy.loadtxt(f)
 						f.close()
 					else:
@@ -221,8 +229,12 @@ class DataSelector(QtGui.QWidget):
 			for column in self.config.get('cache', 'string').split():
 				if column in dataDict:
 					data = dataDict[column]
-					if data:
+					if isinstance(data, bytes):
 						f = io.BytesIO(data)
+						dataDict[column] = numpy.loadtxt(f, dtype = bytes).astype(str)
+						f.close()
+					elif isinstance(data, str):
+						f = io.StringIO(data)
 						dataDict[column] = numpy.loadtxt(f, dtype = bytes).astype(str)
 						f.close()
 					else:
