@@ -28,4 +28,4 @@ def division(config, properties):
 		return [3] * properties['objectives']
 
 def pf(config, properties):
-	return parameters.indicator.pf.pf(config, properties, 'PF_%u' % properties['population'])
+	return parameters.indicator.pf.pf(config, properties, 'PF_%u' % properties['solutions'])

@@ -198,7 +198,7 @@ def evaluate_r2(config, rowID, columns, rowData):
 	referencePoint = pyotl.utility.PyList2Vector_Real(referencePoint)
 	module, function = config.get('r2', 'weight_vectors').rsplit('.', 1)
 	module = importlib.import_module(module)
-	weightVectors = getattr(module, function)(config, properties['population'], properties['objectives'])
+	weightVectors = getattr(module, function)(config, properties['solutions'], properties['objectives'])
 	assert(weightVectors.shape[1] == properties['objectives'])
 	weightVectors = pyotl.utility.PyListList2VectorVector_Real(weightVectors.tolist())
 	indicator = pyotl.indicator.real.R2(referencePoint, weightVectors)
