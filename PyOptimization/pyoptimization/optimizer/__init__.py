@@ -410,7 +410,7 @@ def make_nsga_iii(config, executer, newProblem, coding, **kwargs):
 	if isinstance(referenceSet, numpy.ndarray):
 		referenceSet = pyotl.utility.PyListList2VectorVector_Real(referenceSet.tolist())
 	_population = len(referenceSet)
-	_population += _population % 4
+	_population += (4 - _population % 4) % 4
 	initial = kwargs['initialGen'](random, problem, _population)
 	crossover = kwargs['crossoverGen'](random, problem)
 	_crossover = pyoptimization.optimizer.crossover.adapter(coding, crossover, random)

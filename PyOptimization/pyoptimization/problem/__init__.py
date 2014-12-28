@@ -56,6 +56,12 @@ def make_shubert(config, executer, optimization):
 		fetcher = lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 	)
 
+def make_binh(config, executer, optimization):
+	optimization(config, executer,
+		lambda **kwargs: pyotl.problem.real.Binh(),
+		fetcher = lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+	)
+
 def make_pareto_box(config, executer, optimization):
 	optimization(config, executer,
 		lambda **kwargs: pyotl.problem.real.ParetoBox(),
@@ -371,6 +377,8 @@ def make_problem_real(config, executer, optimization):
 		make_shaffer_f6(config, executer, optimization)
 	if config.getboolean('problem_switch', 'shubert'):
 		make_shubert(config, executer, optimization)
+	if config.getboolean('problem_switch', 'binh'):
+		make_binh(config, executer, optimization)
 	if config.getboolean('problem_switch', 'pareto_box'):
 		make_pareto_box(config, executer, optimization)
 	if config.getboolean('problem_switch', 'water'):

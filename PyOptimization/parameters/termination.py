@@ -31,6 +31,8 @@ def iteration(config, optimizer):
 		return 50
 	elif type(optimizer.GetProblem()).__name__ == 'Shubert':
 		return 50
+	elif type(optimizer.GetProblem()).__name__ == 'Binh':
+		return 50
 	elif type(optimizer.GetProblem()).__name__ == 'ParetoBox':
 		return 300
 	elif type(optimizer.GetProblem()).__name__ == 'Water':
