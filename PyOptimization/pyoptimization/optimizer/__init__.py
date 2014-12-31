@@ -677,6 +677,24 @@ def make_hype(config, executer, newProblem, coding, **kwargs):
 	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.hype(optimizer, solutions) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
 	executer(optimization, config, optimizer, **_kwargs)
 
+def make_fast_hype(config, executer, newProblem, coding, **kwargs):
+	optimization = pyoptimization.optimizer.optimization.Optimization()
+	random = pyotl.utility.Random(pyotl.utility.Time())
+	problem = newProblem(random = random, progress = optimization)
+	module, function = config.get('optimizer', 'solutions').rsplit('.', 1)
+	module = importlib.import_module(module)
+	solutions = getattr(module, function)(config, problem)
+	initial = kwargs['initialGen'](random, problem, solutions)
+	crossover = kwargs['crossoverGen'](random, problem)
+	_crossover = pyoptimization.optimizer.crossover.adapter(coding, crossover, random)
+	mutation = kwargs['mutationGen'](random, problem)
+	sample = config.getint('hype', 'sample')
+	module = eval('pyotl.optimizer.' + coding)
+	optimizer = module.FastHypE(random, problem, initial, _crossover, mutation, sample)
+	_kwargs = copy.copy(kwargs)
+	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.hype(optimizer, solutions) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
+	executer(optimization, config, optimizer, **_kwargs)
+
 def make_sms_emoa(config, executer, newProblem, coding, **kwargs):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
 	random = pyotl.utility.Random(pyotl.utility.Time())
@@ -784,6 +802,8 @@ def make_optimizer(config, executer, newProblem, coding, **kwargs):
 		make_moea_d_pbi(config, executer, newProblem, coding, **kwargs)
 	if config.getboolean('optimizer_switch', 'hype'):
 		make_hype(config, executer, newProblem, coding, **kwargs)
+	if config.getboolean('optimizer_switch', 'fast_hype'):
+		make_fast_hype(config, executer, newProblem, coding, **kwargs)
 	if config.getboolean('optimizer_switch', 'sms_emoa'):
 		make_sms_emoa(config, executer, newProblem, coding, **kwargs)
 	if config.getboolean('optimizer_switch', 'monte_carlo_sms_emoa'):
