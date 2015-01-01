@@ -708,7 +708,7 @@ def make_sms_emoa(config, executer, newProblem, coding, **kwargs):
 	module = get_optimizer_module(coding, crossover)
 	optimizer = module.SMS_EMOA(random, problem, initial, crossover, mutation)
 	_kwargs = copy.copy(kwargs)
-	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.sms_emoa(optimizer, solutions) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
+	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.basic(optimizer, solutions) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
 	executer(optimization, config, optimizer, **_kwargs)
 
 def make_monte_carlo_sms_emoa(config, executer, newProblem, coding, **kwargs):
@@ -742,7 +742,7 @@ def make_monte_carlo_hv_sms_emoa(config, executer, newProblem, coding, **kwargs)
 	module = get_optimizer_module(coding, crossover)
 	optimizer = module.MonteCarloHV_SMS_EMOA(random, problem, initial, crossover, mutation, sample)
 	_kwargs = copy.copy(kwargs)
-	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.sms_emoa(optimizer, solutions) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
+	_kwargs['fetcher'] = lambda optimizer: kwargs['fetcher'](optimizer) + pyoptimization.optimizer.fetcher.basic(optimizer, solutions) + kwargs['crossoverFetcher'](crossover) + kwargs['mutationFetcher'](mutation)
 	executer(optimization, config, optimizer, **_kwargs)
 
 def make_optimizer(config, executer, newProblem, coding, **kwargs):

@@ -56,25 +56,12 @@ def ibea(optimizer, solutions):
 	]
 
 def hype(optimizer, solutions):
-	fitness = list(map(lambda solution: solution.fitness_, optimizer.GetSolutionSet()))
-	f = io.BytesIO()
-	numpy.savetxt(f, fitness)
-	fitness = f.getvalue()
 	return basic(optimizer, solutions) + [
-		('fitness', fitness),
-	]
-
-def sms_emoa(optimizer, solutions):
-	fitness = list(map(lambda solution: solution.hvContribution_, optimizer.GetSolutionSet()))
-	f = io.BytesIO()
-	numpy.savetxt(f, fitness)
-	fitness = f.getvalue()
-	return basic(optimizer, solutions) + [
-		('fitness', fitness),
+		('sample', optimizer.GetSampleSize()),
 	]
 
 def monte_carlo_sms_emoa(optimizer, solutions):
-	return sms_emoa(optimizer, solutions) + [
+	return basic(optimizer, solutions) + [
 		('sample', optimizer.GetSampleSize()),
 	]
 
