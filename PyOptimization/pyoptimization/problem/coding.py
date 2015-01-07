@@ -15,11 +15,5 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import os.path
-
 def get_coding(problem):
-	coding = os.path.splitext(type(problem).__module__)[-1]
-	if coding.startswith('.'):
-		return coding[1:]
-	else:
-		return coding
+	return type(problem).__module__.split('.')[-1]
