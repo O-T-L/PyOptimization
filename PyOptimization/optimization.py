@@ -16,8 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import configparser
-import pyoptimization.utility
 import pyoptimization.main
+import pyoptimization.utility
 import pyoptimization.problem
 import pyoptimization.optimizer
 
