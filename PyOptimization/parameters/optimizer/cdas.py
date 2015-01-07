@@ -143,7 +143,7 @@ def angle(config, problem):
 		}
 	elif re.match('^MOTSP$', type(problem).__name__):
 		parameters = {
-			'MOTSP$':	{
+			'MOTSP':	{
 				4:	72.6102,
 				5:	63.4576,
 				10:	41.4915,
