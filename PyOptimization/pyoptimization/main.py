@@ -21,36 +21,23 @@ import configparser
 import sqlite3
 import pyoptimization.executer
 
-def make_executer(config):
-	if config.get('common', 'executer') == 'mpi':
-		executer, caller = pyoptimization.executer.make_mpi_executer()
-		print('MPI process %u of %u' %(caller.rank + 1, caller.size))
-	elif config.get('common', 'executer') == 'parallel':
-		parallel = config.getint('parallel', 'parallel')
-		executer = pyoptimization.executer.make_parallel_executer(parallel)
-		print('%u parallel' % executer.capacity())
-	else:
-		executer = pyoptimization.executer.make_executer()
-	return executer
-
 def get_columns(path, table):
 	conn = sqlite3.connect(path)
 	cursor = conn.cursor()
 	result = cursor.execute('PRAGMA table_info(%s)' % table)
 	return map(lambda row: row[1], result)
 
-def optimization(config, optimization):
-	executer = make_executer(config)
+def optimization(config, problem_optimize, optimizer_optimize):
+	executer = pyoptimization.executer.make_executer(config)
 	repeat = config.getint('experiment', 'repeat')
 	for _ in range(repeat):
-		for makeProblem, makeOptimizer in optimization:
-			makeProblem(config, executer, makeOptimizer)
+		problem_optimize(config, executer, optimizer_optimize)
 	if config.get('common', 'executer') == 'parallel':
 		executer.join()
 	print('Finished normally')
 
 def evaluation(config, fnEvaluator):
-	executer = make_executer(config)
+	executer = pyoptimization.executer.make_executer(config)
 	path = os.path.expandvars(config.get('database', 'file.' + platform.system()))
 	conn = sqlite3.connect(path)
 	conn.isolation_level = None # Enable automatic commit

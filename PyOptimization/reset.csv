@@ -36,7 +36,9 @@ division	REAL
 degree	REAL
 degreeVector	TEXT
 rounds	INTEGER
-weightVectors	TEXT
+moea_d_neighbors	INTEGER
+pbi_penalty	REAL
+weightVectors	INTEGER
 referencePoint	TEXT
 R-NSGA-II Threshold	REAL
 sample	INTEGER

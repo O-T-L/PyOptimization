@@ -35,8 +35,7 @@ def output(config, items):
 	cursor.execute(sql, rowData)
 
 class Optimization(pyotl.utility.Progress):
-	def __call__(self, config, optimizer, *args, **kwargs):
-		fetcher = kwargs['fetcher']
+	def __call__(self, config, optimizer, fetcher):
 		try:
 			calculateStep = eval(config.get('output', 'step'))
 		except configparser.NoOptionError:

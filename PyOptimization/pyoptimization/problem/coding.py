@@ -15,16 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import configparser
-import pyoptimization.utility
-import pyoptimization.main
-import pyoptimization.problem
-import pyoptimization.optimizer
+import os.path
 
-def main():
-	config = configparser.ConfigParser()
-	pyoptimization.utility.read_config(config, __file__)
-	pyoptimization.main.optimization(config, pyoptimization.problem.optimize, pyoptimization.optimizer.optimize)
-
-if __name__ == '__main__':
-	main()
+def get_coding(problem):
+	coding = os.path.splitext(type(problem).__module__)[-1]
+	if coding.startswith('.'):
+		return coding[1:]
+	else:
+		return coding
