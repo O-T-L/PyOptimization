@@ -182,7 +182,7 @@ def make_gde3(config, executer, problemFactory, problemFetcher):
 		probability = eval(config.get(coding + '_crossover', 'probability'))(problem)
 		scaling_factor = config.getfloat('differential_evolution', 'scaling_factor')
 		crossover = pyotl.crossover.real.DifferentialEvolution(random, probability, problem.GetBoundary(), scaling_factor)
-		crossoverFetcher = lambda optimizer: pyoptimization.optimizer.fetcher.crossover.std(crossover)
+		crossoverFetcher = lambda optimizer: pyoptimization.optimizer.fetcher.crossover.std(optimizer)
 		optimizer = pyotl.optimizer.xtriple.real.GDE3(random, problem, initial, crossover)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.nsga_ii(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer)
 		executer(optimization, config, optimizer, fetcher)

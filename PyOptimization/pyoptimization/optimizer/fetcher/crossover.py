@@ -15,18 +15,35 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-def basic(crossover):
+import sys
+import pyoptimization.problem.coding
+
+def get_crossover(optimizer):
+	problem = optimizer.GetProblem()
+	coding = pyoptimization.problem.coding.get_coding(problem)
+	module = sys.modules['pyotl.crossover.' + coding]
+	crossover = optimizer.GetCrossover()
+	if issubclass(type(crossover), module.CoupleCrossoverAdapter):
+		return crossover.GetCrossover()
+	elif issubclass(type(crossover), module.CoupleCoupleCrossoverAdapter):
+		return crossover.GetCrossover()
+	elif issubclass(type(crossover), module.TripleCrossoverAdapter):
+		return crossover.GetCrossover()
+	elif issubclass(type(crossover), module.TripleTripleCrossoverAdapter):
+		return crossover.GetCrossover()
+	elif issubclass(type(crossover), module.XTripleCrossoverAdapter):
+		return crossover.GetCrossover()
+	else:
+		return crossover
+
+def basic(optimizer):
+	crossover = get_crossover(optimizer)
 	return [('crossover', type(crossover).__name__)]
 
-def std(crossover):
-	return basic(crossover) + [('crossoverProbability', crossover.GetProbability())]
+def std(optimizer):
+	crossover = get_crossover(optimizer)
+	return basic(optimizer) + [('crossoverProbability', crossover.GetProbability())]
 
-def sbx(crossover):
-	return std(crossover) + [('SBX Distribution Index', crossover.GetDistributionIndex())]
-
-class Adapter:
-	def __init__(self, fetcher):
-		self.fetcher = fetcher
-	
-	def __call__(self, crossover):
-		return self.fetcher(crossover)
+def sbx(optimizer):
+	crossover = get_crossover(optimizer)
+	return std(optimizer) + [('SBX Distribution Index', crossover.GetDistributionIndex())]

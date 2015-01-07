@@ -68,16 +68,15 @@ def get_mutation_tsp(config, problem, random):
 def get_mutation(config, problem, random):
 	coding = pyoptimization.problem.coding.get_coding(problem)
 	if coding == 'real':
-		mutation, fetcher = get_mutation_real(config, problem, random, coding)
+		return get_mutation_real(config, problem, random, coding)
 	elif coding == 'integer':
-		mutation, fetcher = get_mutation_integer(config, problem, random, coding)
+		return get_mutation_integer(config, problem, random, coding)
 	elif coding == 'dynamic_bitset':
-		mutation, fetcher = get_mutation_dynamic_bitset(config, problem, random, coding)
+		return get_mutation_dynamic_bitset(config, problem, random, coding)
 	elif coding == 'index':
 		if type(problem).__name__.endswith('TSP'):
-			mutation, fetcher = get_mutation_tsp(config, problem, random)
+			return get_mutation_tsp(config, problem, random)
 		else:
-			mutation, fetcher = get_mutation_index(config, problem, random, coding)
+			return get_mutation_index(config, problem, random, coding)
 	else:
 		raise
-	return mutation, lambda optimzier: fetcher(mutation)

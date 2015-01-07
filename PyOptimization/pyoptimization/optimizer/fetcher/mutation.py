@@ -15,11 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-def basic(mutation):
-	return [('mutation', type(mutation).__name__)]
+def basic(optimizer):
+	return [('mutation', type(optimizer.GetMutation()).__name__)]
 
-def std(mutation):
-	return basic(mutation) + [('mutationProbability', mutation.GetProbability())]
+def std(optimizer):
+	return basic(optimizer) + [('mutationProbability', optimizer.GetMutation().GetProbability())]
 
-def pm(mutation):
-	return std(mutation) + [('PM Distribution Index', mutation.GetDistributionIndex())]
+def pm(optimizer):
+	return std(optimizer) + [('PM Distribution Index', optimizer.GetMutation().GetDistributionIndex())]

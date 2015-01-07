@@ -70,19 +70,18 @@ def get_crossover_tsp(config, problem, random):
 def get_crossover(config, problem, random):
 	coding = pyoptimization.problem.coding.get_coding(problem)
 	if coding == 'real':
-		crossover, fetcher = get_crossover_real(config, problem, random, coding)
+		return get_crossover_real(config, problem, random, coding)
 	elif coding == 'integer':
-		crossover, fetcher = get_crossover_integer(config, problem, random, coding)
+		return get_crossover_integer(config, problem, random, coding)
 	elif coding == 'dynamic_bitset':
-		crossover, fetcher = get_crossover_dynamic_bitset(config, problem, random, coding)
+		return get_crossover_dynamic_bitset(config, problem, random, coding)
 	elif coding == 'index':
 		if type(problem).__name__.endswith('TSP'):
-			crossover, fetcher = get_crossover_tsp(config, problem, random)
+			return get_crossover_tsp(config, problem, random)
 		else:
-			crossover, fetcher = get_crossover_index(config, problem, random, coding)
+			return get_crossover_index(config, problem, random, coding)
 	else:
 		raise
-	return crossover, lambda optimzier: fetcher(crossover)
 
 def adapter(config, problem, crossover, random):
 	coding = pyoptimization.problem.coding.get_coding(problem)
