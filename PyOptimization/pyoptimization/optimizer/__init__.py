@@ -57,21 +57,21 @@ import pyoptimization.optimizer.fetcher
 import pyoptimization.optimizer.fetcher.crossover
 import pyoptimization.optimizer.fetcher.mutation
 
-def get_optimizer_module(config, problem, crossover):
+def get_optimizer_module(config, problem, crossover, optimizer = 'pyotl.optimizer'):
 	coding = pyoptimization.problem.coding.get_coding(problem)
 	module = sys.modules['pyotl.crossover.' + coding]
 	if issubclass(type(crossover), module.CoupleCrossover):
-		return sys.modules['pyotl.optimizer.couple.' + coding]
+		return sys.modules[optimizer + '.couple.' + coding]
 	elif issubclass(type(crossover), module.CoupleCoupleCrossover):
-		return sys.modules['pyotl.optimizer.couple_couple.' + coding]
+		return sys.modules[optimizer + '.couple_couple.' + coding]
 	elif issubclass(type(crossover), module.TripleCrossover):
-		return sys.modules['pyotl.optimizer.triple.' + coding]
+		return sys.modules[optimizer + '.triple.' + coding]
 	elif issubclass(type(crossover), module.TripleTripleCrossover):
-		return sys.modules['pyotl.optimizer.triple_triple.' + coding]
+		return sys.modules[optimizer + '.triple_triple.' + coding]
 	elif issubclass(type(crossover), module.XTripleCrossover):
-		return sys.modules['pyotl.optimizer.xtriple.' + coding]
+		return sys.modules[optimizer + '.xtriple.' + coding]
 	else:
-		return sys.modules['pyotl.optimizer.' + coding]
+		return sys.modules[optimizer + '.' + coding]
 
 def make_sga(config, executer, problemFactory, problemFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
