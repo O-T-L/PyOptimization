@@ -55,7 +55,7 @@ def ibea(optimizer, solutions):
 		('fitness', fitness),
 	]
 
-def hype(optimizer, solutions):
+def monte_carlo_hype(optimizer, solutions):
 	return basic(optimizer, solutions) + [
 		('sample', optimizer.GetSampleSize()),
 	]
