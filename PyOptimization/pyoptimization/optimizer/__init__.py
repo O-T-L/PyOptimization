@@ -90,10 +90,10 @@ def make_sga(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_sga(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_sga(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_rwsga(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -112,10 +112,10 @@ def make_rwsga(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_rwsga(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_rwsga(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -134,10 +134,10 @@ def make_nsga_ii(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_constrained_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -156,10 +156,10 @@ def make_constrained_nsga_ii(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_constrained_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_constrained_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_spea2(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -178,10 +178,10 @@ def make_spea2(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_spea2(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_spea2(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_spea2_sde(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -200,10 +200,10 @@ def make_spea2_sde(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_spea2_sde(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_spea2_sde(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def make_gde3(config, executer, problemFactory, problemFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -241,10 +241,10 @@ def make_ibea_epsilon(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_ibea_epsilon(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_ibea_epsilon(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_ibea_hd(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -264,10 +264,10 @@ def make_ibea_hd(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_ibea_hd(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_ibea_hd(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_ar(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -286,10 +286,10 @@ def make_ar(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_ar(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_ar(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_ar_cd_(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -308,10 +308,10 @@ def make_ar_cd_(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_ar_cd_(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_ar_cd_(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_grea(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -334,10 +334,10 @@ def make_grea(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_grea(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_grea(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_epsilon_moea(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -427,10 +427,10 @@ def make_isnps(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_isnps(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_isnps(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_nsga_iii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher, referenceSet):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -456,10 +456,10 @@ def make_nsga_iii(config, executer, problemFactory, problemFetcher):
 		_solutions = len(referenceSet)
 		_solutions += (4 - _solutions % 4) % 4
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, _solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_nsga_iii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher, referenceSet)
+				_make_nsga_iii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher, referenceSet)
 
 def _make_ar_dmo(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -482,10 +482,10 @@ def make_ar_dmo(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_ar_dmo(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_ar_dmo(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_cdas(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -508,10 +508,10 @@ def make_cdas(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_cdas(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_cdas(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_g_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -534,10 +534,10 @@ def make_g_nsga_ii(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_g_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_g_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_r_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -563,10 +563,10 @@ def make_r_nsga_ii(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_r_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_r_nsga_ii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_msops(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -595,10 +595,10 @@ def make_msops(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_msops(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_msops(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_moea_d_weighted_sum(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher, weightVectors):
 	assert(len(initial) == len(weightVectors))
@@ -744,10 +744,10 @@ def make_monte_carlo_hype(config, executer, problemFactory, problemFetcher):
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_monte_carlo_hype(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_monte_carlo_hype(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_fast_monte_carlo_hype(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
@@ -767,10 +767,10 @@ def make_fast_monte_carlo_hype(config, executer, problemFactory, problemFetcher)
 	module = importlib.import_module(module)
 	for solutions in getattr(module, function)(config, problem):
 		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-		for crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			_crossover = pyoptimization.optimizer.crossover.adapter(config, problem, crossover, random)
+		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
 			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_fast_monte_carlo_hype(config, executer, problemFactory, problemFetcher, initial, initialFetcher, _crossover, crossoverFetcher, mutation, mutationFetcher)
+				_make_fast_monte_carlo_hype(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher)
 
 def _make_sms_emoa(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
