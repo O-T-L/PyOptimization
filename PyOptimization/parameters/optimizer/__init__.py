@@ -18,9 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import re
 
 def solutions(config, problem):
-	return 100
+	return [100]
 	if re.match('^(Convex)?DTLZ\dI?$', type(problem).__name__) and len(problem.GetBoundary()) == problem.GetNumberOfObjectives() - 1:
-		return 1000
+		return [1000]
 	elif re.match('^WFG\d$', type(problem).__name__) and len(problem.GetBoundary()) == problem.GetPosDecisions():
-		return 1000
-	return 100
+		return [1000]
+	return [100]

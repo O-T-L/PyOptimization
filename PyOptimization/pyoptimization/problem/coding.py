@@ -16,4 +16,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 def get_coding(problem):
-	return type(problem).__module__.split('.')[-1]
+	return type(problem).__module__.rsplit('.', 1)[-1]

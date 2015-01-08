@@ -15,17 +15,5 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import re
-
-def reference_point(config, problem):
-	if re.match('^DTLZ[23456]I?$', type(problem).__name__):
-		return [[0.6] * problem.GetNumberOfObjectives()]
-	elif re.match('^WFG\d$', type(problem).__name__):
-		return [[0.6] * problem.GetNumberOfObjectives()]
-	elif re.match('^UF[1-7]$', type(problem).__name__):
-		return [[0.6] * problem.GetNumberOfObjectives()]
-	elif re.match('^UF[89]$|^UF10$', type(problem).__name__):
-		return [[1] * problem.GetNumberOfObjectives()]
-
-def threshold(config, problem):
-	return [0.2]
+def cout(config, problem, solutions):
+	return [solutions / 2]

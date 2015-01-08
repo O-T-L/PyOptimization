@@ -21,8 +21,8 @@ import pyoptimization.utility
 
 def flat(config, count, dimension):
 	path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'PF_%u' % count)
-	return numpy.loadtxt(os.path.join(path, 'DTLZ1', str(dimension) + '.csv'), ndmin = 2) * 2
+	return [numpy.loadtxt(os.path.join(path, 'DTLZ1', str(dimension) + '.csv'), ndmin = 2) * 2]
 
 def sphere(config, count, dimension):
 	path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'PF_%u' % count)
-	return numpy.loadtxt(os.path.join(path, 'DTLZ2', str(dimension) + '.csv'), ndmin = 2)
+	return [numpy.loadtxt(os.path.join(path, 'DTLZ2', str(dimension) + '.csv'), ndmin = 2)]

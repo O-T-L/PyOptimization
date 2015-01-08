@@ -200,7 +200,7 @@ def optimize_dtlz(config, executer, optimize):
 				lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 			)
 		if config.getboolean('problem_switch', 'dtlz4'):
-			lambda optimizer: pyoptimization.problem.fetcher.dtlz4(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer)
+			fetcher = lambda optimizer: pyoptimization.problem.fetcher.dtlz4(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer)
 			if distDecisions >= 0:
 				try:
 					for baisFactor in map(float, config.get('dtlz4', 'bias_factor').split()):

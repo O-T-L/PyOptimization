@@ -24,62 +24,85 @@ import pyotl.crossover.index
 import pyoptimization.problem.coding
 import pyoptimization.optimizer.fetcher.crossover
 
-def get_crossover_real(config, problem, random, coding):
-	crossover = config.get(coding, 'crossover')
+def get_crossovers_real(config, problem, random, coding):
 	probability = eval(config.get(coding + '_crossover', 'probability'))(problem)
-	if crossover == 'SimulatedBinaryCrossover':
+	crossovers = []
+	if config.getboolean(coding + '_crossover_switch', 'simulated_binary_crossover'):
 		distribution_index = config.getfloat('simulated_binary_crossover', 'distribution_index')
-		return pyotl.crossover.real.SimulatedBinaryCrossover(random, probability, problem.GetBoundary(), distribution_index), pyoptimization.optimizer.fetcher.crossover.sbx
-	elif crossover == 'DifferentialEvolution':
+		crossover = pyotl.crossover.real.SimulatedBinaryCrossover(random, probability, problem.GetBoundary(), distribution_index)
+		fetcher = pyoptimization.optimizer.fetcher.crossover.sbx
+		crossovers.append([crossover, fetcher])
+	elif config.getboolean(coding + '_crossover_switch', 'differential_evolution'):
 		scaling_factor = config.getfloat('differential_evolution', 'scaling_factor')
-		return pyotl.crossover.real.DifferentialEvolution(random, probability, problem.GetBoundary(), scaling_factor), pyoptimization.optimizer.fetcher.crossover.std
+		crossover = pyotl.crossover.real.DifferentialEvolution(random, probability, problem.GetBoundary(), scaling_factor)
+		fetcher = pyoptimization.optimizer.fetcher.crossover.std
+		crossovers.append([crossover, fetcher])
+	return crossovers
 
-def get_crossover_integer(config, problem, random, coding):
-	crossover = config.get(coding, 'crossover')
+def get_crossovers_integer(config, problem, random, coding):
 	probability = eval(config.get(coding + '_crossover', 'probability'))(problem)
-	if crossover == 'SinglePointCrossover':
-		return pyotl.crossover.integer.SinglePointCrossover(random, probability, problem.GetDecisionBits()), pyoptimization.optimizer.fetcher.crossover.std
+	crossovers = []
+	if config.getboolean(coding + '_crossover_switch', 'single_point_crossover'):
+		crossover = pyotl.crossover.integer.SinglePointCrossover(random, probability, problem.GetDecisionBits())
+		fetcher = pyoptimization.optimizer.fetcher.crossover.std
+		crossovers.append([crossover, fetcher])
+	return crossovers
 
-def get_crossover_dynamic_bitset(config, problem, random, coding):
-	crossover = config.get(coding, 'crossover')
+def get_crossovers_dynamic_bitset(config, problem, random, coding):
 	probability = eval(config.get(coding + '_crossover', 'probability'))(problem)
-	if crossover == 'BitsetSinglePointCrossover':
-		return pyotl.crossover.dynamic_bitset.BitsetSinglePointCrossover(random, probability), pyoptimization.optimizer.fetcher.crossover.std
-	elif crossover == 'DynamicBitsetUniformCrossover':
-		return pyotl.crossover.dynamic_bitset.DynamicBitsetUniformCrossover(random, probability), pyoptimization.optimizer.fetcher.crossover.std
+	crossovers = []
+	if config.getboolean(coding + '_crossover_switch', 'single_point_crossover'):
+		crossover = pyotl.crossover.dynamic_bitset.BitsetSinglePointCrossover(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.crossover.std
+		crossovers.append([crossover, fetcher])
+	elif config.getboolean(coding + '_crossover_switch', 'uniform_crossover'):
+		crossover = pyotl.crossover.dynamic_bitset.DynamicBitsetUniformCrossover(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.crossover.std
+		crossovers.append([crossover, fetcher])
+	return crossovers
 
-def get_crossover_index(config, problem, random, coding):
-	crossover = config.get(coding, 'crossover')
+def get_crossovers_index(config, problem, random, coding):
 	probability = eval(config.get(coding + '_crossover', 'probability'))(problem)
-	if crossover == 'SinglePointCrossover':
+	crossovers = []
+	if config.getboolean(coding + '_crossover_switch', 'single_point_crossover'):
 		decisions = len(problem.GetBoundary())
 		bits = math.ceil(math.log2(decisions))
 		_bits = pyotl.utility.PyList2Vector_size_t([bits] * decisions)
-		return pyotl.crossover.index.SinglePointCrossover(random, probability, _bits), pyoptimization.optimizer.fetcher.crossover.std
+		crossover = pyotl.crossover.index.SinglePointCrossover(random, probability, _bits)
+		fetcher = pyoptimization.optimizer.fetcher.crossover.std
+		crossovers.append([crossover, fetcher])
+	return crossovers
 
-def get_crossover_tsp(config, problem, random):
-	crossover = config.get('tsp', 'crossover')
+def get_crossovers_tsp(config, problem, random):
 	probability = eval(config.get('tsp_crossover', 'probability'))(problem)
-	if crossover == 'OrderBasedCrossover':
-		return pyotl.crossover.index.OrderBasedCrossover(random, probability), pyoptimization.optimizer.fetcher.crossover.std
-	elif crossover == 'PartiallyMappedCrossover':
-		return pyotl.crossover.index.PartiallyMappedCrossover(random, probability), pyoptimization.optimizer.fetcher.crossover.std
-	elif crossover == 'PositionBasedCrossover':
-		return pyotl.crossover.index.PositionBasedCrossover(random, probability), pyoptimization.optimizer.fetcher.crossover.std
+	crossovers = []
+	if config.getboolean('tsp_crossover_switch', 'order_based_crossover'):
+		crossover = pyotl.crossover.index.OrderBasedCrossover(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.crossover.std
+		crossovers.append([crossover, fetcher])
+	elif config.getboolean('tsp_crossover_switch', 'partially_mapped_crossover'):
+		crossover = pyotl.crossover.index.PartiallyMappedCrossover(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.crossover.std
+		crossovers.append([crossover, fetcher])
+	elif config.getboolean('tsp_crossover_switch', 'position_based_crossover'):
+		crossover = pyotl.crossover.index.PositionBasedCrossover(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.crossover.std
+		crossovers.append([crossover, fetcher])
+	return crossovers
 
-def get_crossover(config, problem, random):
+def get_crossovers(config, problem, random):
 	coding = pyoptimization.problem.coding.get_coding(problem)
 	if coding == 'real':
-		return get_crossover_real(config, problem, random, coding)
+		return get_crossovers_real(config, problem, random, coding)
 	elif coding == 'integer':
-		return get_crossover_integer(config, problem, random, coding)
+		return get_crossovers_integer(config, problem, random, coding)
 	elif coding == 'dynamic_bitset':
-		return get_crossover_dynamic_bitset(config, problem, random, coding)
+		return get_crossovers_dynamic_bitset(config, problem, random, coding)
 	elif coding == 'index':
 		if type(problem).__name__.endswith('TSP'):
-			return get_crossover_tsp(config, problem, random)
+			return get_crossovers_tsp(config, problem, random)
 		else:
-			return get_crossover_index(config, problem, random, coding)
+			return get_crossovers_index(config, problem, random, coding)
 	else:
 		raise
 

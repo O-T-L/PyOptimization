@@ -23,60 +23,83 @@ import pyotl.mutation.index
 import pyoptimization.problem.coding
 import pyoptimization.optimizer.fetcher.mutation
 
-def get_mutation_real(config, problem, random, coding):
-	mutation = config.get(coding, 'mutation')
+def get_mutations_real(config, problem, random, coding):
 	probability = eval(config.get(coding + '_mutation', 'probability'))(problem)
-	if mutation == 'PolynomialMutation':
+	mutations = []
+	if config.getboolean(coding + '_mutation_switch', 'polynomial_mutation'):
 		distribution_index = config.getfloat('polynomial_mutation', 'distribution_index')
-		return pyotl.mutation.real.PolynomialMutation(random, probability, problem.GetBoundary(), distribution_index), pyoptimization.optimizer.fetcher.mutation.pm
+		mutation = pyotl.mutation.real.PolynomialMutation(random, probability, problem.GetBoundary(), distribution_index)
+		fetcher = pyoptimization.optimizer.fetcher.mutation.pm
+		mutations.append([mutation, fetcher])
+	return mutations
 
-def get_mutation_integer(config, problem, random, coding):
-	mutation = config.get(coding, 'mutation')
+def get_mutations_integer(config, problem, random, coding):
 	probability = eval(config.get(coding + '_mutation', 'probability'))(problem)
-	if mutation == 'BitwiseMutation':
-		return lambda random, problem: pyotl.mutation.integer.BitwiseMutation(random, probability, problem.GetDecisionBits()), pyoptimization.optimizer.fetcher.mutation.std
+	mutations = []
+	if config.getboolean(coding + '_mutation_switch', 'bitwise_mutation'):
+		mutation = pyotl.mutation.integer.BitwiseMutation(random, probability, problem.GetDecisionBits())
+		fetcher = pyoptimization.optimizer.fetcher.mutation.std
+		mutations.append([mutation, fetcher])
+	return mutations
 
-def get_mutation_dynamic_bitset(config, problem, random, coding):
-	mutation = config.get(coding, 'mutation')
+def get_mutations_dynamic_bitset(config, problem, random, coding):
 	probability = eval(config.get(coding + '_mutation', 'probability'))(problem)
-	if mutation == 'BitsetBitwiseMutation':
-		return pyotl.mutation.dynamic_bitset.BitsetBitwiseMutation(random, probability), pyoptimization.optimizer.fetcher.mutation.std
+	mutations = []
+	if config.getboolean(coding + '_mutation_switch', 'bitwise_mutation'):
+		mutation = pyotl.mutation.dynamic_bitset.BitsetBitwiseMutation(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.mutation.std
+		mutations.append([mutation, fetcher])
+	return mutations
 
-def get_mutation_index(config, problem, random, coding):
-	mutation = config.get(coding, 'mutation')
+def get_mutations_index(config, problem, random, coding):
 	probability = eval(config.get(coding + '_mutation', 'probability'))(problem)
-	if mutation == 'BitwiseMutation':
+	mutations = []
+	if config.getboolean(coding + '_mutation_switch', 'bitwise_mutation'):
 		decisions = len(problem.GetBoundary())
 		bits = math.ceil(math.log2(decisions))
 		_bits = pyotl.utility.PyList2Vector_size_t([bits] * decisions)
-		return pyotl.mutation.index.BitwiseMutation(random, probability, _bits), pyoptimization.optimizer.fetcher.mutation.std
+		mutation = pyotl.mutation.index.BitwiseMutation(random, probability, _bits)
+		fetcher = pyoptimization.optimizer.fetcher.mutation.std
+		mutations.append([mutation, fetcher])
+	return mutations
 
-def get_mutation_tsp(config, problem, random):
-	mutation = config.get('tsp', 'mutation')
+def get_mutations_tsp(config, problem, random):
 	probability = eval(config.get('tsp_mutation', 'probability'))(problem)
-	if mutation == 'DisplacementMutation':
-		return pyotl.mutation.index.DisplacementMutation(random, probability), pyoptimization.optimizer.fetcher.mutation.std
-	elif mutation == 'ExchangeMutation':
-		return pyotl.mutation.index.ExchangeMutation(random, probability), pyoptimization.optimizer.fetcher.mutation.std
-	elif mutation == 'InsertionMutation':
-		return pyotl.mutation.index.InsertionMutation(random, probability), pyoptimization.optimizer.fetcher.mutation.std
-	elif mutation == 'InversionMutation':
-		return pyotl.mutation.index.InversionMutation(random, probability), pyoptimization.optimizer.fetcher.mutation.std
-	elif mutation == 'SpreadMutation':
-		return pyotl.mutation.index.SpreadMutation(random, probability), pyoptimization.optimizer.fetcher.mutation.std
+	mutations = []
+	if config.getboolean('tsp_mutation_switch', 'displacement_mutation'):
+		mutation = pyotl.mutation.index.DisplacementMutation(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.mutation.std
+		mutations.append([mutation, fetcher])
+	elif config.getboolean('tsp_mutation_switch', 'exchange_mutation'):
+		mutation = pyotl.mutation.index.ExchangeMutation(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.mutation.std
+		mutations.append([mutation, fetcher])
+	elif config.getboolean('tsp_mutation_switch', 'insertion_mutation'):
+		mutation = pyotl.mutation.index.InsertionMutation(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.mutation.std
+		mutations.append([mutation, fetcher])
+	elif config.getboolean('tsp_mutation_switch', 'inversion_mutation'):
+		mutation = pyotl.mutation.index.InversionMutation(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.mutation.std
+		mutations.append([mutation, fetcher])
+	elif config.getboolean('tsp_mutation_switch', 'spread_mutation'):
+		mutation = pyotl.mutation.index.SpreadMutation(random, probability)
+		fetcher = pyoptimization.optimizer.fetcher.mutation.std
+		mutations.append([mutation, fetcher])
+	return mutations
 
-def get_mutation(config, problem, random):
+def get_mutations(config, problem, random):
 	coding = pyoptimization.problem.coding.get_coding(problem)
 	if coding == 'real':
-		return get_mutation_real(config, problem, random, coding)
+		return get_mutations_real(config, problem, random, coding)
 	elif coding == 'integer':
-		return get_mutation_integer(config, problem, random, coding)
+		return get_mutations_integer(config, problem, random, coding)
 	elif coding == 'dynamic_bitset':
-		return get_mutation_dynamic_bitset(config, problem, random, coding)
+		return get_mutations_dynamic_bitset(config, problem, random, coding)
 	elif coding == 'index':
 		if type(problem).__name__.endswith('TSP'):
-			return get_mutation_tsp(config, problem, random)
+			return get_mutations_tsp(config, problem, random)
 		else:
-			return get_mutation_index(config, problem, random, coding)
+			return get_mutations_index(config, problem, random, coding)
 	else:
 		raise
