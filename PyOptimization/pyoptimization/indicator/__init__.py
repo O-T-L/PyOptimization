@@ -38,8 +38,6 @@ def evaluate_gd(config, rowID, columns, rowData):
 		module, function = config.get('data', 'pf').rsplit('.', 1)
 		module = importlib.import_module(module)
 		pfTrue = getattr(module, function)(config, properties)
-		assert(pfTrue.shape[1] == properties['objectives'])
-		pfTrue = pyotl.utility.PyListList2VectorVector_Real(pfTrue.tolist())
 		indicator = pyotl.indicator.real.FrontGD(pfTrue)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
@@ -54,8 +52,6 @@ def evaluate_igd(config, rowID, columns, rowData):
 	module, function = config.get('data', 'pf').rsplit('.', 1)
 	module = importlib.import_module(module)
 	pfTrue = getattr(module, function)(config, properties)
-	assert(pfTrue.shape[1] == properties['objectives'])
-	pfTrue = pyotl.utility.PyListList2VectorVector_Real(pfTrue.tolist())
 	indicator = pyotl.indicator.real.InvertedGenerationalDistance(pfTrue)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
@@ -70,8 +66,6 @@ def evaluate_eps(config, rowID, columns, rowData):
 	module, function = config.get('data', 'pf').rsplit('.', 1)
 	module = importlib.import_module(module)
 	pfTrue = getattr(module, function)(config, properties)
-	assert(pfTrue.shape[1] == properties['objectives'])
-	pfTrue = pyotl.utility.PyListList2VectorVector_Real(pfTrue.tolist())
 	method = config.get('eps', 'method')
 	if method == 'additive':
 		indicator = pyotl.indicator.real.AdditiveEpsilon(pfTrue)
@@ -147,8 +141,6 @@ def evaluate_dm(config, rowID, columns, rowData):
 	module, function = config.get('dm', 'pf').rsplit('.', 1)
 	module = importlib.import_module(module)
 	pfTrue = getattr(module, function)(config, properties)
-	assert(pfTrue.shape[1] == properties['objectives'])
-	pfTrue = pyotl.utility.PyListList2VectorVector_Real(pfTrue.tolist())
 	indicator = pyotl.indicator.real.DiversityMetric(boundary, division, pfTrue)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
