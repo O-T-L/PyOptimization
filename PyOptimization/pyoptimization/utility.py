@@ -15,26 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import sys
 import os
 
 def read_config(config, path):
 	config.read(os.path.join(os.path.dirname(path), 'config.ini'))
 	config.read(os.path.splitext(path)[0] + '.ini')
-
-def _get_codings(prefix):
-	codings = set()
-	for module in list(sys.modules.keys()):
-		if module.startswith(prefix):
-			codings.add(module[len(prefix):])
-	return codings
-
-def get_codings(prefixes = ['pyotl.problem.', 'pyotl.optimizer.']):
-	codings = _get_codings(prefixes[0])
-	for prefix in prefixes[1:]:
-		_codings = _get_codings(prefix)
-		codings &= _codings
-	return codings
 
 def get_pyoptimization_path(config):
 	try:

@@ -20,80 +20,80 @@ import re
 def division(config, problem):
 	if type(problem).__name__ == 'DTLZ1':
 		if problem.GetNumberOfObjectives() == 3:
-			return [10] * problem.GetNumberOfObjectives()
+			return [[10] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 4:
-			return [10] * problem.GetNumberOfObjectives()
+			return [[10] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 5:
-			return [10] * problem.GetNumberOfObjectives()
+			return [[10] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 6:
-			return [10] * problem.GetNumberOfObjectives()
+			return [[10] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 8:
-			return [10] * problem.GetNumberOfObjectives()
+			return [[10] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 10:
-			return [11] * problem.GetNumberOfObjectives()
+			return [[11] * problem.GetNumberOfObjectives()]
 	elif re.match('DTLZ[24]', type(problem).__name__):
 		if problem.GetNumberOfObjectives() == 3:
-			return [10] * problem.GetNumberOfObjectives()
+			return [[10] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 4:
-			return [10] * problem.GetNumberOfObjectives()
+			return [[10] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 5:
-			return [9] * problem.GetNumberOfObjectives()
+			return [[9] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 6:
-			return [8] * problem.GetNumberOfObjectives()
+			return [[8] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 8:
-			return [7] * problem.GetNumberOfObjectives()
+			return [[7] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 10:
-			return [8] * problem.GetNumberOfObjectives()
+			return [[8] * problem.GetNumberOfObjectives()]
 	elif type(problem).__name__ == 'DTLZ3':
 		if problem.GetNumberOfObjectives() == 3:
-			return [11] * problem.GetNumberOfObjectives()
+			return [[11] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 4:
-			return [11] * problem.GetNumberOfObjectives()
+			return [[11] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 5:
-			return [11] * problem.GetNumberOfObjectives()
+			return [[11] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 6:
-			return [11] * problem.GetNumberOfObjectives()
+			return [[11] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 8:
-			return [10] * problem.GetNumberOfObjectives()
+			return [[10] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 10:
-			return [11] * problem.GetNumberOfObjectives()
+			return [[11] * problem.GetNumberOfObjectives()]
 	elif type(problem).__name__ == 'DTLZ5':
 		if problem.GetNumberOfObjectives() == 3:
-			return [35] * problem.GetNumberOfObjectives()
+			return [[35] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 4:
-			return [35] * problem.GetNumberOfObjectives()
+			return [[35] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 5:
-			return [29] * problem.GetNumberOfObjectives()
+			return [[29] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 6:
-			return [14] * problem.GetNumberOfObjectives()
+			return [[14] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 8:
-			return [11] * problem.GetNumberOfObjectives()
+			return [[11] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 10:
-			return [11] * problem.GetNumberOfObjectives()
+			return [[11] * problem.GetNumberOfObjectives()]
 	elif type(problem).__name__ == 'DTLZ6':
 		if problem.GetNumberOfObjectives() == 3:
-			return [36] * problem.GetNumberOfObjectives()
+			return [[36] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 4:
-			return [36] * problem.GetNumberOfObjectives()
+			return [[36] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 5:
-			return [24] * problem.GetNumberOfObjectives()
+			return [[24] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 6:
-			return [50] * problem.GetNumberOfObjectives()
+			return [[50] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 8:
-			return [50] * problem.GetNumberOfObjectives()
+			return [[50] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 10:
-			return [50] * problem.GetNumberOfObjectives()
+			return [[50] * problem.GetNumberOfObjectives()]
 	elif type(problem).__name__ == 'DTLZ7':
 		if problem.GetNumberOfObjectives() == 3:
-			return [9] * problem.GetNumberOfObjectives()
+			return [[9] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 4:
-			return [9] * problem.GetNumberOfObjectives()
+			return [[9] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 5:
-			return [8] * problem.GetNumberOfObjectives()
+			return [[8] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 6:
-			return [6] * problem.GetNumberOfObjectives()
+			return [[6] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 8:
-			return [5] * problem.GetNumberOfObjectives()
+			return [[5] * problem.GetNumberOfObjectives()]
 		elif problem.GetNumberOfObjectives() == 10:
-			return [4] * problem.GetNumberOfObjectives()
+			return [[4] * problem.GetNumberOfObjectives()]
 	raise

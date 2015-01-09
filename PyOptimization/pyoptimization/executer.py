@@ -50,7 +50,7 @@ class ProcessPool:
 def executer(fn, *args, **kwargs):
 	return fn(*args, **kwargs)
 
-def make_executer():
+def make_serial_executer():
 	return executer
 
 def error_logger(exception):
@@ -64,3 +64,15 @@ def make_mpi_executer():
 	caller = pyoptimization.mpi.MPICaller()
 	executer = lambda fn, *args, **kwargs: caller(functools.partial(fn, *args, **kwargs))
 	return executer, caller
+
+def make_executer(config):
+	if config.get('common', 'executer') == 'mpi':
+		executer, caller = make_mpi_executer()
+		print('MPI process %u of %u' %(caller.rank + 1, caller.size))
+	elif config.get('common', 'executer') == 'parallel':
+		parallel = config.getint('parallel', 'parallel')
+		executer = make_parallel_executer(parallel)
+		print('%u parallel' % executer.capacity())
+	else:
+		executer = make_serial_executer()
+	return executer

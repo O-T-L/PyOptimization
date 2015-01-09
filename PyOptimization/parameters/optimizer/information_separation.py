@@ -20,6 +20,7 @@ import numpy
 
 def convergence_direction(config, problem):
 	if re.match('^(Convex)?DTLZ\d$', type(problem).__name__):
-		return numpy.array([1] * problem.GetNumberOfObjectives())
+		return [1] * problem.GetNumberOfObjectives()
 	elif re.match('^WFG\d$', type(problem).__name__):
-		return 1 / numpy.arange(2, (problem.GetNumberOfObjectives() + 1) * 2, 2)
+		direction = 1 / numpy.arange(2, (problem.GetNumberOfObjectives() + 1) * 2, 2)
+		return direction.tolist()
