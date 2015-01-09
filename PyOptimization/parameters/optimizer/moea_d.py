@@ -20,24 +20,44 @@ import pyotl.optimizer.nsga_iii
 
 def nbi(config, count, dimension):
 	if dimension == 2:
-		return pyotl.utility.NormalBoundaryIntersection_Real(dimension, count)
+		return [
+			pyotl.utility.NormalBoundaryIntersection_Real(dimension, count),
+		]
 	if count == 100:
 		if dimension == 3:
-			return pyotl.utility.NormalBoundaryIntersection_Real(dimension, 13) # 105
+			return [
+				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 13), # 105
+			]
 		elif dimension == 4:
-			return pyotl.utility.NormalBoundaryIntersection_Real(dimension, 7) # 120
+			return [
+				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 7), # 120
+			]
 		elif dimension == 5:
-			return pyotl.utility.NormalBoundaryIntersection_Real(dimension, 5) # 126
+			return [
+				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 5), # 126
+			]
 		elif dimension == 6:
-			return pyotl.utility.NormalBoundaryIntersection_Real(dimension, 4) # 126
+			return [
+				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 4), # 126
+			]
 		elif dimension == 8:
-			return pyotl.utility.NormalBoundaryIntersection_Real(dimension, 3) # 120
+			return [
+				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 3), # 120
+			]
 		elif dimension == 10:
-			return pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 2) # 55 + 55 = 110
+			return [
+				pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 2), # 55 + 55 = 110
+			]
 		elif dimension == 10:
-			return pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2) # 55
+			return [
+				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2), # 55
+			]
 		elif dimension == 10:
-			return pyotl.utility.NormalBoundaryIntersection_Real(dimension, 3) # 220
+			return [
+				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 3), # 220
+			]
 		elif dimension == 15:
-			return pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2) # 120
+			return [
+				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2), # 120
+			]
 	raise
