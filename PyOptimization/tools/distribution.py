@@ -103,13 +103,16 @@ def main():
 				path = os.path.join(parent, filename)
 				population = numpy.loadtxt(path)
 				fig = draw(config, population)
-				pathFigure = os.path.join(figureFolder, os.path.splitext(os.path.relpath(path, dataFolder))[0]) + figureExt
-				print(path + ' -> ' + pathFigure)
-				try:
-					os.makedirs(os.path.dirname(pathFigure))
-				except OSError:
-					pass
-				fig.savefig(pathFigure)
+				if config.getboolean('switch', 'save'):
+					pathFigure = os.path.join(figureFolder, os.path.splitext(os.path.relpath(path, dataFolder))[0]) + figureExt
+					print(path + ' -> ' + pathFigure)
+					try:
+						os.makedirs(os.path.dirname(pathFigure))
+					except OSError:
+						pass
+					fig.savefig(pathFigure)
+	if config.getboolean('switch', 'show'):
+		matplotlib.pyplot.show()
 
 if __name__ == '__main__':
 	main()
