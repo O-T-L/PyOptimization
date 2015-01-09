@@ -58,17 +58,15 @@ def draw_parallel_coordinates(config, ax, data):
 	ax.set_xticks(list(range(dimension)))
 	ax.set_xticklabels([r'$f_{%u}$' % axis for axis in range(1, dimension + 1)])
 
-def draw(config, population):
+def draw(config, population, title):
+	fig = matplotlib.pyplot.figure(title)
 	if len(population[0]) == 2:
-		fig = matplotlib.pyplot.figure()
 		ax = fig.gca()
 		draw_distribution2(config, ax, population)
 	elif len(population[0]) == 3:
-		fig = matplotlib.pyplot.figure()
 		ax = mpl_toolkits.mplot3d.Axes3D(fig)
 		draw_distribution3(config, ax, population)
 	else:
-		fig = matplotlib.pyplot.figure()
 		ax = fig.gca()
 		draw_parallel_coordinates(config, ax, population)
 	try:
@@ -102,7 +100,7 @@ def main():
 			if fnmatch.fnmatch(filename, pattern):
 				path = os.path.join(parent, filename)
 				population = numpy.loadtxt(path)
-				fig = draw(config, population)
+				fig = draw(config, population, path)
 				if config.getboolean('switch', 'save'):
 					pathFigure = os.path.join(figureFolder, os.path.splitext(os.path.relpath(path, dataFolder))[0]) + figureExt
 					print(path + ' -> ' + pathFigure)
