@@ -95,7 +95,7 @@ def main():
 	figureFolder = os.path.expandvars(config.get('config', 'figure_folder.' + platform.system()))
 	pattern = config.get('config', 'data_pattern')
 	figureExt = config.get('config', 'figure_ext')
-	for parent, _, filenames in os.walk(dataFolder):
+	for parent, _, filenames in os.walk(dataFolder, followlinks = True):
 		for filename in filenames:
 			if fnmatch.fnmatch(filename, pattern):
 				path = os.path.join(parent, filename)
