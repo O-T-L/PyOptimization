@@ -24,3 +24,9 @@ def solutions(config, problem):
 	elif re.match('^WFG\d$', type(problem).__name__) and len(problem.GetBoundary()) == problem.GetPosDecisions():
 		return [1000]
 	return [100]
+
+def step(config, optimizer, optimization):
+	return True
+
+def progress(config, optimizer, optimization):
+	return optimization.iteration

@@ -19,6 +19,7 @@ import os
 import platform
 import configparser
 import sqlite3
+import importlib
 import uuid
 import timeit
 import pyotl.utility
@@ -37,13 +38,17 @@ def output(config, items):
 class Optimization(pyotl.utility.Progress):
 	def __call__(self, config, optimizer, fetcher):
 		try:
-			calculateStep = eval(config.get('output', 'step'))
+			module, function = config.get('output', 'step').rsplit('.', 1)
+			module = importlib.import_module(module)
+			stepOutput = getattr(module, function)
 		except configparser.NoOptionError:
-			calculateStep = lambda optimizer, optimization: False
+			stepOutput = lambda config, optimizer, optimization: False
 		try:
-			calculateProgress = eval(config.get('optimization', 'progress'))
+			module, function = config.get('optimization', 'progress').rsplit('.', 1)
+			module = importlib.import_module(module)
+			calculateProgress = getattr(module, function)
 		except configparser.NoOptionError:
-			calculateProgress = lambda optimizer, optimization: optimization.iteration
+			calculateProgress = lambda config, optimizer, optimization: optimization.iteration
 		stepInfo = eval(config.get('print', 'step'))
 		self.uuid = str(uuid.uuid4())
 		self.iteration = 0
@@ -53,20 +58,20 @@ class Optimization(pyotl.utility.Progress):
 			self.interval = None
 		self.duration = 0
 		print(eval(config.get('print', 'initial'))(optimizer, self))
-		if calculateStep(optimizer, self):
+		if stepOutput(config, optimizer, self):
 			print(stepInfo(optimizer, self))
 			output(config, [('uuid', self.uuid), ('iteration', self.iteration), ('interval', self.interval)] + fetcher(optimizer))
-		self.progress_ = calculateProgress(optimizer, self)
+		self.progress_ = calculateProgress(config, optimizer, self)
 		terminator = pyoptimization.optimizer.terminator.get_terminator(config, optimizer)
 		while terminator(optimizer, self):
 			timer = timeit.Timer(optimizer)
 			self.interval = timer.timeit(1)
 			self.duration += self.interval
 			self.iteration += 1
-			if calculateStep(optimizer, self):
+			if stepOutput(config, optimizer, self):
 				print(stepInfo(optimizer, self))
 				output(config, [('uuid', self.uuid), ('iteration', self.iteration), ('interval', self.interval)] + fetcher(optimizer))
-			self.progress_ = calculateProgress(optimizer, self)
+			self.progress_ = calculateProgress(config, optimizer, self)
 		if config.getboolean('output', 'final'):
 			print(eval(config.get('print', 'final'))(optimizer, self))
 			output(config, [('uuid', self.uuid), ('iteration', self.iteration), ('duration', self.duration)] + fetcher(optimizer))
