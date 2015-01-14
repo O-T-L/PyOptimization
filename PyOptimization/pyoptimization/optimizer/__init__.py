@@ -220,7 +220,7 @@ def make_gde3(config, executer, problemFactory, problemFetcher):
 			crossover = pyotl.crossover.real.DifferentialEvolution(random, probability, problem.GetBoundary(), scaling_factor)
 			crossoverFetcher = lambda optimizer: pyoptimization.optimizer.fetcher.crossover.std(optimizer)
 			optimizer = pyotl.optimizer.xtriple.real.GDE3(random, problem, initial, crossover)
-			fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.nsga_ii(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer)
+			fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.basic(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer)
 			executer(optimization, config, optimizer, fetcher)
 
 def _make_ibea_epsilon(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
