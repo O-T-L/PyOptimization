@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os
 
 def read_config(config, path):
+	assert(os.path.exists(path))
 	config.read(os.path.join(os.path.dirname(path), 'config.ini'))
 	config.read(os.path.splitext(path)[0] + '.ini')
 
