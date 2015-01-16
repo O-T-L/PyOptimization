@@ -450,16 +450,16 @@ def make_nsga_iii(config, executer, problemFactory, problemFetcher):
 	for solutions in getattr(module, function)(config, problem):
 		module, function = config.get('nsga_iii', 'reference_set').rsplit('.', 1)
 		module = importlib.import_module(module)
-		referenceSet = getattr(module, function)(config, solutions, problem.GetNumberOfObjectives())
-		if isinstance(referenceSet, numpy.ndarray):
-			referenceSet = pyotl.utility.PyListList2VectorVector_Real(referenceSet.tolist())
-		_solutions = len(referenceSet)
-		_solutions += (4 - _solutions % 4) % 4
-		initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, _solutions)
-		for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
-			crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
-			for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
-				_make_nsga_iii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher, referenceSet)
+		for referenceSet in getattr(module, function)(config, solutions, problem.GetNumberOfObjectives()):
+			if isinstance(referenceSet, numpy.ndarray):
+				referenceSet = pyotl.utility.PyListList2VectorVector_Real(referenceSet.tolist())
+			_solutions = len(referenceSet)
+			_solutions += (4 - _solutions % 4) % 4
+			initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, _solutions)
+			for _crossover, crossoverFetcher in pyoptimization.optimizer.crossover.get_crossovers(config, problem, random):
+				crossover = pyoptimization.optimizer.crossover.adapter(config, problem, _crossover, random)
+				for mutation, mutationFetcher in pyoptimization.optimizer.mutation.get_mutations(config, problem, random):
+					_make_nsga_iii(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher, referenceSet)
 
 def _make_ar_dmo(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
