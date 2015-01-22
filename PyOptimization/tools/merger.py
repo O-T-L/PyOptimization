@@ -1,5 +1,6 @@
 import os
 import fnmatch
+import platform
 import configparser
 
 def merge_files(root, pattern, ext, lines, sort):
@@ -32,7 +33,7 @@ def main():
 	config.read(os.path.splitext(__file__)[0] + '.ini')
 	name = os.path.splitext(os.path.basename(__file__))[0]
 	merge_files(
-		config.get(name, 'root'),
+		os.path.expandvars(config.get(name, 'root.' + platform.system())),
 		config.get(name, 'pattern'),
 		config.get(name, 'ext'),
 		config.getint(name, 'lines'),
