@@ -215,13 +215,13 @@ def make_gde3(config, executer, problemFactory, problemFetcher):
 		module = importlib.import_module(module)
 		for solutions in getattr(module, function)(config, problem):
 			initial, initialFetcher = pyoptimization.optimizer.initial.get_initial(config, problem, random, solutions)
-			probability = eval(config.get(coding + '_crossover', 'probability'))(problem)
-			scaling_factor = config.getfloat('differential_evolution', 'scaling_factor')
-			crossover = pyotl.crossover.real.DifferentialEvolution(random, probability, problem.GetBoundary(), scaling_factor)
-			crossoverFetcher = lambda optimizer: pyoptimization.optimizer.fetcher.crossover.std(optimizer)
-			optimizer = pyotl.optimizer.xtriple.real.GDE3(random, problem, initial, crossover)
-			fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.basic(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer)
-			executer(optimization, config, optimizer, fetcher)
+			for probability in eval(config.get(coding + '_crossover', 'probability'))(problem):
+				for scaling_factor in map(float, config.get('differential_evolution', 'scaling_factor').split()):
+					crossover = pyotl.crossover.real.DifferentialEvolution(random, probability, problem.GetBoundary(), scaling_factor)
+					crossoverFetcher = lambda optimizer: pyoptimization.optimizer.fetcher.crossover.std(optimizer)
+					optimizer = pyotl.optimizer.xtriple.real.GDE3(random, problem, initial, crossover)
+					fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.basic(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer)
+					executer(optimization, config, optimizer, fetcher)
 
 def _make_ibea_epsilon(config, executer, problemFactory, problemFetcher, initial, initialFetcher, crossover, crossoverFetcher, mutation, mutationFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
