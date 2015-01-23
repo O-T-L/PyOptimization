@@ -376,7 +376,7 @@ def _make_tdea(config, executer, problemFactory, problemFetcher, initial, initia
 	module, function = config.get('boundary', 'objective').rsplit('.', 1)
 	module = importlib.import_module(module)
 	boundary = getattr(module, function)(config, problem)
-	_boundary = pyotl.utility.PyList2Boundary_Real(boundary.tolist())
+	_boundary = pyotl.utility.PyListList2VectorPair_Real(boundary.tolist())
 	module, function = config.get('tdea', 'territory').rsplit('.', 1)
 	module = importlib.import_module(module)
 	for territory in getattr(module, function)(config, problem):
@@ -468,7 +468,7 @@ def _make_ar_dmo(config, executer, problemFactory, problemFetcher, initial, init
 	module, function = config.get('boundary', 'objective').rsplit('.', 1)
 	module = importlib.import_module(module)
 	boundary = getattr(module, function)(config, problem)
-	_boundary = pyotl.utility.PyList2Boundary_Real(boundary.tolist())
+	_boundary = pyotl.utility.PyListList2VectorPair_Real(boundary.tolist())
 	module = get_optimizer_module(config, problem, crossover)
 	optimizer = module.AR_DMO(random, problem, initial, crossover, mutation, _boundary)
 	fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.ar(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)

@@ -103,7 +103,7 @@ def evaluate_ms1(config, rowID, columns, rowData):
 	module, function = config.get('boundary', 'objective').rsplit('.', 1)
 	module = importlib.import_module(module)
 	boundary = getattr(module, function)(config, properties)
-	boundary = pyotl.utility.PyList2Boundary_Real(boundary.tolist())
+	boundary = pyotl.utility.PyListList2VectorPair_Real(boundary.tolist())
 	indicator = pyotl.indicator.real.MaximumSpread1(boundary)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
@@ -118,7 +118,7 @@ def evaluate_ms2(config, rowID, columns, rowData):
 	module, function = config.get('boundary', 'objective').rsplit('.', 1)
 	module = importlib.import_module(module)
 	boundary = getattr(module, function)(config, properties)
-	boundary = pyotl.utility.PyList2Boundary_Real(boundary.tolist())
+	boundary = pyotl.utility.PyListList2VectorPair_Real(boundary.tolist())
 	indicator = pyotl.indicator.real.MaximumSpread2(boundary)
 	pf = rowData[columns.index('pf')]
 	pf = pyotl.utility.PyListList2VectorVector_Real(numpy.loadtxt(io.BytesIO(pf), ndmin = 2).tolist())
@@ -133,7 +133,7 @@ def evaluate_dm(config, rowID, columns, rowData):
 	module, function = config.get('boundary', 'objective').rsplit('.', 1)
 	module = importlib.import_module(module)
 	boundary = getattr(module, function)(config, properties)
-	boundary = pyotl.utility.PyList2Boundary_Real(boundary.tolist())
+	boundary = pyotl.utility.PyListList2VectorPair_Real(boundary.tolist())
 	module, function = config.get('dm', 'division').rsplit('.', 1)
 	module = importlib.import_module(module)
 	division = getattr(module, function)(config, properties)
