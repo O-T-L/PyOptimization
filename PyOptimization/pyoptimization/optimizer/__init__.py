@@ -547,13 +547,17 @@ def _make_r_nsga_ii(config, executer, problemFactory, problemFetcher, initial, i
 	module = importlib.import_module(module)
 	for referencePoint in getattr(module, function)(config, problem):
 		_referencePoint = pyotl.utility.PyList2Vector_Real(referencePoint)
-		module, function = config.get('r_nsga_ii', 'threshold').rsplit('.', 1)
+		module, function = config.get('r_nsga_ii', 'weight').rsplit('.', 1)
 		module = importlib.import_module(module)
-		for threshold in getattr(module, function)(config, problem):
-			module = get_optimizer_module(config, problem, crossover)
-			optimizer = module.R_NSGA_II(random, problem, initial, crossover, mutation, _referencePoint, threshold)
-			fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.r_nsga_ii(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
-			executer(optimization, config, optimizer, fetcher)
+		for weight in getattr(module, function)(config, problem):
+			_weight = pyotl.utility.PyList2Vector_Real(weight)
+			module, function = config.get('r_nsga_ii', 'threshold').rsplit('.', 1)
+			module = importlib.import_module(module)
+			for threshold in getattr(module, function)(config, problem):
+				module = get_optimizer_module(config, problem, crossover)
+				optimizer = module.R_NSGA_II(random, problem, initial, crossover, mutation, _referencePoint, _weight, threshold)
+				fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.r_nsga_ii(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
+				executer(optimization, config, optimizer, fetcher)
 
 def make_r_nsga_ii(config, executer, problemFactory, problemFetcher):
 	optimization = pyoptimization.optimizer.optimization.Optimization()
