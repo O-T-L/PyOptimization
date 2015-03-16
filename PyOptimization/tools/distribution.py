@@ -28,10 +28,20 @@ def dtlz7_shape(decision, distance):
 	return len(decision) + 1 - sum([(math.sin(3 * math.pi * x) + 1) * x / distance for x in decision])
 
 def draw_dtlz1_2(config, ax):
-	pass
+	ax.plot([0.5, 0], [0, 0.5])
 
-def draw_dtlz2_2(config, ax, resolution = 10):
-	pass
+def draw_dtlz2_2(config, ax, resolution = 100):
+	u = numpy.linspace(0, numpy.pi / 2, resolution)
+	x = numpy.cos(u)
+	y = numpy.sin(u)
+	ax.plot(x, y)
+
+def draw_dtlz7_2(config, ax, resolution = 100):
+	x = numpy.linspace(0, numpy.pi / 2, resolution)
+	y = numpy.zeros(x.shape)
+	distance = 2
+	y.flat = [distance * dtlz7_shape([_x], distance) for _x in x]
+	ax.plot(x, y)
 
 def draw_dtlz1_3(config, ax):
 	polygon = mpl_toolkits.mplot3d.art3d.Poly3DCollection([[
@@ -69,6 +79,8 @@ def draw_distribution2(config, ax, population):
 		draw_dtlz1_2(config, ax)
 	elif problem == 'DTLZ2':
 		draw_dtlz2_2(config, ax)
+	elif problem == 'DTLZ7':
+		draw_dtlz7_2(config, ax)
 	ax.plot(population.T[0], population.T[1], 'o')
 	ax.set_xlabel(r"$f_{1}$")
 	ax.set_ylabel(r"$f_{2}$")
