@@ -17,28 +17,71 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import platform
+import math
 import numpy
 import fnmatch
 import matplotlib.pyplot
 import mpl_toolkits.mplot3d
 import configparser
 
+def dtlz7_shape(decision, distance = 2):
+	return len(decision) + 1 - sum([(math.sin(3 * math.pi * x) + 1) * x / (distance + 1) for x in decision])
+
+def draw_dtlz1_2(config, ax):
+	pass
+
+def draw_dtlz2_2(config, ax, resolution = 10):
+	pass
+
+def draw_dtlz1_3(config, ax):
+	polygon = mpl_toolkits.mplot3d.art3d.Poly3DCollection([[
+		(0.5, 0, 0),
+		(0, 0.5, 0),
+		(0, 0, 0.5)]], facecolors = 'red', linewidth = 0, alpha = 0.2)
+	ax.add_collection3d(polygon)
+
 def draw_dtlz2_3(config, ax, resolution = 10):
-	mU, mV = numpy.mgrid[0 : 1 : resolution * 1j, 0 : 1 : resolution * 1j] * numpy.pi / 2
-	mX = numpy.cos(mU) * numpy.cos(mV)
-	mY = numpy.sin(mU) * numpy.cos(mV)
-	mZ = numpy.sin(mV)
-	ax.plot_surface(mX, mY, mZ, color = 'red', linewidth = 0, alpha = 0.2)
+	u, v = numpy.mgrid[0 : 1 : resolution * 1j, 0 : 1 : resolution * 1j] * numpy.pi / 2
+	x = numpy.cos(u) * numpy.cos(v)
+	y = numpy.sin(u) * numpy.cos(v)
+	z = numpy.sin(v)
+	ax.plot_surface(x, y, z, color = 'red', linewidth = 0, alpha = 0.2)
+
+def draw_dtlz5_3(config, ax, resolution = 20):
+	v = numpy.linspace(0, numpy.pi / 2, resolution)
+	z = numpy.cos(v)
+	r = numpy.sin(v)
+	alpha = math.pi / 4
+	x = r * math.cos(alpha)
+	y = r * math.sin(alpha)
+	ax.plot(x, y, z)
+
+def draw_dtlz7_3(config, ax, resolution = 20):
+	x, y = numpy.mgrid[0 : 1 : resolution * 1j, 0 : 1 : resolution * 1j]
+	z = numpy.zeros(x.shape)
+	z.flat = [dtlz7_shape([_x, _y]) for _x, _y in zip(x.flat, y.flat)]
+	ax.plot_surface(x, y, z, cmap = matplotlib.cm.get_cmap('jet'), rstride = 1, cstride = 1, linewidth = 0, alpha = 0.2)
 
 def draw_distribution2(config, ax, population):
+	problem = config.get('pf', 'problem')
+	if problem == 'DTLZ1':
+		draw_dtlz1_2(config, ax)
+	elif problem == 'DTLZ2':
+		draw_dtlz2_2(config, ax)
 	ax.plot(population.T[0], population.T[1], 'o')
 	ax.set_xlabel(r"$f_{1}$")
 	ax.set_ylabel(r"$f_{2}$")
 
 def draw_distribution3(config, ax, population):
 	problem = config.get('pf', 'problem')
-	if problem == 'DTLZ2':
+	if problem == 'DTLZ1':
+		draw_dtlz1_3(config, ax)
+	elif problem == 'DTLZ2':
 		draw_dtlz2_3(config, ax)
+	elif problem == 'DTLZ5':
+		draw_dtlz5_3(config, ax)
+	elif problem == 'DTLZ7':
+		draw_dtlz7_3(config, ax)
 	ax.view_init(azim = config.getfloat('3d', 'azimuth'), elev = config.getfloat('3d', 'elevation'))
 	ax.plot(population.T[0], population.T[1], population.T[2], 'o')
 	ax.set_xlabel(r"$f_{1}$")
