@@ -24,8 +24,8 @@ import matplotlib.pyplot
 import mpl_toolkits.mplot3d
 import configparser
 
-def dtlz7_shape(decision, distance = 2):
-	return len(decision) + 1 - sum([(math.sin(3 * math.pi * x) + 1) * x / (distance + 1) for x in decision])
+def dtlz7_shape(decision, distance):
+	return len(decision) + 1 - sum([(math.sin(3 * math.pi * x) + 1) * x / distance for x in decision])
 
 def draw_dtlz1_2(config, ax):
 	pass
@@ -59,7 +59,8 @@ def draw_dtlz5_3(config, ax, resolution = 20):
 def draw_dtlz7_3(config, ax, resolution = 20):
 	x, y = numpy.mgrid[0 : 1 : resolution * 1j, 0 : 1 : resolution * 1j]
 	z = numpy.zeros(x.shape)
-	z.flat = [dtlz7_shape([_x, _y]) for _x, _y in zip(x.flat, y.flat)]
+	distance = 2
+	z.flat = [distance * dtlz7_shape([_x, _y], distance) for _x, _y in zip(x.flat, y.flat)]
 	ax.plot_surface(x, y, z, cmap = matplotlib.cm.get_cmap('jet'), rstride = 1, cstride = 1, linewidth = 0, alpha = 0.2)
 
 def draw_distribution2(config, ax, population):
