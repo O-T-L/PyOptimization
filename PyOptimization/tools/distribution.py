@@ -99,7 +99,7 @@ def main():
 		for filename in filenames:
 			if fnmatch.fnmatch(filename, pattern):
 				path = os.path.join(parent, filename)
-				population = numpy.loadtxt(path)
+				population = numpy.loadtxt(path, ndmin = 2)
 				fig = draw(config, population, path)
 				if config.getboolean('switch', 'save'):
 					pathFigure = os.path.join(figureFolder, os.path.splitext(os.path.relpath(path, dataFolder))[0]) + figureExt
