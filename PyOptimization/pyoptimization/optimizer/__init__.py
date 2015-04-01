@@ -228,6 +228,7 @@ def _make_ibea_epsilon(config, executer, problemFactory, problemFetcher, initial
 	random = pyotl.utility.Random(pyotl.utility.Time())
 	problem = problemFactory(random = random, progress = optimization)
 	for scalingFactor in map(float, config.get('ibea', 'scaling_factor').split()):
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.IBEA_Epsilon(random, problem, initial, crossover, mutation, scalingFactor)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.ibea(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -251,6 +252,7 @@ def _make_ibea_hd(config, executer, problemFactory, problemFetcher, initial, ini
 	random = pyotl.utility.Random(pyotl.utility.Time())
 	problem = problemFactory(random = random, progress = optimization)
 	for scalingFactor in map(float, config.get('ibea', 'scaling_factor').split()):
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.IBEA_HD(random, problem, initial, crossover, mutation, scalingFactor)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.ibea(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -321,6 +323,7 @@ def _make_grea(config, executer, problemFactory, problemFetcher, initial, initia
 	module = importlib.import_module(module)
 	for division in getattr(module, function)(config, problem):
 		_division = pyotl.utility.PyList2Vector_size_t(division)
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.GrEA(random, problem, initial, crossover, mutation, _division)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.grea(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -352,6 +355,7 @@ def _make_epsilon_moea(config, executer, problemFactory, problemFetcher, initial
 	module = importlib.import_module(module)
 	for epsilon in getattr(module, function)(config, problem):
 		_epsilon = pyotl.utility.PyList2Vector_Real(epsilon)
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.Epsilon_MOEA(random, problem, initial, crossover, mutation, _lower, _epsilon)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.epsilon_moea(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -380,6 +384,7 @@ def _make_tdea(config, executer, problemFactory, problemFetcher, initial, initia
 	module, function = config.get('tdea', 'territory').rsplit('.', 1)
 	module = importlib.import_module(module)
 	for territory in getattr(module, function)(config, problem):
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.TDEA(random, problem, initial, crossover, mutation, _boundary, territory)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.tdea(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -414,6 +419,7 @@ def _make_isnps(config, executer, problemFactory, problemFetcher, initial, initi
 		module = importlib.import_module(module)
 		for degree2 in getattr(module, function)(config, problem, amplification):
 			angle2 = degree2 * math.pi / 180
+			problem = problemFactory(random = random, progress = optimization)
 			module = get_optimizer_module(config, problem, crossover)
 			optimizer = module.ISNPS(random, problem, initial, crossover, mutation, _convergenceDirection, angle1, angle2, amplification)
 			fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.isnps(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -495,6 +501,7 @@ def _make_cdas(config, executer, problemFactory, problemFetcher, initial, initia
 	module = importlib.import_module(module)
 	for angle in getattr(module, function)(config, problem):
 		_angle = pyotl.utility.PyList2Vector_Real(angle)
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.CDAS(random, problem, initial, crossover, mutation, _angle)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.cdas(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -521,6 +528,7 @@ def _make_g_nsga_ii(config, executer, problemFactory, problemFetcher, initial, i
 	module = importlib.import_module(module)
 	for referencePoint in getattr(module, function)(config, problem):
 		_referencePoint = pyotl.utility.PyList2Vector_Real(referencePoint)
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.G_NSGA_II(random, problem, initial, crossover, mutation, _referencePoint)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.g_nsga_ii(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -550,6 +558,7 @@ def _make_r_nsga_ii(config, executer, problemFactory, problemFetcher, initial, i
 		module, function = config.get('r_nsga_ii', 'threshold').rsplit('.', 1)
 		module = importlib.import_module(module)
 		for threshold in getattr(module, function)(config, problem):
+			problem = problemFactory(random = random, progress = optimization)
 			module = get_optimizer_module(config, problem, crossover)
 			optimizer = module.R_NSGA_II(random, problem, initial, crossover, mutation, _referencePoint, threshold)
 			fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.r_nsga_ii(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -582,6 +591,7 @@ def _make_msops(config, executer, problemFactory, problemFetcher, initial, initi
 			if isinstance(targets, numpy.ndarray):
 				targets = pyotl.utility.PyListList2VectorVector_Real(targets.tolist())
 			for factor in map(float, config.get('msops', 'factor').split()):
+				problem = problemFactory(random = random, progress = optimization)
 				module = get_optimizer_module(config, problem, crossover)
 				optimizer = module.MSOPS(random, problem, initial, crossover, mutation, targets, factor)
 				fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.msops(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -607,6 +617,7 @@ def _make_moea_d_weighted_sum(config, executer, problemFactory, problemFetcher, 
 	problem = problemFactory(random = random, progress = optimization)
 	for neighborhoodRatio in map(float, config.get('moea_d', 'neighborhood_ratio').split()):
 		neighbors = int(len(initial) * neighborhoodRatio)
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.MOEA_D_WeightedSum(random, problem, initial, crossover, mutation, weightVectors, neighbors)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.moea_d(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -636,6 +647,7 @@ def _make_moea_d_tchebycheff(config, executer, problemFactory, problemFetcher, i
 	problem = problemFactory(random = random, progress = optimization)
 	for neighborhoodRatio in map(float, config.get('moea_d', 'neighborhood_ratio').split()):
 		neighbors = int(len(initial) * neighborhoodRatio)
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.MOEA_D_Tchebycheff(random, problem, initial, crossover, mutation, weightVectors, neighbors)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.moea_d(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -668,6 +680,7 @@ def _make_moea_d_norm_tchebycheff(config, executer, problemFactory, problemFetch
 	problem = problemFactory(random = random, progress = optimization)
 	for neighborhoodRatio in map(float, config.get('moea_d', 'neighborhood_ratio').split()):
 		neighbors = int(len(initial) * neighborhoodRatio)
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.MOEA_D_NormTchebycheff(random, problem, initial, crossover, mutation, weightVectors, neighbors)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.moea_d(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -701,6 +714,7 @@ def _make_moea_d_pbi(config, executer, problemFactory, problemFetcher, initial, 
 	for neighborhoodRatio in map(float, config.get('moea_d', 'neighborhood_ratio').split()):
 		neighbors = int(len(initial) * neighborhoodRatio)
 		for penalty in map(float, config.get('moea_d_pbi', 'penalty').split()):
+			problem = problemFactory(random = random, progress = optimization)
 			module = get_optimizer_module(config, problem, crossover)
 			optimizer = module.MOEA_D_PBI(random, problem, initial, crossover, mutation, weightVectors, neighbors, penalty)
 			fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.moea_d_pbi(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -731,6 +745,7 @@ def _make_monte_carlo_hype(config, executer, problemFactory, problemFetcher, ini
 	random = pyotl.utility.Random(pyotl.utility.Time())
 	problem = problemFactory(random = random, progress = optimization)
 	for sample in map(int, config.get('monte_carlo_hype', 'sample').split()):
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.MonteCarloHypE(random, problem, initial, crossover, mutation, sample)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.monte_carlo_hype(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -754,6 +769,7 @@ def _make_fast_monte_carlo_hype(config, executer, problemFactory, problemFetcher
 	random = pyotl.utility.Random(pyotl.utility.Time())
 	problem = problemFactory(random = random, progress = optimization)
 	for sample in map(int, config.get('monte_carlo_hype', 'sample').split()):
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.FastMonteCarloHypE(random, problem, initial, crossover, mutation, sample)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.monte_carlo_hype(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -798,6 +814,7 @@ def _make_monte_carlo_hv_sms_emoa(config, executer, problemFactory, problemFetch
 	random = pyotl.utility.Random(pyotl.utility.Time())
 	problem = problemFactory(random = random, progress = optimization)
 	for sample in map(int, config.get('monte_carlo_hv_sms_emoa', 'sample').split()):
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.MonteCarloHV_SMS_EMOA(random, problem, initial, crossover, mutation, sample)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.basic(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
@@ -820,6 +837,7 @@ def _make_monte_carlo_sms_emoa(config, executer, problemFactory, problemFetcher,
 	random = pyotl.utility.Random(pyotl.utility.Time())
 	problem = problemFactory(random = random, progress = optimization)
 	for sample in map(int, config.get('monte_carlo_sms_emoa', 'sample').split()):
+		problem = problemFactory(random = random, progress = optimization)
 		module = get_optimizer_module(config, problem, crossover)
 		optimizer = module.MonteCarloSMS_EMOA(random, problem, initial, crossover, mutation, sample)
 		fetcher = lambda optimizer: pyoptimization.optimizer.fetcher.monte_carlo_sms_emoa(optimizer) + problemFetcher(optimizer) + initialFetcher(optimizer) + crossoverFetcher(optimizer) + mutationFetcher(optimizer)
