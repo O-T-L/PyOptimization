@@ -109,7 +109,7 @@ def get_crossovers(config, problem, random):
 		else:
 			return get_crossovers_index(config, problem, random, coding)
 	else:
-		raise
+		raise Exception(type(problem).__name__, problem.GetNumberOfObjectives())
 
 def adapter(config, problem, crossover, random):
 	coding = pyoptimization.problem.coding.get_coding(problem)

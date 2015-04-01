@@ -106,4 +106,4 @@ def territory(config, problem):
 			}
 			territory = table[problem.GetManifold() + 1]
 			return [territory]
-	raise
+	raise Exception(type(problem).__name__, problem.GetNumberOfObjectives())

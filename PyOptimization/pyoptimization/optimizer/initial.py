@@ -36,4 +36,4 @@ def get_initial(config, problem, random, solutions):
 		else:
 			return pyotl.initial.index.PopulationUniform(random, problem.GetBoundary(), solutions), fetcher
 	else:
-		raise
+		raise Exception(type(problem).__name__, problem.GetNumberOfObjectives(), solutions)

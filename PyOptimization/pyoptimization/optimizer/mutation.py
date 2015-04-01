@@ -106,4 +106,4 @@ def get_mutations(config, problem, random):
 		else:
 			return get_mutations_index(config, problem, random, coding)
 	else:
-		raise
+		raise Exception(type(problem).__name__, problem.GetNumberOfObjectives())

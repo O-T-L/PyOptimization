@@ -208,4 +208,4 @@ def angle(config, problem):
 		degree = table[problem.GetNumberOfObjectives()]
 		angle = [degree * numpy.pi / 180] * problem.GetNumberOfObjectives()
 		return [angle]
-	raise
+	raise Exception(type(problem).__name__, problem.GetNumberOfObjectives())

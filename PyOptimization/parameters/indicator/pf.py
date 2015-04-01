@@ -66,4 +66,4 @@ def pf(config, properties, folder = 'PF'):
 	elif re.match('^WFG[4-9]$', properties['problem']):
 		return get_pf(os.path.join(path, 'WFG4', str(properties['objectives']) + '.csv'))
 	print(properties)
-	raise
+	raise Exception(properties, folder)

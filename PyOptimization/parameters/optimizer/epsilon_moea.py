@@ -30,6 +30,7 @@ def epsilon(config, problem):
 		return [epsilon]
 	elif type(problem).__name__ == 'DTLZ2':
 		table = {
+			2:	0.006,
 			3:	0.06,
 			4:	0.1312,
 			5:	0.1927,
@@ -101,6 +102,14 @@ def epsilon(config, problem):
 		_epsilon = table[problem.GetNumberOfObjectives()]
 		epsilon = [_epsilon] * problem.GetNumberOfObjectives()
 		return [epsilon]
+	elif type(problem).__name__ == 'ConvexDTLZ2':
+		table = {
+			2:	0.0075,
+			3:	0.035,
+		}
+		_epsilon = table[problem.GetNumberOfObjectives()]
+		epsilon = [_epsilon] * problem.GetNumberOfObjectives()
+		return [epsilon]
 	elif type(problem).__name__ == 'DTLZ5I':
 		if problem.GetNumberOfObjectives() == 10:
 			table = {
@@ -115,4 +124,4 @@ def epsilon(config, problem):
 			_epsilon = table[problem.GetManifold() + 1]
 			epsilon = [_epsilon] * problem.GetNumberOfObjectives()
 			return [epsilon]
-	raise
+	raise Exception(type(problem).__name__, problem.GetNumberOfObjectives())

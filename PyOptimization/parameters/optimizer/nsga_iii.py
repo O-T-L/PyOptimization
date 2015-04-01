@@ -44,7 +44,7 @@ def nbi_original(config, count, dimension):
 			return [
 				pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 1), # 120 + 15 = 135
 			]
-	raise
+	raise Exception(count, dimension)
 
 def nbi_miqing(config, count, dimension):
 	if dimension == 2:
@@ -68,7 +68,7 @@ def nbi_miqing(config, count, dimension):
 			return [
 				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2), # 120
 			]
-	raise
+	raise Exception(count, dimension)
 
 def nbi(config, count, dimension):
 	if dimension == 2:
@@ -108,4 +108,4 @@ def nbi(config, count, dimension):
 			return [
 				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2), # 210
 			]
-	raise
+	raise Exception(count, dimension)

@@ -60,4 +60,4 @@ def nbi(config, count, dimension):
 			return [
 				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2), # 120
 			]
-	raise
+	raise Exception(count, dimension)
