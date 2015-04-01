@@ -32,7 +32,7 @@ def main():
 	config = configparser.ConfigParser()
 	config.read(os.path.splitext(__file__)[0] + '.ini')
 	name = os.path.splitext(os.path.basename(__file__))[0]
-	pathRoot = config.get(name, 'root.' + platform.system())
+	pathRoot = os.path.expandvars(config.get(name, 'root.' + platform.system()))
 	pattern = config.get(name, 'pattern')
 	_reformat = eval(config.get(name, 'reformat'))
 	paths = []

@@ -27,5 +27,20 @@ def reference_point(config, problem):
 	elif re.match('^UF[89]$|^UF10$', type(problem).__name__):
 		return [[1] * problem.GetNumberOfObjectives()]
 
+def _norm_weight(weight):
+	_sum = sum(weight)
+	return [w / _sum for w in weight]
+
+def weight(config, problem):
+	if re.match('^DTLZ[23456]I?$', type(problem).__name__):
+		weights = [[0.4] * problem.GetNumberOfObjectives()]
+	elif re.match('^WFG\d$', type(problem).__name__):
+		weights = [[0.6] * problem.GetNumberOfObjectives()]
+	elif re.match('^UF[1-7]$', type(problem).__name__):
+		weights = [[0.6] * problem.GetNumberOfObjectives()]
+	elif re.match('^UF[89]$|^UF10$', type(problem).__name__):
+		weights = [[1] * problem.GetNumberOfObjectives()]
+	return [_norm_weight(weight) for weight in weights]
+
 def threshold(config, problem):
-	return [0.2]
+	return [0.4]

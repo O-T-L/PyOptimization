@@ -26,7 +26,16 @@ def solutions(config, problem):
 	return [100]
 
 def step(config, optimizer, optimization):
-	return True
+	evaluation = optimizer.GetProblem().GetNumberOfEvaluations()
+	if hasattr(optimization, 'lastEvaluation'):
+		if evaluation - optimization.lastEvaluation >= 100:
+			optimization.lastEvaluation = evaluation
+			return True
+		else:
+			return False
+	else:
+		optimization.lastEvaluation = evaluation
+		return True
 
 def progress(config, optimizer, optimization):
 	return optimization.iteration

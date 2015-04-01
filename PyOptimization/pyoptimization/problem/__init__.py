@@ -78,8 +78,8 @@ def optimize_rectangle(config, executer, optimize):
 	module, function = config.get('rectangle', 'boundaries').rsplit('.', 1)
 	module = importlib.import_module(module)
 	for boundary, boundaryOptimal in getattr(module, function)(config):
-		boundary = pyotl.utility.PyList2Boundary_Real(boundary)
-		boundaryOptimal = pyotl.utility.PyList2Boundary_Real(boundaryOptimal)
+		boundary = pyotl.utility.PyListList2VectorPair_Real(boundary)
+		boundaryOptimal = pyotl.utility.PyListList2VectorPair_Real(boundaryOptimal)
 		optimize(config, executer,
 			lambda **kwargs: pyotl.problem.real.Rectangle(boundary, boundaryOptimal),
 			lambda optimizer: pyoptimization.problem.fetcher.rectangle(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
@@ -90,8 +90,8 @@ def optimize_rotated_rectangle(config, executer, optimize):
 	module, function = config.get('rotated_rectangle', 'boundaries').rsplit('.', 1)
 	module = importlib.import_module(module)
 	for boundary, boundaryOptimal in getattr(module, function)(config):
-		boundary = pyotl.utility.PyList2Boundary_Real(boundary)
-		boundaryOptimal = pyotl.utility.PyList2Boundary_Real(boundaryOptimal)
+		boundary = pyotl.utility.PyListList2VectorPair_Real(boundary)
+		boundaryOptimal = pyotl.utility.PyListList2VectorPair_Real(boundaryOptimal)
 		direction = getDirection(len(boundary))
 		_direction = pyotl.utility.PyList2BlasVector_Real(direction)
 		optimize(config, executer,

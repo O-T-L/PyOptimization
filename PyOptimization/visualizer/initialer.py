@@ -138,7 +138,7 @@ def rotated_rectangle(ax, dataDict, **kwargs):
 		boundary = dataDict['boundary']
 		direction = dataDict['direction']
 		assert(len(direction) == len(boundary))
-		_boundary = pyotl.utility.PyList2Boundary_Real(boundary.tolist())
+		_boundary = pyotl.utility.PyListList2VectorPair_Real(boundary.tolist())
 		_direction = pyotl.utility.PyList2BlasVector_Real(direction.tolist())
 		problem = pyotl.problem.real.RotatedRectangle(_boundary, _boundary, _direction)
 		axes = numpy.array(pyotl.utility.BlasMatrix2PyListList_Real(problem.GetAxes())).T

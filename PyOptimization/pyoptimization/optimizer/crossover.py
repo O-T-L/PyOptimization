@@ -31,7 +31,7 @@ def get_crossovers_real(config, problem, random, coding):
 		for probability in eval(config.get(coding + '_crossover', 'probability'))(problem):
 			for distribution_index in map(float, config.get('simulated_binary_crossover', 'distribution_index').split()):
 				crossover = pyotl.crossover.real.SimulatedBinaryCrossover(random, probability, problem.GetBoundary(), distribution_index)
-		crossovers.append([crossover, fetcher])
+				crossovers.append([crossover, fetcher])
 	elif config.getboolean(coding + '_crossover_switch', 'differential_evolution'):
 		fetcher = pyoptimization.optimizer.fetcher.crossover.std
 		for probability in eval(config.get(coding + '_crossover', 'probability'))(problem):
