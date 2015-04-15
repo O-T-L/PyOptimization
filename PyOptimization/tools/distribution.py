@@ -47,7 +47,7 @@ def draw_dtlz1_3(config, ax):
 	polygon = mpl_toolkits.mplot3d.art3d.Poly3DCollection([[
 		(0.5, 0, 0),
 		(0, 0.5, 0),
-		(0, 0, 0.5)]], facecolors = 'red', linewidth = 0, alpha = 0.2)
+		(0, 0, 0.5)]], facecolors = 'white')
 	ax.add_collection3d(polygon)
 
 def draw_dtlz2_3(config, ax, resolution = 10):

@@ -106,6 +106,11 @@ def epsilon(config, problem):
 		table = {
 			2:	0.0075,
 			3:	0.035,
+			4:	0.039,
+			5:	0.034,
+			6:	0.0273,
+			8:	0.0184,
+			10:	0.0153,
 		}
 		_epsilon = table[problem.GetNumberOfObjectives()]
 		epsilon = [_epsilon] * problem.GetNumberOfObjectives()
