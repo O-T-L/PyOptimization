@@ -325,49 +325,54 @@ def wfg4(ax, dimension, resolution = 400, alpha = 0.2):
 		draw = ax.plot_surface(x, y, z, alpha = alpha, color = 'red', linewidth = 0)
 		return lambda: draw.remove()
 
+def objective_space(properties):
+	if re.match('^ZDT[14]$|^UF[123]$', properties['problem']):
+		return lambda ax, dataDictList: zdt1(ax)
+	elif re.match('^ZDT[26]$|^UF[4]$', properties['problem']):
+		return lambda ax, dataDictList: zdt2(ax)
+	elif properties['problem'] == 'ZDT3':
+		return lambda ax, dataDictList: zdt3(ax)
+	elif properties['problem'] == 'ZDT5':
+		return lambda ax, dataDictList: zdt5(ax)
+	elif re.match('^UF[567]$|^CF1$', properties['problem']):
+		return lambda ax, dataDictList: uf5(ax)
+	elif properties['problem'] == 'DTLZ1':
+		return lambda ax, dataDictList: flat(ax, properties['objectives'], 0.5)
+	elif re.match('^(Negative)?DTLZ[2-4]$|^UF[89]$|^UF10$', properties['problem']):
+		return lambda ax, dataDictList: sphere(ax, properties['objectives'], 1)
+	elif re.match('^DTLZ[56]$', properties['problem']):
+		return lambda ax, dataDictList: circle(ax, properties['objectives'], 1)
+	elif properties['problem'] == 'DTLZ7':
+		return lambda ax, dataDictList: dtlz7(ax, properties['objectives'])
+	elif re.match('^ConvexDTLZ[2-4]$', properties['problem']):
+		return lambda ax, dataDictList: convex_dtlz2(ax, properties['objectives'], 1)
+	elif re.match('^ScaledDTLZ[2-4]$', properties['problem']):
+		return lambda ax, dataDictList: scaled_dtlz2(ax, properties['objectives'], 1)
+	elif properties['problem'] == 'WFG1':
+		return lambda ax, dataDictList: wfg1(ax, properties['objectives'])
+	elif properties['problem'] == 'WFG2':
+		return lambda ax, dataDictList: wfg2(ax, properties['objectives'])
+	elif properties['problem'] == 'WFG3':
+		return lambda ax, dataDictList: wfg3(ax, properties['objectives'])
+	elif re.match('^WFG[4-9]$', properties['problem']):
+		return lambda ax, dataDictList: wfg4(ax, properties['objectives'])
+
+def decision_space(properties):
+	if properties['problem'] == 'Rectangle':
+		return lambda ax, dataDictList: rectangle(ax, dataDictList[0], facecolor = 'grey', alpha = 0.1)
+	elif properties['problem'] == 'RotatedRectangle':
+		return lambda ax, dataDictList: rotated_rectangle(ax, dataDictList[0], facecolor = 'grey', alpha = 0.1)
+
+def sop(properties):
+	if properties['problem'] == 'XSinX':
+		return lambda ax, dataDictList: xsinx(ax)
+	elif properties['problem'] == 'Camel':
+		return lambda ax, dataDictList: camel(ax)
+
 def __init__(name, properties):
 	if name == 'Objective Space':
-		if re.match('^ZDT[14]$|^UF[123]$', properties['problem']):
-			return lambda ax, dataDictList: zdt1(ax)
-		elif re.match('^ZDT[26]$|^UF[4]$', properties['problem']):
-			return lambda ax, dataDictList: zdt2(ax)
-		elif properties['problem'] == 'ZDT3':
-			return lambda ax, dataDictList: zdt3(ax)
-		elif properties['problem'] == 'ZDT5':
-			return lambda ax, dataDictList: zdt5(ax)
-		elif re.match('^UF[567]$|^CF1$', properties['problem']):
-			return lambda ax, dataDictList: uf5(ax)
-		elif properties['problem'] == 'DTLZ1':
-			return lambda ax, dataDictList: flat(ax, dataDictList[0]['pf'].shape[1], 0.5)
-		elif re.match('^(Negative)?DTLZ[2-4]$|^UF[89]$|^UF10$', properties['problem']):
-			return lambda ax, dataDictList: sphere(ax, dataDictList[0]['pf'].shape[1], 1)
-		elif re.match('^DTLZ[56]$', properties['problem']):
-			return lambda ax, dataDictList: circle(ax, dataDictList[0]['pf'].shape[1], 1)
-		elif properties['problem'] == 'DTLZ7':
-			return lambda ax, dataDictList: dtlz7(ax, dataDictList[0]['pf'].shape[1])
-		elif re.match('^ConvexDTLZ[2-4]$', properties['problem']):
-			return lambda ax, dataDictList: convex_dtlz2(ax, dataDictList[0]['pf'].shape[1], 1)
-		elif re.match('^ScaledDTLZ[2-4]$', properties['problem']):
-			return lambda ax, dataDictList: scaled_dtlz2(ax, dataDictList[0]['pf'].shape[1], 1)
-		elif properties['problem'] == 'WFG1':
-			return lambda ax, dataDictList: wfg1(ax, dataDictList[0]['pf'].shape[1])
-		elif properties['problem'] == 'WFG2':
-			return lambda ax, dataDictList: wfg2(ax, dataDictList[0]['pf'].shape[1])
-		elif properties['problem'] == 'WFG3':
-			return lambda ax, dataDictList: wfg3(ax, dataDictList[0]['pf'].shape[1])
-		elif re.match('^WFG[4-9]$', properties['problem']):
-			return lambda ax, dataDictList: wfg4(ax, dataDictList[0]['pf'].shape[1])
-		else:
-			return None
+		return objective_space(properties)
 	elif name == 'Decision Space':
-		if properties['problem'] == 'Rectangle':
-			return lambda ax, dataDictList: rectangle(ax, dataDictList[0], facecolor = 'grey', alpha = 0.1)
-		elif properties['problem'] == 'RotatedRectangle':
-			return lambda ax, dataDictList: rotated_rectangle(ax, dataDictList[0], facecolor = 'grey', alpha = 0.1)
-		else:
-			return None
+		return decision_space(properties)
 	else:
-		if properties['problem'] == 'XSinX':
-			return lambda ax, dataDictList: xsinx(ax)
-		elif properties['problem'] == 'Camel':
-			return lambda ax, dataDictList: camel(ax)
+		return sop(properties)

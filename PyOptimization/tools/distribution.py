@@ -17,84 +17,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import platform
-import math
+import csv
+import importlib
 import numpy
 import fnmatch
 import matplotlib.pyplot
 import mpl_toolkits.mplot3d
 import configparser
 
-def dtlz7_shape(decision, distance):
-	return len(decision) + 1 - sum([(math.sin(3 * math.pi * x) + 1) * x / distance for x in decision])
-
-def draw_dtlz1_2(config, ax):
-	ax.plot([0.5, 0], [0, 0.5])
-
-def draw_dtlz2_2(config, ax, resolution = 100):
-	u = numpy.linspace(0, numpy.pi / 2, resolution)
-	x = numpy.cos(u)
-	y = numpy.sin(u)
-	ax.plot(x, y)
-
-def draw_dtlz7_2(config, ax, resolution = 100):
-	x = numpy.linspace(0, numpy.pi / 2, resolution)
-	y = numpy.zeros(x.shape)
-	distance = 2
-	y.flat = [distance * dtlz7_shape([_x], distance) for _x in x]
-	ax.plot(x, y)
-
-def draw_dtlz1_3(config, ax):
-	polygon = mpl_toolkits.mplot3d.art3d.Poly3DCollection([[
-		(0.5, 0, 0),
-		(0, 0.5, 0),
-		(0, 0, 0.5)]], facecolors = 'white')
-	ax.add_collection3d(polygon)
-
-def draw_dtlz2_3(config, ax, resolution = 10):
-	u, v = numpy.mgrid[0 : 1 : resolution * 1j, 0 : 1 : resolution * 1j] * numpy.pi / 2
-	x = numpy.cos(u) * numpy.cos(v)
-	y = numpy.sin(u) * numpy.cos(v)
-	z = numpy.sin(v)
-	ax.plot_surface(x, y, z, color = 'red', linewidth = 0, alpha = 0.2)
-
-def draw_dtlz5_3(config, ax, resolution = 20):
-	v = numpy.linspace(0, numpy.pi / 2, resolution)
-	z = numpy.cos(v)
-	r = numpy.sin(v)
-	alpha = math.pi / 4
-	x = r * math.cos(alpha)
-	y = r * math.sin(alpha)
-	ax.plot(x, y, z)
-
-def draw_dtlz7_3(config, ax, resolution = 20):
-	x, y = numpy.mgrid[0 : 1 : resolution * 1j, 0 : 1 : resolution * 1j]
-	z = numpy.zeros(x.shape)
-	distance = 2
-	z.flat = [distance * dtlz7_shape([_x, _y], distance) for _x, _y in zip(x.flat, y.flat)]
-	ax.plot_surface(x, y, z, cmap = matplotlib.cm.get_cmap('jet'), rstride = 1, cstride = 1, linewidth = 0, alpha = 0.2)
-
 def draw_distribution2(config, ax, population):
-	problem = config.get('pf', 'problem')
-	if problem == 'DTLZ1':
-		draw_dtlz1_2(config, ax)
-	elif problem == 'DTLZ2':
-		draw_dtlz2_2(config, ax)
-	elif problem == 'DTLZ7':
-		draw_dtlz7_2(config, ax)
 	ax.plot(population.T[0], population.T[1], 'o')
 	ax.set_xlabel(r"$f_{1}$")
 	ax.set_ylabel(r"$f_{2}$")
 
 def draw_distribution3(config, ax, population):
-	problem = config.get('pf', 'problem')
-	if problem == 'DTLZ1':
-		draw_dtlz1_3(config, ax)
-	elif problem == 'DTLZ2':
-		draw_dtlz2_3(config, ax)
-	elif problem == 'DTLZ5':
-		draw_dtlz5_3(config, ax)
-	elif problem == 'DTLZ7':
-		draw_dtlz7_3(config, ax)
 	ax.view_init(azim = config.getfloat('3d', 'azimuth'), elev = config.getfloat('3d', 'elevation'))
 	ax.plot(population.T[0], population.T[1], population.T[2], 'o')
 	ax.set_xlabel(r"$f_{1}$")
@@ -114,16 +50,19 @@ def draw_parallel_coordinates(config, ax, data):
 	ax.set_xticks(list(range(dimension)))
 	ax.set_xticklabels([r'$f_{%u}$' % axis for axis in range(1, dimension + 1)])
 
-def draw(config, population, title):
+def draw(config, initialer, population, title):
 	fig = matplotlib.pyplot.figure(title)
 	if len(population[0]) == 2:
 		ax = fig.gca()
+		initialer(ax)
 		draw_distribution2(config, ax, population)
 	elif len(population[0]) == 3:
 		ax = mpl_toolkits.mplot3d.Axes3D(fig)
+		initialer(ax)
 		draw_distribution3(config, ax, population)
 	else:
 		ax = fig.gca()
+		initialer(ax)
 		draw_parallel_coordinates(config, ax, population)
 	try:
 		lower, upper = map(int, config.get('limits', 'x').split())
@@ -142,6 +81,34 @@ def draw(config, population, title):
 		pass
 	return fig
 
+def get_properties_settings(path, delimiter = '\t'):
+	f = open(path, 'r')
+	reader = csv.reader(f, delimiter = delimiter)
+	propertiesSettings = []
+	for column, converter in reader:
+		converter = eval(converter)
+		propertiesSettings.append((column, converter))
+	return propertiesSettings
+
+def full_split_path(path):
+	components = []
+	while True:
+		path, folder = os.path.split(path)
+		if folder:
+			components.append(folder)
+		else:
+			if path:
+				components.append(path)
+			break
+	components.reverse()
+	return components
+
+def get_properties(components, propertiesSettings):
+	properties = []
+	for column, converter in propertiesSettings:
+		properties.append((column, converter(components)))
+	return properties
+
 def main():
 	config = configparser.ConfigParser()
 	config.read(os.path.splitext(__file__)[0] + '.ini')
@@ -151,12 +118,22 @@ def main():
 	figureFolder = os.path.expandvars(config.get('config', 'figure_folder.' + platform.system()))
 	pattern = config.get('config', 'data_pattern')
 	figureExt = config.get('config', 'figure_ext')
+	propertiesSettings = get_properties_settings(os.path.expandvars(config.get('config', 'properties_settings')))
+	module, function = config.get('visualizer', 'initialer').rsplit('.', 1)
+	module = importlib.import_module(module)
+	function = getattr(module, function)
+	getInitialer = lambda properties: function(properties)
 	for parent, _, filenames in os.walk(dataFolder, followlinks = True):
 		for filename in filenames:
 			if fnmatch.fnmatch(filename, pattern):
 				path = os.path.join(parent, filename)
+				pathRelative = os.path.relpath(path, dataFolder)
+				components = full_split_path(pathRelative)
+				properties = get_properties(components, propertiesSettings)
+				properties = dict(properties)
+				initialer = lambda ax: getInitialer(properties)(ax, [properties])
 				population = numpy.loadtxt(path, ndmin = 2)
-				fig = draw(config, population, path)
+				fig = draw(config, initialer, population, path)
 				if config.getboolean('switch', 'save'):
 					pathFigure = os.path.join(figureFolder, os.path.splitext(os.path.relpath(path, dataFolder))[0]) + figureExt
 					print(path + ' -> ' + pathFigure)
