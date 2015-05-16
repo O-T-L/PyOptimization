@@ -114,10 +114,6 @@ def main():
 	config.read(os.path.splitext(__file__)[0] + '.ini')
 	
 	matplotlib.rcParams['font.size'] *= config.getfloat('scale', 'fontsize')
-	matplotlib.rcParams['xtick.major.pad'] *= config.getfloat('scale', 'tickmajorpad')
-	matplotlib.rcParams['ytick.major.pad'] *= config.getfloat('scale', 'tickmajorpad')
-	matplotlib.rcParams['xtick.minor.pad'] *= config.getfloat('scale', 'tickminorpad')
-	matplotlib.rcParams['ytick.minor.pad'] *= config.getfloat('scale', 'tickminorpad')
 	dataFolder = os.path.expandvars(config.get('config', 'data_folder.' + platform.system()))
 	figureFolder = os.path.expandvars(config.get('config', 'figure_folder.' + platform.system()))
 	pattern = config.get('config', 'data_pattern')
@@ -131,6 +127,8 @@ def main():
 		for filename in filenames:
 			if fnmatch.fnmatch(filename, pattern):
 				path = os.path.join(parent, filename)
+				pathFigure = os.path.join(figureFolder, os.path.splitext(os.path.relpath(path, dataFolder))[0]) + figureExt
+				print(path + ' -> ' + pathFigure)
 				pathRelative = os.path.relpath(path, dataFolder)
 				components = full_split_path(pathRelative)
 				properties = get_properties(components, propertiesSettings)
@@ -138,8 +136,6 @@ def main():
 				initialer = lambda ax: getInitialer(properties)(ax, [properties])
 				population = numpy.loadtxt(path, ndmin = 2)
 				fig = draw(config, initialer, population, path)
-				pathFigure = os.path.join(figureFolder, os.path.splitext(os.path.relpath(path, dataFolder))[0]) + figureExt
-				print(path + ' -> ' + pathFigure)
 				try:
 					os.makedirs(os.path.dirname(pathFigure))
 				except OSError:
