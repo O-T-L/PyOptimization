@@ -363,7 +363,6 @@ def decision_space(properties):
 		return lambda ax, dataDictList: rectangle(ax, dataDictList[0], facecolor = 'grey', alpha = 0.1)
 	elif properties['problem'] == 'RotatedRectangle':
 		return lambda ax, dataDictList: rotated_rectangle(ax, dataDictList[0], facecolor = 'grey', alpha = 0.1)
-	raise Exception(properties)
 
 def sop(properties):
 	if properties['problem'] == 'XSinX':
