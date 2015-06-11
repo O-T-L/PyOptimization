@@ -234,13 +234,13 @@ def optimize_dtlz(config, executer, optimize):
 				lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 			)
 		if config.getboolean('problem_switch', 'dtlz5i'):
-			for nManifold in range(2, nObjectives - 1):
+			for nManifold in eval(config.get('dtlz_i', 'manifold'))(nObjectives):
 				optimize(config, executer,
 					lambda **kwargs: pyotl.problem.real.DTLZ5I(nObjectives, nManifold, distDecisions) if distDecisions >= 0 else pyotl.problem.real.DTLZ5I(nObjectives, nManifold),
 					lambda optimizer: pyoptimization.problem.fetcher.dtlz_i(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 				)
 		if config.getboolean('problem_switch', 'dtlz6i'):
-			for nManifold in range(2, nObjectives - 1):
+			for nManifold in eval(config.get('dtlz_i', 'manifold'))(nObjectives):
 				optimize(config, executer,
 					lambda **kwargs: pyotl.problem.real.DTLZ6I(nObjectives, nManifold, distDecisions) if distDecisions >= 0 else pyotl.problem.real.DTLZ6I(nObjectives, nManifold),
 					lambda optimizer: pyoptimization.problem.fetcher.dtlz_i(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
