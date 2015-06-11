@@ -356,7 +356,6 @@ def objective_space(properties):
 		return lambda ax, dataDictList: wfg3(ax, properties['objectives'])
 	elif re.match('^WFG[4-9]$', properties['problem']):
 		return lambda ax, dataDictList: wfg4(ax, properties['objectives'])
-	raise Exception(properties)
 
 def decision_space(properties):
 	if properties['problem'] == 'Rectangle':
@@ -369,7 +368,6 @@ def sop(properties):
 		return lambda ax, dataDictList: xsinx(ax)
 	elif properties['problem'] == 'Camel':
 		return lambda ax, dataDictList: camel(ax)
-	raise Exception(properties)
 
 def __init__(name, properties):
 	if name == 'Objective Space':
