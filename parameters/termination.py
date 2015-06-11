@@ -39,6 +39,12 @@ def iteration(config, optimizer):
 		return 300
 	elif re.match('^(Rotated)?Rectangle$', type(optimizer.GetProblem()).__name__):
 		return 300
+	elif type(optimizer.GetProblem()).__name__ == 'Kursawe':
+		return 250
+	elif re.match('^SCH\d$', type(optimizer.GetProblem()).__name__):
+		return 250
+	elif re.match('^Viennet\d$', type(optimizer.GetProblem()).__name__):
+		return 300
 	elif re.match('^ZDT[12356]$', type(optimizer.GetProblem()).__name__):
 		return 300
 	elif re.match('^ZDT[4]$', type(optimizer.GetProblem()).__name__):
@@ -65,6 +71,7 @@ def iteration(config, optimizer):
 		return 1000
 	elif type(optimizer.GetProblem()).__name__ == 'ONL':
 		return 300
+	raise Exception(type(optimizer.GetProblem()).__name__, optimizer.GetProblem().GetNumberOfObjectives())
 
 def evaluation(config, optimizer):
 	return iteration(config, optimizer) * 100

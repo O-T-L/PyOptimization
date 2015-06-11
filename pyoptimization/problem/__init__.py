@@ -99,6 +99,47 @@ def optimize_rotated_rectangle(config, executer, optimize):
 			lambda optimizer: pyoptimization.problem.fetcher.rotated_rectangle(optimizer.GetProblem(), direction) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 		)
 
+def optimize_kursawe(config, executer, optimize):
+	decisions = config.getint('kursawe', 'decisions')
+	optimize(config, executer,
+		lambda **kwargs: pyotl.problem.real.Kursawe(decisions) if decisions > 1 else pyotl.problem.real.Kursawe(),
+		lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+	)
+
+def optimize_sch(config, executer, optimize):
+	if config.getboolean('problem_switch', 'sch1'):
+		optimize(config, executer,
+			lambda **kwargs: pyotl.problem.real.SCH1(),
+			lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+		)
+	if config.getboolean('problem_switch', 'sch2'):
+		optimize(config, executer,
+			lambda **kwargs: pyotl.problem.real.SCH2(),
+			lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+		)
+
+def optimize_viennet(config, executer, optimize):
+	if config.getboolean('problem_switch', 'viennet1'):
+		optimize(config, executer,
+			lambda **kwargs: pyotl.problem.real.Viennet1(),
+			lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+		)
+	if config.getboolean('problem_switch', 'viennet2'):
+		optimize(config, executer,
+			lambda **kwargs: pyotl.problem.real.Viennet2(),
+			lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+		)
+	if config.getboolean('problem_switch', 'viennet3'):
+		optimize(config, executer,
+			lambda **kwargs: pyotl.problem.real.Viennet3(),
+			lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+		)
+	if config.getboolean('problem_switch', 'viennet4'):
+		optimize(config, executer,
+			lambda **kwargs: pyotl.problem.real.Viennet4(),
+			lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+		)
+
 def optimize_zdt_real(config, executer, optimize):
 	distDecisions = config.getint('zdt', 'dist_decisions')
 	if config.getboolean('problem_switch', 'zdt1'):
@@ -387,6 +428,12 @@ def optimize_real(config, executer, optimize):
 		optimize_rectangle(config, executer, optimize)
 	if config.getboolean('problem_switch', 'rotated_rectangle'):
 		optimize_rotated_rectangle(config, executer, optimize)
+	if config.getboolean('problem_switch', 'kursawe'):
+		optimize_kursawe(config, executer, optimize)
+	if config.getboolean('problem_switch', 'sch'):
+		optimize_sch(config, executer, optimize)
+	if config.getboolean('problem_switch', 'viennet'):
+		optimize_viennet(config, executer, optimize)
 	if config.getboolean('problem_switch', 'zdt'):
 		optimize_zdt_real(config, executer, optimize)
 	if config.getboolean('problem_switch', 'uf'):
