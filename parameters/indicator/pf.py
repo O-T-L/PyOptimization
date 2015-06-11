@@ -43,6 +43,8 @@ def pf(config, properties, folder = 'PF'):
 		return get_pf(os.path.join(path, 'ZDT3.csv'))
 	elif re.match('^ZDT5$', properties['problem']):
 		return get_pf(os.path.join(path, 'ZDT5.csv'))
+	elif re.match('^UF(\d|10)$', properties['problem']):
+		return get_pf(os.path.join(path, properties['problem'] + '.csv'))
 	elif properties['problem'] == 'DTLZ1':
 		return get_pf(os.path.join(path, 'DTLZ1', str(properties['objectives']) + '.csv'))
 	elif re.match('^DTLZ[234]$', properties['problem']):
@@ -65,5 +67,10 @@ def pf(config, properties, folder = 'PF'):
 		return get_pf(os.path.join(path, properties['problem'], str(properties['objectives']) + '.csv'))
 	elif re.match('^WFG[4-9]$', properties['problem']):
 		return get_pf(os.path.join(path, 'WFG4', str(properties['objectives']) + '.csv'))
-	print(properties)
-	raise Exception(properties, folder)
+	try:
+		return get_pf(os.path.join(path, properties['problem'] + '.csv'))
+	except:
+		try:
+			return get_pf(os.path.join(path, properties['problem'], str(properties['objectives']) + '.csv'))
+		except:
+			raise Exception(properties, folder)
