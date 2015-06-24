@@ -44,12 +44,6 @@ def optimize_camel(config, executer, optimize):
 		lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 	)
 
-def optimize_shaffer_f6(config, executer, optimize):
-	optimize(config, executer,
-		lambda **kwargs: pyotl.problem.real.ShafferF6(),
-		lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
-	)
-
 def optimize_shubert(config, executer, optimize):
 	optimize(config, executer,
 		lambda **kwargs: pyotl.problem.real.Shubert(),
@@ -106,15 +100,20 @@ def optimize_kursawe(config, executer, optimize):
 		lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 	)
 
-def optimize_sch(config, executer, optimize):
-	if config.getboolean('problem_switch', 'sch1'):
+def optimize_schaffer(config, executer, optimize):
+	if config.getboolean('problem_switch', 'schaffer1'):
 		optimize(config, executer,
-			lambda **kwargs: pyotl.problem.real.SCH1(),
+			lambda **kwargs: pyotl.problem.real.Schaffer1(),
 			lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 		)
-	if config.getboolean('problem_switch', 'sch2'):
+	if config.getboolean('problem_switch', 'schaffer2'):
 		optimize(config, executer,
-			lambda **kwargs: pyotl.problem.real.SCH2(),
+			lambda **kwargs: pyotl.problem.real.Schaffer2(),
+			lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
+		)
+	if config.getboolean('problem_switch', 'schaffer6'):
+		optimize(config, executer,
+			lambda **kwargs: pyotl.problem.real.Schaffer6(),
 			lambda optimizer: pyoptimization.problem.fetcher.std(optimizer.GetProblem()) + pyoptimization.problem.fetcher.result.std(config, optimizer),
 		)
 
@@ -414,8 +413,6 @@ def optimize_real(config, executer, optimize):
 		optimize_xsinx(config, executer, optimize)
 	if config.getboolean('problem_switch', 'camel'):
 		optimize_camel(config, executer, optimize)
-	if config.getboolean('problem_switch', 'shaffer_f6'):
-		optimize_shaffer_f6(config, executer, optimize)
 	if config.getboolean('problem_switch', 'shubert'):
 		optimize_shubert(config, executer, optimize)
 	if config.getboolean('problem_switch', 'binh'):
@@ -430,8 +427,8 @@ def optimize_real(config, executer, optimize):
 		optimize_rotated_rectangle(config, executer, optimize)
 	if config.getboolean('problem_switch', 'kursawe'):
 		optimize_kursawe(config, executer, optimize)
-	if config.getboolean('problem_switch', 'sch'):
-		optimize_sch(config, executer, optimize)
+	if config.getboolean('problem_switch', 'schaffer'):
+		optimize_schaffer(config, executer, optimize)
 	if config.getboolean('problem_switch', 'viennet'):
 		optimize_viennet(config, executer, optimize)
 	if config.getboolean('problem_switch', 'zdt'):
