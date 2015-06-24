@@ -41,7 +41,7 @@ def iteration(config, optimizer):
 		return 300
 	elif type(optimizer.GetProblem()).__name__ == 'Kursawe':
 		return 250
-	elif re.match('^SCH\d$', type(optimizer.GetProblem()).__name__):
+	elif re.match('^Schaffer\d$', type(optimizer.GetProblem()).__name__):
 		return 250
 	elif re.match('^Viennet\d$', type(optimizer.GetProblem()).__name__):
 		return 300
