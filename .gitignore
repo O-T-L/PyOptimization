@@ -2,5 +2,5 @@
 __pycache__
 .project
 .pydevproject
-.settings
-.idea
+.settings/
+.idea/

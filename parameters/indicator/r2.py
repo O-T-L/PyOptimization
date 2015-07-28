@@ -17,16 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+
 def reference_point(config, properties):
-	if re.match('^ZDT\d$', properties['problem']):
-		return [2, 2]
-	elif properties['problem'] == 'DTLZ1':
-		return [1] * properties['objectives']
-	elif re.match('^DTLZ[23456]I?$', properties['problem']):
-		return [2] * properties['objectives']
-	elif properties['problem'] == 'DTLZ7':
-		return {
-			3:	[1, 1, 6]
-		}[properties['objectives']]
-	elif re.match('^WFG\d$', properties['problem']):
-		return list(range(3, (properties['objectives'] + 1) * 2, 2))
+    if re.match('^ZDT\d$', properties['problem']):
+        return [2, 2]
+    elif properties['problem'] == 'DTLZ1':
+        return [1] * properties['objectives']
+    elif re.match('^DTLZ[23456]I?$', properties['problem']):
+        return [2] * properties['objectives']
+    elif properties['problem'] == 'DTLZ7':
+        return {
+            3: [1, 1, 6]
+        }[properties['objectives']]
+    elif re.match('^WFG\d$', properties['problem']):
+        return list(range(3, (properties['objectives'] + 1) * 2, 2))

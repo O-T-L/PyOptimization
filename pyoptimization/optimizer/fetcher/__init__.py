@@ -20,134 +20,152 @@ import math
 import numpy
 import pyotl.utility
 
+
 def basic(optimizer):
-	return [('optimizer', type(optimizer).__name__)]
+    return [('optimizer', type(optimizer).__name__)]
+
 
 def nsga_ii(optimizer):
-	crowdingDistance = list(map(lambda solution: solution.crowdingDistance_, optimizer.GetSolutionSet()))
-	f = io.BytesIO()
-	numpy.savetxt(f, crowdingDistance)
-	crowdingDistance = f.getvalue()
-	return basic(optimizer) + [
-		('crowdingDistance', crowdingDistance),
-	]
+    crowdingDistance = list(map(lambda solution: solution.crowdingDistance_, optimizer.GetSolutionSet()))
+    f = io.BytesIO()
+    numpy.savetxt(f, crowdingDistance)
+    crowdingDistance = f.getvalue()
+    return basic(optimizer) + [
+        ('crowdingDistance', crowdingDistance),
+    ]
+
 
 def spea2(optimizer):
-	fitness = list(map(lambda solution: solution.fitness_, optimizer.GetSolutionSet()))
-	f = io.BytesIO()
-	numpy.savetxt(f, fitness)
-	fitness = f.getvalue()
-	return basic(optimizer) + [
-		('fitness', fitness),
-	]
+    fitness = list(map(lambda solution: solution.fitness_, optimizer.GetSolutionSet()))
+    f = io.BytesIO()
+    numpy.savetxt(f, fitness)
+    fitness = f.getvalue()
+    return basic(optimizer) + [
+        ('fitness', fitness),
+    ]
+
 
 def moea_d(optimizer):
-	return basic(optimizer) + [
-		('weightVectors', len(optimizer.GetWeightVectors())),
-		('moea_d_neighbors', len(optimizer.GetNeighbors()[0])),
-	]
+    return basic(optimizer) + [
+        ('weightVectors', len(optimizer.GetWeightVectors())),
+        ('moea_d_neighbors', len(optimizer.GetNeighbors()[0])),
+    ]
+
 
 def moea_d_pbi(optimizer):
-	return moea_d(optimizer) + [
-		('pbi_penalty', optimizer.GetPenalty()),
-	]
+    return moea_d(optimizer) + [
+        ('pbi_penalty', optimizer.GetPenalty()),
+    ]
+
 
 def ibea(optimizer):
-	fitness = list(map(lambda solution: solution.fitness_, optimizer.GetSolutionSet()))
-	f = io.BytesIO()
-	numpy.savetxt(f, fitness)
-	fitness = f.getvalue()
-	return basic(optimizer) + [
-		('fitness', fitness),
-	]
+    fitness = list(map(lambda solution: solution.fitness_, optimizer.GetSolutionSet()))
+    f = io.BytesIO()
+    numpy.savetxt(f, fitness)
+    fitness = f.getvalue()
+    return basic(optimizer) + [
+        ('fitness', fitness),
+    ]
+
 
 def monte_carlo_hype(optimizer):
-	return basic(optimizer) + [
-		('sample', optimizer.GetSampleSize()),
-	]
+    return basic(optimizer) + [
+        ('sample', optimizer.GetSampleSize()),
+    ]
+
 
 def monte_carlo_sms_emoa(optimizer):
-	return basic(optimizer) + [
-		('sample', optimizer.GetSampleSize()),
-	]
+    return basic(optimizer) + [
+        ('sample', optimizer.GetSampleSize()),
+    ]
+
 
 def ar(optimizer):
-	fitness = list(map(lambda solution: solution.averageRank_, optimizer.GetSolutionSet()))
-	f = io.BytesIO()
-	numpy.savetxt(f, fitness)
-	fitness = f.getvalue()
-	return basic(optimizer) + [
-		('fitness', fitness),
-	]
+    fitness = list(map(lambda solution: solution.averageRank_, optimizer.GetSolutionSet()))
+    f = io.BytesIO()
+    numpy.savetxt(f, fitness)
+    fitness = f.getvalue()
+    return basic(optimizer) + [
+        ('fitness', fitness),
+    ]
+
 
 def epsilon_moea(optimizer):
-	epsilon = optimizer.GetEpsilon()
-	if len(numpy.unique(epsilon)) == 1:
-		epsilon = str(epsilon[0])
-	else:
-		epsilon = ' '.join(map(str, epsilon))
-	return basic(optimizer) + [
-		('epsilon', epsilon),
-	]
+    epsilon = optimizer.GetEpsilon()
+    if len(numpy.unique(epsilon)) == 1:
+        epsilon = str(epsilon[0])
+    else:
+        epsilon = ' '.join(map(str, epsilon))
+    return basic(optimizer) + [
+        ('epsilon', epsilon),
+    ]
+
 
 def tdea(optimizer):
-	return basic(optimizer) + [
-		('territory', optimizer.GetTerritorySize()),
-	]
+    return basic(optimizer) + [
+        ('territory', optimizer.GetTerritorySize()),
+    ]
+
 
 def isnps(optimizer):
-	fitness = list(map(lambda solution: solution.convergence_, optimizer.GetSolutionSet()))
-	f = io.BytesIO()
-	numpy.savetxt(f, fitness)
-	fitness = f.getvalue()
-	return basic(optimizer) + [
-		('fitness', fitness),
-		('degree', optimizer.GetAngle1() * 180 / math.pi),
-		('rounds', optimizer.GetRounds()),
-	]
+    fitness = list(map(lambda solution: solution.convergence_, optimizer.GetSolutionSet()))
+    f = io.BytesIO()
+    numpy.savetxt(f, fitness)
+    fitness = f.getvalue()
+    return basic(optimizer) + [
+        ('fitness', fitness),
+        ('degree', optimizer.GetAngle1() * 180 / math.pi),
+        ('rounds', optimizer.GetRounds()),
+    ]
+
 
 def nsga_iii(optimizer):
-	fitness = list(map(lambda solution: solution.minDistance_, optimizer.GetSolutionSet()))
-	f = io.BytesIO()
-	numpy.savetxt(f, fitness)
-	fitness = f.getvalue()
-	return basic(optimizer) + [
-		('fitness', fitness),
-		('epsilon', optimizer.GetEpsilon()),
-	]
+    fitness = list(map(lambda solution: solution.minDistance_, optimizer.GetSolutionSet()))
+    f = io.BytesIO()
+    numpy.savetxt(f, fitness)
+    fitness = f.getvalue()
+    return basic(optimizer) + [
+        ('fitness', fitness),
+        ('epsilon', optimizer.GetEpsilon()),
+    ]
+
 
 def msops(optimizer):
-	return basic(optimizer) + [
-		('weightVectors', len(optimizer.GetTargets())),
-	]
+    return basic(optimizer) + [
+        ('weightVectors', len(optimizer.GetTargets())),
+    ]
+
 
 def grea(optimizer):
-	division = optimizer.GetDivision()
-	if len(numpy.unique(division)) == 1:
-		division = str(division[0])
-	else:
-		division = ' '.join(map(str, division))
-	return basic(optimizer) + [
-		('division', division),
-	]
+    division = optimizer.GetDivision()
+    if len(numpy.unique(division)) == 1:
+        division = str(division[0])
+    else:
+        division = ' '.join(map(str, division))
+    return basic(optimizer) + [
+        ('division', division),
+    ]
+
 
 def cdas(optimizer):
-	angle = optimizer.GetAngle()
-	if len(numpy.unique(angle)) == 1:
-		degree = str(angle[0] * 180 / math.pi)
-	else:
-		degree = ' '.join(map(lambda _angle: str(_angle * 180 / math.pi), angle))
-	return nsga_ii(optimizer) + [
-		('degreeVector', degree),
-	]
+    angle = optimizer.GetAngle()
+    if len(numpy.unique(angle)) == 1:
+        degree = str(angle[0] * 180 / math.pi)
+    else:
+        degree = ' '.join(map(lambda _angle: str(_angle * 180 / math.pi), angle))
+    return nsga_ii(optimizer) + [
+        ('degreeVector', degree),
+    ]
+
 
 def g_nsga_ii(optimizer):
-	return nsga_ii(optimizer) + [
-		('referencePoint', ' '.join(map(str, optimizer.GetReferencePoint()))),
-	]
+    return nsga_ii(optimizer) + [
+        ('referencePoint', ' '.join(map(str, optimizer.GetReferencePoint()))),
+    ]
+
 
 def r_nsga_ii(optimizer):
-	return nsga_ii(optimizer) + [
-		('referencePoint', ' '.join(map(str, optimizer.GetReferencePoint()))),
-		('R-NSGA-II Threshold', optimizer.GetThreshold()),
-	]
+    return nsga_ii(optimizer) + [
+        ('referencePoint', ' '.join(map(str, optimizer.GetReferencePoint()))),
+        ('R-NSGA-II Threshold', optimizer.GetThreshold()),
+    ]

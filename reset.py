@@ -22,44 +22,48 @@ import sqlite3
 import configparser
 import pyoptimization.utility
 
-def get_settings(path, delimiter = '\t'):
-	f = open(path, 'r')
-	reader = csv.reader(f, delimiter = delimiter)
-	settingsList = []
-	for row in reader:
-		assert(2 <= len(row) <= 3)
-		if len(row) == 2:
-			settingsList.append(row + [''])
-		elif len(row) == 3:
-			if bool(row[-1]):
-				settingsList.append(row[:2] + ['NOT NULL'])
-			else:
-				settingsList.append(row[:2] + [''])
-		assert(len(settingsList[-1]) == 3)
-	return settingsList
+
+def get_settings(path, delimiter='\t'):
+    f = open(path, 'r')
+    reader = csv.reader(f, delimiter=delimiter)
+    settingsList = []
+    for row in reader:
+        assert (2 <= len(row) <= 3)
+        if len(row) == 2:
+            settingsList.append(row + [''])
+        elif len(row) == 3:
+            if bool(row[-1]):
+                settingsList.append(row[:2] + ['NOT NULL'])
+            else:
+                settingsList.append(row[:2] + [''])
+        assert (len(settingsList[-1]) == 3)
+    return settingsList
+
 
 def main():
-	config = configparser.ConfigParser()
-	pyoptimization.utility.read_config(config, __file__)
-	pathSettingsCSV = os.path.expandvars(config.get('reset', 'settings'))
-	settingsList = get_settings(pathSettingsCSV)
-	# Database
-	path = os.path.expandvars(config.get('database', 'file.' + platform.system()))
-	print(path)
-	if config.getboolean('reset', 'remove'):
-		try:
-			os.remove(path)
-		except:
-			pass
-	os.makedirs(os.path.dirname(path), exist_ok = True)
-	conn = sqlite3.connect(path)
-	table = config.get('database', 'table')
-	cursor = conn.cursor()
-	cursor.execute('DROP TABLE IF EXISTS %s' % table)
-	
-	sql = 'CREATE TABLE %s (%s)' % (table, ','.join(['"%s" %s %s' % (column, dataType, notNull) for column, dataType, notNull in settingsList]))
-	cursor.execute(sql)
-	conn.commit()
+    config = configparser.ConfigParser()
+    pyoptimization.utility.read_config(config, __file__)
+    pathSettingsCSV = os.path.expandvars(config.get('reset', 'settings'))
+    settingsList = get_settings(pathSettingsCSV)
+    # Database
+    path = os.path.expandvars(config.get('database', 'file.' + platform.system()))
+    print(path)
+    if config.getboolean('reset', 'remove'):
+        try:
+            os.remove(path)
+        except:
+            pass
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    conn = sqlite3.connect(path)
+    table = config.get('database', 'table')
+    cursor = conn.cursor()
+    cursor.execute('DROP TABLE IF EXISTS %s' % table)
+
+    sql = 'CREATE TABLE %s (%s)' % (
+    table, ','.join(['"%s" %s %s' % (column, dataType, notNull) for column, dataType, notNull in settingsList]))
+    cursor.execute(sql)
+    conn.commit()
+
 
 if __name__ == '__main__':
-	main()
+    main()

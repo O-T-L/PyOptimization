@@ -20,59 +20,66 @@ import functools
 import multiprocessing
 from . import producer_consumer
 
+
 class ProcessPool:
-	def __init__(self, capacity, onError):
-		if capacity is None or capacity <= 0:
-			capacity = multiprocessing.cpu_count()
-		self.__producer_consumer = producer_consumer.ProducerConsumer(capacity)
-		self.__pool = multiprocessing.Pool(capacity)
-		self.__onError = onError
-		self.__capacity = capacity
-	
-	def __call__(self, fn, *args, **kwargs):
-		self.__producer_consumer.producer()
-		self.__pool.apply_async(fn, args, kwargs, self.__done, self.__error)
-	
-	def capacity(self):
-		return self.__capacity
-	
-	def join(self):
-		self.__pool.close()
-		self.__pool.join()
-	
-	def __done(self, result):
-		self.__producer_consumer.consumer()
-	
-	def __error(self, exception):
-		self.__onError(exception)
-		self.__producer_consumer.consumer()
+    def __init__(self, capacity, onError):
+        if capacity is None or capacity <= 0:
+            capacity = multiprocessing.cpu_count()
+        self.__producer_consumer = producer_consumer.ProducerConsumer(capacity)
+        self.__pool = multiprocessing.Pool(capacity)
+        self.__onError = onError
+        self.__capacity = capacity
+
+    def __call__(self, fn, *args, **kwargs):
+        self.__producer_consumer.producer()
+        self.__pool.apply_async(fn, args, kwargs, self.__done, self.__error)
+
+    def capacity(self):
+        return self.__capacity
+
+    def join(self):
+        self.__pool.close()
+        self.__pool.join()
+
+    def __done(self, result):
+        self.__producer_consumer.consumer()
+
+    def __error(self, exception):
+        self.__onError(exception)
+        self.__producer_consumer.consumer()
+
 
 def executer(fn, *args, **kwargs):
-	return fn(*args, **kwargs)
+    return fn(*args, **kwargs)
+
 
 def make_serial_executer():
-	return executer
+    return executer
+
 
 def error_logger(exception):
-	sys.stderr.write('%s\n' % str(exception))
+    sys.stderr.write('%s\n' % str(exception))
 
-def make_parallel_executer(parallel, onError = error_logger):
-	return ProcessPool(parallel, onError)
+
+def make_parallel_executer(parallel, onError=error_logger):
+    return ProcessPool(parallel, onError)
+
 
 def make_mpi_executer():
-	import pyoptimization.mpi
-	caller = pyoptimization.mpi.MPICaller()
-	executer = lambda fn, *args, **kwargs: caller(functools.partial(fn, *args, **kwargs))
-	return executer, caller
+    import pyoptimization.mpi
+    caller = pyoptimization.mpi.MPICaller()
+    executer = lambda fn, *args, **kwargs: caller(functools.partial(fn, *args, **kwargs))
+    return executer, caller
+
 
 def make_executer(config):
-	if config.get('common', 'executer') == 'mpi':
-		executer, caller = make_mpi_executer()
-		print('MPI process %u of %u' %(caller.rank + 1, caller.size))
-	elif config.get('common', 'executer') == 'parallel':
-		parallel = config.getint('parallel', 'parallel')
-		executer = make_parallel_executer(parallel)
-		print('%u parallel' % executer.capacity())
-	else:
-		executer = make_serial_executer()
-	return executer
+    if config.get('common', 'executer') == 'mpi':
+        executer, caller = make_mpi_executer()
+        print('MPI process %u of %u' % (caller.rank + 1, caller.size))
+    elif config.get('common', 'executer') == 'parallel':
+        parallel = config.getint('parallel', 'parallel')
+        executer = make_parallel_executer(parallel)
+        print('%u parallel' % executer.capacity())
+    else:
+        executer = make_serial_executer()
+    return executer

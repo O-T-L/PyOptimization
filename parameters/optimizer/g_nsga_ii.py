@@ -17,12 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+
 def reference_point(config, problem):
-	if re.match('^DTLZ[23456]I?$', type(problem).__name__):
-		return [[0.6] * problem.GetNumberOfObjectives()]
-	elif re.match('^WFG\d$', type(problem).__name__):
-		return [[0.6] * problem.GetNumberOfObjectives()]
-	elif re.match('^UF[1-7]$', type(problem).__name__):
-		return [[0.6] * problem.GetNumberOfObjectives()]
-	elif re.match('^UF[89]$|^UF10$', type(problem).__name__):
-		return [[1] * problem.GetNumberOfObjectives()]
+    if re.match('^DTLZ[23456]I?$', type(problem).__name__):
+        return [[0.6] * problem.GetNumberOfObjectives()]
+    elif re.match('^WFG\d$', type(problem).__name__):
+        return [[0.6] * problem.GetNumberOfObjectives()]
+    elif re.match('^UF[1-7]$', type(problem).__name__):
+        return [[0.6] * problem.GetNumberOfObjectives()]
+    elif re.match('^UF[89]$|^UF10$', type(problem).__name__):
+        return [[1] * problem.GetNumberOfObjectives()]

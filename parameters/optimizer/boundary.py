@@ -17,9 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ..indicator import boundary
 
+
 def objective(config, problem):
-	properties = {
-		'problem': type(problem).__name__,
-		'objectives': problem.GetNumberOfObjectives(),
-	}
-	return boundary.objective(config, properties)
+    properties = {
+        'problem': type(problem).__name__,
+        'objectives': problem.GetNumberOfObjectives(),
+    }
+    return boundary.objective(config, properties)

@@ -19,42 +19,45 @@ import io
 import copy
 import numpy
 
+
 def basic(config, optimizer):
-	if config.getboolean('output', 'feasible'):
-		solutionSet = list(filter(lambda solution: solution(), optimizer.GetSolutionSet()))
-	else:
-		solutionSet = optimizer.GetSolutionSet()
-	items = [('outputs', len(solutionSet))]
-	if config.getboolean('output', 'pf'):
-		pf = list(map(lambda solution: copy.copy(solution.objective_), solutionSet))
-		problem = optimizer.GetProblem()
-		for objective in pf:
-			problem.Fix(objective)
-		f = io.BytesIO()
-		numpy.savetxt(f, pf, delimiter = '\t')
-		items.append(('pf', f.getvalue()))
-	if config.getboolean('output', 'inequality'):
-		inequality = list(map(lambda solution: solution.inequality_, solutionSet))
-		f = io.BytesIO()
-		numpy.savetxt(f, inequality, delimiter = '\t')
-		items.append(('inequality', f.getvalue()))
-	if config.getboolean('output', 'equality'):
-		equality = list(map(lambda solution: solution.equality_, solutionSet))
-		f = io.BytesIO()
-		numpy.savetxt(f, equality, delimiter = '\t')
-		items.append(('equality', f.getvalue()))
-	return items
+    if config.getboolean('output', 'feasible'):
+        solutionSet = list(filter(lambda solution: solution(), optimizer.GetSolutionSet()))
+    else:
+        solutionSet = optimizer.GetSolutionSet()
+    items = [('outputs', len(solutionSet))]
+    if config.getboolean('output', 'pf'):
+        pf = list(map(lambda solution: copy.copy(solution.objective_), solutionSet))
+        problem = optimizer.GetProblem()
+        for objective in pf:
+            problem.Fix(objective)
+        f = io.BytesIO()
+        numpy.savetxt(f, pf, delimiter='\t')
+        items.append(('pf', f.getvalue()))
+    if config.getboolean('output', 'inequality'):
+        inequality = list(map(lambda solution: solution.inequality_, solutionSet))
+        f = io.BytesIO()
+        numpy.savetxt(f, inequality, delimiter='\t')
+        items.append(('inequality', f.getvalue()))
+    if config.getboolean('output', 'equality'):
+        equality = list(map(lambda solution: solution.equality_, solutionSet))
+        f = io.BytesIO()
+        numpy.savetxt(f, equality, delimiter='\t')
+        items.append(('equality', f.getvalue()))
+    return items
+
 
 def std(config, optimizer):
-	items = basic(config, optimizer)
-	if config.getboolean('output', 'ps'):
-		solutionSet = optimizer.GetSolutionSet()
-		ps = list(map(lambda solution: solution.decision_, solutionSet))
-		f = io.BytesIO()
-		numpy.savetxt(f, ps, delimiter = '\t')
-		items.append(('ps', f.getvalue()))
-	return items
+    items = basic(config, optimizer)
+    if config.getboolean('output', 'ps'):
+        solutionSet = optimizer.GetSolutionSet()
+        ps = list(map(lambda solution: solution.decision_, solutionSet))
+        f = io.BytesIO()
+        numpy.savetxt(f, ps, delimiter='\t')
+        items.append(('ps', f.getvalue()))
+    return items
+
 
 def dynamic_bitset(config, optimizer):
-	items = basic(config, optimizer)
-	return items
+    items = basic(config, optimizer)
+    return items

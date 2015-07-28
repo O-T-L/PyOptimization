@@ -21,39 +21,42 @@ import configparser
 import sqlite3
 import pyoptimization.executer
 
+
 def get_columns(path, table):
-	conn = sqlite3.connect(path)
-	cursor = conn.cursor()
-	result = cursor.execute('PRAGMA table_info(%s)' % table)
-	return map(lambda row: row[1], result)
+    conn = sqlite3.connect(path)
+    cursor = conn.cursor()
+    result = cursor.execute('PRAGMA table_info(%s)' % table)
+    return map(lambda row: row[1], result)
+
 
 def optimization(config, problem_optimize, optimizer_optimize):
-	executer = pyoptimization.executer.make_executer(config)
-	repeat = config.getint('experiment', 'repeat')
-	for _ in range(repeat):
-		problem_optimize(config, executer, optimizer_optimize)
-	if config.get('common', 'executer') == 'parallel':
-		executer.join()
-	print('Finished normally')
+    executer = pyoptimization.executer.make_executer(config)
+    repeat = config.getint('experiment', 'repeat')
+    for _ in range(repeat):
+        problem_optimize(config, executer, optimizer_optimize)
+    if config.get('common', 'executer') == 'parallel':
+        executer.join()
+    print('Finished normally')
+
 
 def evaluation(config, fnEvaluator):
-	executer = pyoptimization.executer.make_executer(config)
-	path = os.path.expandvars(config.get('database', 'file.' + platform.system()))
-	conn = sqlite3.connect(path)
-	conn.isolation_level = None # Enable automatic commit
-	table = config.get('database', 'table')
-	cursor = conn.cursor()
-	columns = tuple(get_columns(path, table))
-	try:
-		condition = config.get('database', 'condition')
-		cursor.execute('SELECT rowid,* FROM %s WHERE %s' % (table, condition))
-	except configparser.NoOptionError:
-		cursor.execute('SELECT rowid,* FROM ' + table)
-	results = cursor.fetchall()
-	nRows = len(results)
-	for index, result in enumerate(results):
-		print('Evaluating %u of %u' % (index, nRows))
-		fnEvaluator(config, result[0], columns, result[1:], executer)
-	if config.get('common', 'executer') == 'parallel':
-		executer.join()
-	print('Finished normally')
+    executer = pyoptimization.executer.make_executer(config)
+    path = os.path.expandvars(config.get('database', 'file.' + platform.system()))
+    conn = sqlite3.connect(path)
+    conn.isolation_level = None  # Enable automatic commit
+    table = config.get('database', 'table')
+    cursor = conn.cursor()
+    columns = tuple(get_columns(path, table))
+    try:
+        condition = config.get('database', 'condition')
+        cursor.execute('SELECT rowid,* FROM %s WHERE %s' % (table, condition))
+    except configparser.NoOptionError:
+        cursor.execute('SELECT rowid,* FROM ' + table)
+    results = cursor.fetchall()
+    nRows = len(results)
+    for index, result in enumerate(results):
+        print('Evaluating %u of %u' % (index, nRows))
+        fnEvaluator(config, result[0], columns, result[1:], executer)
+    if config.get('common', 'executer') == 'parallel':
+        executer.join()
+    print('Finished normally')

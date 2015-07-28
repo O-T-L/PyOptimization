@@ -19,20 +19,22 @@ import os
 import fnmatch
 import numpy
 
+
 def main():
-	for line in open(os.path.splitext(__file__)[0] + '.list', 'r').readlines():
-		root = line.strip()
-		for parent, _, filenames in os.walk(os.path.join(root, 'DTLZ2')):
-			for filename in filenames:
-				path = os.path.join(parent, filename)
-				if not os.path.isdir(path) and fnmatch.fnmatch(filename, '*.csv'):
-					print('Converting "%s"' % path)
-					pf = numpy.loadtxt(path)
-					for i, column in enumerate(pf.T):
-						column *= (i + 1) * 2
-					path = os.path.join(os.path.join(root, 'WFG4'), filename)
-					print('Saving "%s"' % path)
-					numpy.savetxt(path, pf, delimiter = '\t')
+    for line in open(os.path.splitext(__file__)[0] + '.list', 'r').readlines():
+        root = line.strip()
+        for parent, _, filenames in os.walk(os.path.join(root, 'DTLZ2')):
+            for filename in filenames:
+                path = os.path.join(parent, filename)
+                if not os.path.isdir(path) and fnmatch.fnmatch(filename, '*.csv'):
+                    print('Converting "%s"' % path)
+                    pf = numpy.loadtxt(path)
+                    for i, column in enumerate(pf.T):
+                        column *= (i + 1) * 2
+                    path = os.path.join(os.path.join(root, 'WFG4'), filename)
+                    print('Saving "%s"' % path)
+                    numpy.savetxt(path, pf, delimiter='\t')
+
 
 if __name__ == '__main__':
-	main()
+    main()

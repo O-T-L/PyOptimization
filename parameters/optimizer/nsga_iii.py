@@ -18,94 +18,97 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import pyotl.utility
 import pyotl.optimizer.nsga_iii
 
+
 def nbi_original(config, count, dimension):
-	if dimension == 2:
-		return [
-			pyotl.utility.NormalBoundaryIntersection_Real(dimension, count),
-		]
-	if count == 100:
-		if dimension == 3:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 12), # 91
-			]
-		elif dimension == 5:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 6), # 210
-			]
-		elif dimension == 8:
-			return [
-				pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 3, 2), # 120 + 36 = 156
-			]
-		elif dimension == 10:
-			return [
-				pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 3, 2), # 220 + 55 = 275
-			]
-		elif dimension == 15:
-			return [
-				pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 1), # 120 + 15 = 135
-			]
-	raise Exception(count, dimension)
+    if dimension == 2:
+        return [
+            pyotl.utility.NormalBoundaryIntersection_Real(dimension, count),
+        ]
+    if count == 100:
+        if dimension == 3:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 12),  # 91
+            ]
+        elif dimension == 5:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 6),  # 210
+            ]
+        elif dimension == 8:
+            return [
+                pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 3, 2),  # 120 + 36 = 156
+            ]
+        elif dimension == 10:
+            return [
+                pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 3, 2),  # 220 + 55 = 275
+            ]
+        elif dimension == 15:
+            return [
+                pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 1),  # 120 + 15 = 135
+            ]
+    raise Exception(count, dimension)
+
 
 def nbi_miqing(config, count, dimension):
-	if dimension == 2:
-		return [
-			pyotl.utility.NormalBoundaryIntersection_Real(dimension, count),
-		]
-	if count == 100:
-		if dimension == 3:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 12), # 91
-			]
-		elif dimension == 5:
-			return [
-				pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 4, 3), # 70 + 35 = 105
-			]
-		elif dimension == 10:
-			return [
-				pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 1), # 55 + 10 = 65
-			]
-		elif dimension == 15:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2), # 120
-			]
-	raise Exception(count, dimension)
+    if dimension == 2:
+        return [
+            pyotl.utility.NormalBoundaryIntersection_Real(dimension, count),
+        ]
+    if count == 100:
+        if dimension == 3:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 12),  # 91
+            ]
+        elif dimension == 5:
+            return [
+                pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 4, 3),  # 70 + 35 = 105
+            ]
+        elif dimension == 10:
+            return [
+                pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 1),  # 55 + 10 = 65
+            ]
+        elif dimension == 15:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2),  # 120
+            ]
+    raise Exception(count, dimension)
+
 
 def nbi(config, count, dimension):
-	if dimension == 2:
-		return [
-			pyotl.utility.NormalBoundaryIntersection_Real(dimension, count),
-		]
-	if count == 100:
-		if dimension == 3:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 13), # 105
-			]
-		elif dimension == 4:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 7), # 120
-			]
-		elif dimension == 5:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 5), # 126
-			]
-		elif dimension == 6:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 4), # 126
-			]
-		elif dimension == 8:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 3), # 120
-			]
-		elif dimension == 10:
-			return [
-				pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 2), # 55 + 55 = 110
-			]
-		elif dimension == 15:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2), # 120
-			]
-		elif dimension == 20:
-			return [
-				pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2), # 210
-			]
-	raise Exception(count, dimension)
+    if dimension == 2:
+        return [
+            pyotl.utility.NormalBoundaryIntersection_Real(dimension, count),
+        ]
+    if count == 100:
+        if dimension == 3:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 13),  # 105
+            ]
+        elif dimension == 4:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 7),  # 120
+            ]
+        elif dimension == 5:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 5),  # 126
+            ]
+        elif dimension == 6:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 4),  # 126
+            ]
+        elif dimension == 8:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 3),  # 120
+            ]
+        elif dimension == 10:
+            return [
+                pyotl.optimizer.nsga_iii.NBI2_Real(dimension, 2, 2),  # 55 + 55 = 110
+            ]
+        elif dimension == 15:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2),  # 120
+            ]
+        elif dimension == 20:
+            return [
+                pyotl.utility.NormalBoundaryIntersection_Real(dimension, 2),  # 210
+            ]
+    raise Exception(count, dimension)

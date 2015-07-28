@@ -19,7 +19,8 @@ import os
 import numpy
 import pyoptimization.utility
 
+
 def std(config):
-	path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'TSP')
-	cities = ['kroA150', 'kroB150']
-	return [(numpy.loadtxt(os.path.join(path, city, 'matrix.csv'), ndmin = 2), city) for city in cities]
+    path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'TSP')
+    cities = ['kroA150', 'kroB150']
+    return [(numpy.loadtxt(os.path.join(path, city, 'matrix.csv'), ndmin=2), city) for city in cities]

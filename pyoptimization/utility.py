@@ -17,13 +17,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 
+
 def read_config(config, path):
-	assert(os.path.exists(path))
-	config.read(os.path.join(os.path.dirname(path), 'config.ini'))
-	config.read(os.path.splitext(path)[0] + '.ini')
+    assert (os.path.exists(path))
+    config.read(os.path.join(os.path.dirname(path), 'config.ini'))
+    config.read(os.path.splitext(path)[0] + '.ini')
+
 
 def get_pyoptimization_path(config):
-	try:
-		return config.get('common', 'pyoptimization_path')
-	except:
-		return os.path.curdir
+    try:
+        return config.get('common', 'pyoptimization_path')
+    except:
+        return os.path.curdir

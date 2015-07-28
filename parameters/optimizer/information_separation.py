@@ -18,9 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import re
 import numpy
 
+
 def convergence_direction(config, problem):
-	if re.match('^(Convex)?DTLZ\d$', type(problem).__name__):
-		return [1] * problem.GetNumberOfObjectives()
-	elif re.match('^WFG\d$', type(problem).__name__):
-		direction = 1 / numpy.arange(2, (problem.GetNumberOfObjectives() + 1) * 2, 2)
-		return direction.tolist()
+    if re.match('^(Convex)?DTLZ\d$', type(problem).__name__):
+        return [1] * problem.GetNumberOfObjectives()
+    elif re.match('^WFG\d$', type(problem).__name__):
+        direction = 1 / numpy.arange(2, (problem.GetNumberOfObjectives() + 1) * 2, 2)
+        return direction.tolist()

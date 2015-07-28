@@ -20,15 +20,18 @@ import os
 import numpy
 import pyoptimization.utility
 
+
 def objective(config, properties):
-	path = pyoptimization.utility.get_pyoptimization_path(config)
-	if re.match('^ZDT\d$', properties['problem']):
-		return numpy.array([(0.0, 1.0)] * properties['objectives'])
-	elif properties['problem'] == 'DTLZ1':
-		return numpy.array([(0.0, 0.5)] * properties['objectives'])
-	elif re.match('^(Convex)?DTLZ[23456]I?$', properties['problem']):
-		return numpy.array([(0.0, 1.0)] * properties['objectives'])
-	elif properties['problem'] == 'DTLZ7':
-		return numpy.loadtxt(os.path.join(path, 'Data', 'Boundary', 'Objective', 'DTLZ7', str(properties['objectives']) + '.csv'), ndmin = 2)
-	elif re.match('^WFG\d$', properties['problem']):
-		return numpy.array([(0.0, upper) for upper in range(2, (properties['objectives'] + 1) * 2, 2)])
+    path = pyoptimization.utility.get_pyoptimization_path(config)
+    if re.match('^ZDT\d$', properties['problem']):
+        return numpy.array([(0.0, 1.0)] * properties['objectives'])
+    elif properties['problem'] == 'DTLZ1':
+        return numpy.array([(0.0, 0.5)] * properties['objectives'])
+    elif re.match('^(Convex)?DTLZ[23456]I?$', properties['problem']):
+        return numpy.array([(0.0, 1.0)] * properties['objectives'])
+    elif properties['problem'] == 'DTLZ7':
+        return numpy.loadtxt(
+            os.path.join(path, 'Data', 'Boundary', 'Objective', 'DTLZ7', str(properties['objectives']) + '.csv'),
+            ndmin=2)
+    elif re.match('^WFG\d$', properties['problem']):
+        return numpy.array([(0.0, upper) for upper in range(2, (properties['objectives'] + 1) * 2, 2)])

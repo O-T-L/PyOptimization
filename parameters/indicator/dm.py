@@ -17,15 +17,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import parameters.indicator.pf
 
+
 def division(config, properties):
-	if properties['objectives'] == 3:
-		return [10] * properties['objectives']
-	elif properties['objectives'] == 4:
-		return [6] * properties['objectives']
-	elif properties['objectives'] == 5:
-		return [4] * properties['objectives']
-	elif properties['objectives'] > 5:
-		return [3] * properties['objectives']
+    if properties['objectives'] == 3:
+        return [10] * properties['objectives']
+    elif properties['objectives'] == 4:
+        return [6] * properties['objectives']
+    elif properties['objectives'] == 5:
+        return [4] * properties['objectives']
+    elif properties['objectives'] > 5:
+        return [3] * properties['objectives']
+
 
 def pf(config, properties):
-	return parameters.indicator.pf.pf(config, properties, 'PF_%u' % properties['solutions'])
+    return parameters.indicator.pf.pf(config, properties, 'PF_%u' % properties['solutions'])

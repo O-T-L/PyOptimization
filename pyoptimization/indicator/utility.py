@@ -19,11 +19,12 @@ import os
 import platform
 import sqlite3
 
+
 def update_row(config, rowID, columns, rowData):
-	path = os.path.expandvars(config.get('database', 'file.' + platform.system()))
-	conn = sqlite3.connect(path)
-	conn.isolation_level = None # Enable automatic commit
-	cursor = conn.cursor()
-	table = config.get('database', 'table')
-	_columns = ','.join(['"%s"=?' % column for column in columns])
-	cursor.execute('UPDATE %s SET %s WHERE rowid=%u' % (table, _columns, rowID), rowData)
+    path = os.path.expandvars(config.get('database', 'file.' + platform.system()))
+    conn = sqlite3.connect(path)
+    conn.isolation_level = None  # Enable automatic commit
+    cursor = conn.cursor()
+    table = config.get('database', 'table')
+    _columns = ','.join(['"%s"=?' % column for column in columns])
+    cursor.execute('UPDATE %s SET %s WHERE rowid=%u' % (table, _columns, rowID), rowData)

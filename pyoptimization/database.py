@@ -15,12 +15,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+
 def get_columns(cursor, table):
-	result = cursor.execute('PRAGMA table_info(%s)' % table)
-	return map(lambda row: row[1], result)
+    result = cursor.execute('PRAGMA table_info(%s)' % table)
+    return map(lambda row: row[1], result)
+
 
 def remove_null_data(columns, rowData):
-	items = zip(*[columns, rowData])
-	items = list(filter(lambda column_Data: column_Data[1], items))
-	columns, rowData = zip(*items)
-	return columns, rowData
+    items = zip(*[columns, rowData])
+    items = list(filter(lambda column_Data: column_Data[1], items))
+    columns, rowData = zip(*items)
+    return columns, rowData

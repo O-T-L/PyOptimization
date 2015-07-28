@@ -20,10 +20,12 @@ import pyoptimization.main
 import pyoptimization.utility
 import pyoptimization.indicator
 
+
 def main():
-	config = configparser.ConfigParser()
-	pyoptimization.utility.read_config(config, __file__)
-	pyoptimization.main.evaluation(config, pyoptimization.indicator.evaluate)
+    config = configparser.ConfigParser()
+    pyoptimization.utility.read_config(config, __file__)
+    pyoptimization.main.evaluation(config, pyoptimization.indicator.evaluate)
+
 
 if __name__ == '__main__':
-	main()
+    main()

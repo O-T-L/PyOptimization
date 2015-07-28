@@ -21,19 +21,20 @@ import pyotl.initial.dynamic_bitset
 import pyotl.initial.index
 import pyoptimization.problem.coding
 
+
 def get_initial(config, problem, random, solutions):
-	fetcher = lambda optimizer: [('solutions', solutions)]
-	coding = pyoptimization.problem.coding.get_coding(problem)
-	if coding == 'real':
-		return pyotl.initial.real.PopulationUniform(random, problem.GetBoundary(), solutions), fetcher
-	elif coding == 'integer':
-		return pyotl.initial.integer.PopulationUniform(random, problem.GetBoundary(), solutions), fetcher
-	elif coding == 'dynamic_bitset':
-		return pyotl.initial.dynamic_bitset.PopulationUniform(random, problem.GetNumberOfBits(), solutions), fetcher
-	elif coding == 'index':
-		if type(problem).__name__.endswith('TSP'):
-			return pyotl.initial.index.PopulationShuffle(random, problem.GetNumberOfCities(), solutions), fetcher
-		else:
-			return pyotl.initial.index.PopulationUniform(random, problem.GetBoundary(), solutions), fetcher
-	else:
-		raise Exception(type(problem).__name__, problem.GetNumberOfObjectives(), solutions)
+    fetcher = lambda optimizer: [('solutions', solutions)]
+    coding = pyoptimization.problem.coding.get_coding(problem)
+    if coding == 'real':
+        return pyotl.initial.real.PopulationUniform(random, problem.GetBoundary(), solutions), fetcher
+    elif coding == 'integer':
+        return pyotl.initial.integer.PopulationUniform(random, problem.GetBoundary(), solutions), fetcher
+    elif coding == 'dynamic_bitset':
+        return pyotl.initial.dynamic_bitset.PopulationUniform(random, problem.GetNumberOfBits(), solutions), fetcher
+    elif coding == 'index':
+        if type(problem).__name__.endswith('TSP'):
+            return pyotl.initial.index.PopulationShuffle(random, problem.GetNumberOfCities(), solutions), fetcher
+        else:
+            return pyotl.initial.index.PopulationUniform(random, problem.GetBoundary(), solutions), fetcher
+    else:
+        raise Exception(type(problem).__name__, problem.GetNumberOfObjectives(), solutions)

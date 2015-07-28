@@ -18,61 +18,65 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import re
 import parameters.optimizer
 
+
 def iteration(config, optimizer):
-	if re.match('^(Convex|Scaled|Negative)?DTLZ\dI?$', type(optimizer.GetProblem()).__name__) and len(optimizer.GetProblem().GetBoundary()) == optimizer.GetProblem().GetNumberOfObjectives() - 1:
-		return 100
-	elif re.match('^WFG\d$', type(optimizer.GetProblem()).__name__) and len(optimizer.GetProblem().GetBoundary()) == optimizer.GetProblem().GetPosDecisions():
-		return 100
-	if type(optimizer.GetProblem()).__name__ == 'XSinX':
-		return 50
-	elif type(optimizer.GetProblem()).__name__ == 'Camel':
-		return 50
-	elif type(optimizer.GetProblem()).__name__ == 'ShafferF6':
-		return 50
-	elif type(optimizer.GetProblem()).__name__ == 'Shubert':
-		return 50
-	elif type(optimizer.GetProblem()).__name__ == 'Binh':
-		return 50
-	elif type(optimizer.GetProblem()).__name__ == 'ParetoBox':
-		return 300
-	elif type(optimizer.GetProblem()).__name__ == 'Water':
-		return 300
-	elif re.match('^(Rotated)?Rectangle$', type(optimizer.GetProblem()).__name__):
-		return 300
-	elif type(optimizer.GetProblem()).__name__ == 'Kursawe':
-		return 250
-	elif re.match('^Schaffer\d$', type(optimizer.GetProblem()).__name__):
-		return 250
-	elif re.match('^Viennet\d$', type(optimizer.GetProblem()).__name__):
-		return 300
-	elif re.match('^ZDT[12356]$', type(optimizer.GetProblem()).__name__):
-		return 300
-	elif re.match('^ZDT[4]$', type(optimizer.GetProblem()).__name__):
-		return 600
-	elif re.match('^UF\d+$', type(optimizer.GetProblem()).__name__):
-		return 300
-	elif re.match('^(Convex|Scaled|Negative)?DTLZ[136]I?$', type(optimizer.GetProblem()).__name__):
-		return 1000
-	elif re.match('^(Convex|Scaled|Negative)?DTLZ[2457]I?$', type(optimizer.GetProblem()).__name__):
-		return 300
-	elif re.match('^WFG\d$', type(optimizer.GetProblem()).__name__):
-		return 300
-	elif re.match('^WFG[1]$', type(optimizer.GetProblem()).__name__):
-		return 1000
-	elif re.match('^WFG[2-9]$', type(optimizer.GetProblem()).__name__):
-		return 300
-	elif re.match('^FDA\d$', type(optimizer.GetProblem()).__name__):
-		return 300
-	elif re.match('^[A-Za-z0-9]*Knapsack$', type(optimizer.GetProblem()).__name__):
-		return 1000
-	elif type(optimizer.GetProblem()).__name__ == 'TSP':
-		return 300
-	elif type(optimizer.GetProblem()).__name__ == 'MOTSP':
-		return 1000
-	elif type(optimizer.GetProblem()).__name__ == 'ONL':
-		return 300
-	raise Exception(type(optimizer.GetProblem()).__name__, optimizer.GetProblem().GetNumberOfObjectives())
+    if re.match('^(Convex|Scaled|Negative)?DTLZ\dI?$', type(optimizer.GetProblem()).__name__) and len(
+            optimizer.GetProblem().GetBoundary()) == optimizer.GetProblem().GetNumberOfObjectives() - 1:
+        return 100
+    elif re.match('^WFG\d$', type(optimizer.GetProblem()).__name__) and len(
+            optimizer.GetProblem().GetBoundary()) == optimizer.GetProblem().GetPosDecisions():
+        return 100
+    if type(optimizer.GetProblem()).__name__ == 'XSinX':
+        return 50
+    elif type(optimizer.GetProblem()).__name__ == 'Camel':
+        return 50
+    elif type(optimizer.GetProblem()).__name__ == 'ShafferF6':
+        return 50
+    elif type(optimizer.GetProblem()).__name__ == 'Shubert':
+        return 50
+    elif type(optimizer.GetProblem()).__name__ == 'Binh':
+        return 50
+    elif type(optimizer.GetProblem()).__name__ == 'ParetoBox':
+        return 300
+    elif type(optimizer.GetProblem()).__name__ == 'Water':
+        return 300
+    elif re.match('^(Rotated)?Rectangle$', type(optimizer.GetProblem()).__name__):
+        return 300
+    elif type(optimizer.GetProblem()).__name__ == 'Kursawe':
+        return 250
+    elif re.match('^Schaffer\d$', type(optimizer.GetProblem()).__name__):
+        return 250
+    elif re.match('^Viennet\d$', type(optimizer.GetProblem()).__name__):
+        return 300
+    elif re.match('^ZDT[12356]$', type(optimizer.GetProblem()).__name__):
+        return 300
+    elif re.match('^ZDT[4]$', type(optimizer.GetProblem()).__name__):
+        return 600
+    elif re.match('^UF\d+$', type(optimizer.GetProblem()).__name__):
+        return 300
+    elif re.match('^(Convex|Scaled|Negative)?DTLZ[136]I?$', type(optimizer.GetProblem()).__name__):
+        return 1000
+    elif re.match('^(Convex|Scaled|Negative)?DTLZ[2457]I?$', type(optimizer.GetProblem()).__name__):
+        return 300
+    elif re.match('^WFG\d$', type(optimizer.GetProblem()).__name__):
+        return 300
+    elif re.match('^WFG[1]$', type(optimizer.GetProblem()).__name__):
+        return 1000
+    elif re.match('^WFG[2-9]$', type(optimizer.GetProblem()).__name__):
+        return 300
+    elif re.match('^FDA\d$', type(optimizer.GetProblem()).__name__):
+        return 300
+    elif re.match('^[A-Za-z0-9]*Knapsack$', type(optimizer.GetProblem()).__name__):
+        return 1000
+    elif type(optimizer.GetProblem()).__name__ == 'TSP':
+        return 300
+    elif type(optimizer.GetProblem()).__name__ == 'MOTSP':
+        return 1000
+    elif type(optimizer.GetProblem()).__name__ == 'ONL':
+        return 300
+    raise Exception(type(optimizer.GetProblem()).__name__, optimizer.GetProblem().GetNumberOfObjectives())
+
 
 def evaluation(config, optimizer):
-	return iteration(config, optimizer) * 100
-	return iteration(config, optimizer) * parameters.optimizer.solutions(config, optimizer.GetProblem())
+    return iteration(config, optimizer) * 100
+    return iteration(config, optimizer) * parameters.optimizer.solutions(config, optimizer.GetProblem())

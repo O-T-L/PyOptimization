@@ -22,43 +22,47 @@ import csv
 import configparser
 import pyoptimization.utility
 
-def get_properties_settings(path, delimiter = '\t'):
-	f = open(path, 'r')
-	reader = csv.reader(f, delimiter = delimiter)
-	propertiesSettings = []
-	for column, converter in reader:
-		converter = eval(converter)
-		propertiesSettings.append((column, converter))
-	return propertiesSettings
+
+def get_properties_settings(path, delimiter='\t'):
+    f = open(path, 'r')
+    reader = csv.reader(f, delimiter=delimiter)
+    propertiesSettings = []
+    for column, converter in reader:
+        converter = eval(converter)
+        propertiesSettings.append((column, converter))
+    return propertiesSettings
+
 
 def path_fill_properties(path, propertiesSettings, columns, rowData):
-	for column, converter in propertiesSettings:
-		properties = converter(rowData[columns.index(column)])
-		path = os.path.join(path, properties)
-	return path
+    for column, converter in propertiesSettings:
+        properties = converter(rowData[columns.index(column)])
+        path = os.path.join(path, properties)
+    return path
+
 
 def main():
-	config = configparser.ConfigParser()
-	pyoptimization.utility.read_config(config, __file__)
-	# Database
-	propertiesSettings = os.path.expandvars(config.get('exporter', 'properties_settings'))
-	propertiesSettings = get_properties_settings(propertiesSettings)
-	root = os.path.expandvars(config.get('exporter', 'root.' + platform.system()))
-	conn = sqlite3.connect(os.path.expandvars(config.get('database', 'file.' + platform.system())))
-	table = config.get('database', 'table')
-	cursor = conn.cursor()
-	cursor.execute('SELECT * FROM %s' % table)
-	columns = list(map(lambda x: x[0], cursor.description))
-	dataColumn = config.get('exporter', 'data_column')
-	for rowData in cursor.fetchall():
-		path = path_fill_properties(root, propertiesSettings, columns, rowData)
-		data = rowData[columns.index(dataColumn)]
-		print(path)
-		os.makedirs(os.path.dirname(path), exist_ok = True)
-		f = open(path, 'wb')
-		f.write(data)
-		f.close()
-	print('Finished normally')
+    config = configparser.ConfigParser()
+    pyoptimization.utility.read_config(config, __file__)
+    # Database
+    propertiesSettings = os.path.expandvars(config.get('exporter', 'properties_settings'))
+    propertiesSettings = get_properties_settings(propertiesSettings)
+    root = os.path.expandvars(config.get('exporter', 'root.' + platform.system()))
+    conn = sqlite3.connect(os.path.expandvars(config.get('database', 'file.' + platform.system())))
+    table = config.get('database', 'table')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM %s' % table)
+    columns = list(map(lambda x: x[0], cursor.description))
+    dataColumn = config.get('exporter', 'data_column')
+    for rowData in cursor.fetchall():
+        path = path_fill_properties(root, propertiesSettings, columns, rowData)
+        data = rowData[columns.index(dataColumn)]
+        print(path)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        f = open(path, 'wb')
+        f.write(data)
+        f.close()
+    print('Finished normally')
+
 
 if __name__ == '__main__':
-	main()
+    main()

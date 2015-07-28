@@ -19,16 +19,17 @@ import os
 import numpy
 import pyoptimization.utility
 
+
 def random(config):
-	path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'Knapsack')
-	results = []
-	packs = 'Random500'
-	for objectives in map(int, config.get('knapsack', 'objectives').split()):
-		_path = os.path.join(path, packs, str(objectives))
-		price = numpy.loadtxt(os.path.join(_path, 'price.csv'), ndmin = 2)
-		weight = numpy.loadtxt(os.path.join(_path, 'weight.csv'), ndmin = 2)
-		capacity = [sum(_weight) / 2 for _weight in weight]
-		assert(objectives == len(price) == len(weight) == len(capacity))
-		assert(price.shape == weight.shape)
-		results.append([price, weight, capacity])
-	return results
+    path = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'Knapsack')
+    results = []
+    packs = 'Random500'
+    for objectives in map(int, config.get('knapsack', 'objectives').split()):
+        _path = os.path.join(path, packs, str(objectives))
+        price = numpy.loadtxt(os.path.join(_path, 'price.csv'), ndmin=2)
+        weight = numpy.loadtxt(os.path.join(_path, 'weight.csv'), ndmin=2)
+        capacity = [sum(_weight) / 2 for _weight in weight]
+        assert (objectives == len(price) == len(weight) == len(capacity))
+        assert (price.shape == weight.shape)
+        results.append([price, weight, capacity])
+    return results

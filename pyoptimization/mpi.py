@@ -17,14 +17,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from mpi4py import MPI
 
+
 class MPICaller:
-	def __init__(self):
-		self.comm = MPI.COMM_WORLD
-		self.rank = self.comm.Get_rank()
-		self.size = self.comm.Get_size()
-		self.count = 0
-	
-	def __call__(self, fn, *args, **kwargs):
-		if self.count % self.size == self.rank:
-			return fn(*args, **kwargs)
-		self.count += 1
+    def __init__(self):
+        self.comm = MPI.COMM_WORLD
+        self.rank = self.comm.Get_rank()
+        self.size = self.comm.Get_size()
+        self.count = 0
+
+    def __call__(self, fn, *args, **kwargs):
+        if self.count % self.size == self.rank:
+            return fn(*args, **kwargs)
+        self.count += 1

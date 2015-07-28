@@ -17,23 +17,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+
 def reference_point(config, properties):
-	if re.match('^ZDT\d$', properties['problem']):
-		return [2, 2]
-	elif properties['problem'] == 'DTLZ1':
-		return [1] * properties['objectives']
-	elif re.match('^DTLZ[23456]I?$', properties['problem']):
-		return [2] * properties['objectives']
-	elif properties['problem'] == 'DTLZ7':
-		return {
-			3:	[2] * 2 + [7],
-			4:	[2] * 3 + [9],
-			5:	[2] * 4 + [11],
-			6:	[2] * 5 + [13],
-			8:	[2] * 7 + [17],
-			10:	[2] * 9 + [21],
-		}[properties['objectives']]
-	elif re.match('^WFG\d$', properties['problem']):
-		return [1 + (i + 1) * 2 for i in range(properties['objectives'])]
-	elif properties['problem'] == 'MOTSP':
-		return [22] * properties['objectives']
+    if re.match('^ZDT\d$', properties['problem']):
+        return [2, 2]
+    elif properties['problem'] == 'DTLZ1':
+        return [1] * properties['objectives']
+    elif re.match('^DTLZ[23456]I?$', properties['problem']):
+        return [2] * properties['objectives']
+    elif properties['problem'] == 'DTLZ7':
+        return {
+            3: [2] * 2 + [7],
+            4: [2] * 3 + [9],
+            5: [2] * 4 + [11],
+            6: [2] * 5 + [13],
+            8: [2] * 7 + [17],
+            10: [2] * 9 + [21],
+        }[properties['objectives']]
+    elif re.match('^WFG\d$', properties['problem']):
+        return [1 + (i + 1) * 2 for i in range(properties['objectives'])]
+    elif properties['problem'] == 'MOTSP':
+        return [22] * properties['objectives']

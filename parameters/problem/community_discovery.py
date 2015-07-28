@@ -19,7 +19,8 @@ import os
 import numpy
 import pyoptimization.utility
 
+
 def graphs(config):
-	root = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'CommunityDiscovery')
-	paths = [os.path.join(root, file) for file in ('Karate.csv', 'Dolphins.csv')]
-	return [numpy.loadtxt(os.path.join(path), ndmin = 2) for path in paths]
+    root = os.path.join(pyoptimization.utility.get_pyoptimization_path(config), 'Data', 'CommunityDiscovery')
+    paths = [os.path.join(root, file) for file in ('Karate.csv', 'Dolphins.csv')]
+    return [numpy.loadtxt(os.path.join(path), ndmin=2) for path in paths]

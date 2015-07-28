@@ -17,30 +17,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import importlib
 
+
 class IterationTerminator:
-	def __init__(self, iteration):
-		self.iteration = iteration
-	
-	def __call__(self, optimizer, optimization):
-		return optimization.iteration < self.iteration
+    def __init__(self, iteration):
+        self.iteration = iteration
+
+    def __call__(self, optimizer, optimization):
+        return optimization.iteration < self.iteration
+
 
 class EvaluationTerminator:
-	def __init__(self, evaluation):
-		self.evaluation = evaluation
-	
-	def __call__(self, optimizer, optimization):
-		return optimizer.GetProblem().GetNumberOfEvaluations() < self.evaluation
+    def __init__(self, evaluation):
+        self.evaluation = evaluation
+
+    def __call__(self, optimizer, optimization):
+        return optimizer.GetProblem().GetNumberOfEvaluations() < self.evaluation
+
 
 def get_terminator(config, optimizer):
-	termination = config.get('optimization', 'termination')
-	if termination == 'iteration':
-		module, function = config.get('optimization', termination).rsplit('.', 1)
-		module = importlib.import_module(module)
-		iteration = getattr(module, function)(config, optimizer)
-		terminator = IterationTerminator(iteration)
-	elif termination == 'evaluation':
-		module, function = config.get('optimization', termination).rsplit('.', 1)
-		module = importlib.import_module(module)
-		evaluation = getattr(module, function)(config, optimizer)
-		terminator = EvaluationTerminator(evaluation)
-	return terminator
+    termination = config.get('optimization', 'termination')
+    if termination == 'iteration':
+        module, function = config.get('optimization', termination).rsplit('.', 1)
+        module = importlib.import_module(module)
+        iteration = getattr(module, function)(config, optimizer)
+        terminator = IterationTerminator(iteration)
+    elif termination == 'evaluation':
+        module, function = config.get('optimization', termination).rsplit('.', 1)
+        module = importlib.import_module(module)
+        evaluation = getattr(module, function)(config, optimizer)
+        terminator = EvaluationTerminator(evaluation)
+    return terminator

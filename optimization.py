@@ -21,10 +21,12 @@ import pyoptimization.utility
 import pyoptimization.problem
 import pyoptimization.optimizer
 
+
 def main():
-	config = configparser.ConfigParser()
-	pyoptimization.utility.read_config(config, __file__)
-	pyoptimization.main.optimization(config, pyoptimization.problem.optimize, pyoptimization.optimizer.optimize)
+    config = configparser.ConfigParser()
+    pyoptimization.utility.read_config(config, __file__)
+    pyoptimization.main.optimization(config, pyoptimization.problem.optimize, pyoptimization.optimizer.optimize)
+
 
 if __name__ == '__main__':
-	main()
+    main()

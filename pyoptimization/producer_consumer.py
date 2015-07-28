@@ -17,42 +17,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import threading
 
+
 class Producer:
-	def __init__(self, lock, full, empty):
-		self.__lock = lock
-		self.__full = full
-		self.__empty = empty
-		
-		self.__empty.acquire()
-		self.__lock.acquire()
-	
-	def __del__(self):
-		self.__lock.release()
-		self.__full.release()
+    def __init__(self, lock, full, empty):
+        self.__lock = lock
+        self.__full = full
+        self.__empty = empty
+
+        self.__empty.acquire()
+        self.__lock.acquire()
+
+    def __del__(self):
+        self.__lock.release()
+        self.__full.release()
+
 
 class Consumer:
-	def __init__(self, lock, full, empty):
-		self.__lock = lock
-		self.__full = full
-		self.__empty = empty
-		
-		self.__full.acquire()
-		self.__lock.acquire()
-	
-	def __del__(self):
-		self.__lock.release()
-		self.__empty.release()
+    def __init__(self, lock, full, empty):
+        self.__lock = lock
+        self.__full = full
+        self.__empty = empty
+
+        self.__full.acquire()
+        self.__lock.acquire()
+
+    def __del__(self):
+        self.__lock.release()
+        self.__empty.release()
+
 
 class ProducerConsumer:
-	def __init__(self, capacity, count = 0):
-		assert(capacity > 0)
-		assert(count <= capacity)
-		self.__lock = threading.Lock()
-		self.__full = threading.Semaphore(count)
-		self.__empty = threading.Semaphore(capacity - count)
+    def __init__(self, capacity, count=0):
+        assert (capacity > 0)
+        assert (count <= capacity)
+        self.__lock = threading.Lock()
+        self.__full = threading.Semaphore(count)
+        self.__empty = threading.Semaphore(capacity - count)
 
-	def producer(self):
-		return Producer(self.__lock, self.__full, self.__empty)
+    def producer(self):
+        return Producer(self.__lock, self.__full, self.__empty)
 
-	def consumer(self):
-		return Consumer(self.__lock, self.__full, self.__empty)
+    def consumer(self):
+        return Consumer(self.__lock, self.__full, self.__empty)

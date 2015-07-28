@@ -15,8 +15,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+
 def boundaries(config):
-	return [
-		([[-20, 120]] * 2, [[0, 100]] * 2),
-		([[-20, 120]] * 3, [[0, 100]] * 3),
-	]
+    return [
+        ([[-20, 120]] * 2, [[0, 100]] * 2),
+        ([[-20, 120]] * 3, [[0, 100]] * 3),
+    ]

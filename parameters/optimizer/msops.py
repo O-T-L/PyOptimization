@@ -15,5 +15,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+
 def cout(config, problem, solutions):
-	return [solutions / 2]
+    return [solutions / 2]

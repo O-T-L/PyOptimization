@@ -17,7 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import pyotl.problem.community_discovery
 
+
 def metrics(config):
-	return [
-		[pyotl.problem.community_discovery.Q(), pyotl.problem.community_discovery.QLi()],
-	]
+    return [
+        [pyotl.problem.community_discovery.Q(), pyotl.problem.community_discovery.QLi()],
+    ]

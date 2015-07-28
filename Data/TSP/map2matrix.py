@@ -19,14 +19,16 @@ import sys
 import numpy
 import scipy.spatial
 
+
 def main():
-	points = numpy.loadtxt(sys.argv[1])
-	cities = len(points)
-	matrix = numpy.zeros([cities, cities])
-	for i in range(cities):
-		for j in range(cities):
-			matrix[i][j] = scipy.spatial.distance.euclidean(points[i], points[j])
-	numpy.savetxt(sys.argv[2], matrix, delimiter = '\t')
+    points = numpy.loadtxt(sys.argv[1])
+    cities = len(points)
+    matrix = numpy.zeros([cities, cities])
+    for i in range(cities):
+        for j in range(cities):
+            matrix[i][j] = scipy.spatial.distance.euclidean(points[i], points[j])
+    numpy.savetxt(sys.argv[2], matrix, delimiter='\t')
+
 
 if __name__ == '__main__':
-	main()
+    main()

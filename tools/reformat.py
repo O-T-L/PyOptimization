@@ -21,29 +21,32 @@ import platform
 import fnmatch
 import configparser
 
-def reformat(path, _reformat, delimiter = '\t'):
-	data = numpy.loadtxt(path, dtype = bytes, ndmin = 2).astype(str)
-	pathBase = os.path.splitext(path)[0]
-	for ext, _data in _reformat(data):
-		_path = pathBase + ext
-		numpy.savetxt(_path, _data, fmt = '%s', delimiter = delimiter)
+
+def reformat(path, _reformat, delimiter='\t'):
+    data = numpy.loadtxt(path, dtype=bytes, ndmin=2).astype(str)
+    pathBase = os.path.splitext(path)[0]
+    for ext, _data in _reformat(data):
+        _path = pathBase + ext
+        numpy.savetxt(_path, _data, fmt='%s', delimiter=delimiter)
+
 
 def main():
-	config = configparser.ConfigParser()
-	config.read(os.path.splitext(__file__)[0] + '.ini')
-	name = os.path.splitext(os.path.basename(__file__))[0]
-	pathRoot = os.path.expandvars(config.get(name, 'root.' + platform.system()))
-	pattern = config.get(name, 'pattern')
-	_reformat = eval(config.get(name, 'reformat'))
-	paths = []
-	for pathParent, _, fileNames in os.walk(pathRoot):
-		for fileName in fileNames:
-			if fnmatch.fnmatch(fileName, pattern):
-				path = os.path.join(pathParent, fileName)
-				paths.append(path)
-	for path in paths:
-		print(path)
-		reformat(path, _reformat)
+    config = configparser.ConfigParser()
+    config.read(os.path.splitext(__file__)[0] + '.ini')
+    name = os.path.splitext(os.path.basename(__file__))[0]
+    pathRoot = os.path.expandvars(config.get(name, 'root.' + platform.system()))
+    pattern = config.get(name, 'pattern')
+    _reformat = eval(config.get(name, 'reformat'))
+    paths = []
+    for pathParent, _, fileNames in os.walk(pathRoot):
+        for fileName in fileNames:
+            if fnmatch.fnmatch(fileName, pattern):
+                path = os.path.join(pathParent, fileName)
+                paths.append(path)
+    for path in paths:
+        print(path)
+        reformat(path, _reformat)
+
 
 if __name__ == '__main__':
-	main()
+    main()

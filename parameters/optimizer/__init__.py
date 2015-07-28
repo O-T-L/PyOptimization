@@ -17,25 +17,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+
 def solutions(config, problem):
-	return [100]
-	if re.match('^(Convex)?DTLZ\dI?$', type(problem).__name__) and len(problem.GetBoundary()) == problem.GetNumberOfObjectives() - 1:
-		return [1000]
-	elif re.match('^WFG\d$', type(problem).__name__) and len(problem.GetBoundary()) == problem.GetPosDecisions():
-		return [1000]
-	return [100]
+    return [100]
+    if re.match('^(Convex)?DTLZ\dI?$', type(problem).__name__) and len(
+            problem.GetBoundary()) == problem.GetNumberOfObjectives() - 1:
+        return [1000]
+    elif re.match('^WFG\d$', type(problem).__name__) and len(problem.GetBoundary()) == problem.GetPosDecisions():
+        return [1000]
+    return [100]
+
 
 def step(config, optimizer, optimization):
-	evaluation = optimizer.GetProblem().GetNumberOfEvaluations()
-	if hasattr(optimization, 'lastEvaluation'):
-		if evaluation - optimization.lastEvaluation >= 100:
-			optimization.lastEvaluation = evaluation
-			return True
-		else:
-			return False
-	else:
-		optimization.lastEvaluation = evaluation
-		return True
+    evaluation = optimizer.GetProblem().GetNumberOfEvaluations()
+    if hasattr(optimization, 'lastEvaluation'):
+        if evaluation - optimization.lastEvaluation >= 100:
+            optimization.lastEvaluation = evaluation
+            return True
+        else:
+            return False
+    else:
+        optimization.lastEvaluation = evaluation
+        return True
+
 
 def progress(config, optimizer, optimization):
-	return optimization.iteration
+    return optimization.iteration

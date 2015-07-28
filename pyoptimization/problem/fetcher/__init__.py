@@ -18,45 +18,55 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import io
 import numpy
 
+
 def basic(problem):
-	return [
-		('problem', type(problem).__name__),
-		('objectives', problem.GetNumberOfObjectives()),
-		('evaluation', problem.GetNumberOfEvaluations()),
-	]
+    return [
+        ('problem', type(problem).__name__),
+        ('objectives', problem.GetNumberOfObjectives()),
+        ('evaluation', problem.GetNumberOfEvaluations()),
+    ]
+
 
 def std(problem):
-	return basic(problem) + [
-		('decisions', len(problem.GetBoundary())),
-	]
+    return basic(problem) + [
+        ('decisions', len(problem.GetBoundary())),
+    ]
+
 
 def rectangle(problem):
-	boundary = [[minmax.first, minmax.second] for minmax in problem.GetBoundaryOptimal()]
-	f = io.BytesIO()
-	numpy.savetxt(f, boundary)
-	boundary = f.getvalue()
-	return std(problem) + [('boundary', boundary)]
+    boundary = [[minmax.first, minmax.second] for minmax in problem.GetBoundaryOptimal()]
+    f = io.BytesIO()
+    numpy.savetxt(f, boundary)
+    boundary = f.getvalue()
+    return std(problem) + [('boundary', boundary)]
+
 
 def rotated_rectangle(problem, direction):
-	f = io.BytesIO()
-	numpy.savetxt(f, direction)
-	direction = f.getvalue()
-	return rectangle(problem) + [('direction', direction)]
+    f = io.BytesIO()
+    numpy.savetxt(f, direction)
+    direction = f.getvalue()
+    return rectangle(problem) + [('direction', direction)]
+
 
 def tsp(problem, city):
-	return basic(problem) + [('city', city), ('cities', problem.GetNumberOfCities())]
+    return basic(problem) + [('city', city), ('cities', problem.GetNumberOfCities())]
+
 
 def motsp(problem, city):
-	return tsp(problem, city)
+    return tsp(problem, city)
+
 
 def correlation_motsp(problem, city, correlation):
-	return motsp(problem, city) + [('MOTSP correlate', correlation)]
+    return motsp(problem, city) + [('MOTSP correlate', correlation)]
+
 
 def dtlz4(problem):
-	return std(problem) + [('DTLZ4 bias', problem.GetBiasFactor())]
+    return std(problem) + [('DTLZ4 bias', problem.GetBiasFactor())]
+
 
 def dtlz_i(problem):
-	return std(problem) + [('DTLZ_I', problem.GetManifold() + 1)]
+    return std(problem) + [('DTLZ_I', problem.GetManifold() + 1)]
+
 
 def wfg(problem):
-	return std(problem) + [('WFG PosDec', problem.GetPosDecisions())]
+    return std(problem) + [('WFG PosDec', problem.GetPosDecisions())]
