@@ -28,7 +28,7 @@ import pyotl.optimizer.real
 
 def optimization(problem, nPopulation, nGeneration):
     random = pyotl.utility.Random(pyotl.utility.Time())
-    initial = pyotl.initial.real.PopulationUniform(random, problem.GetBoundary(), nPopulation)
+    initial = pyotl.initial.real.BatchUniform(random, problem.GetBoundary(), nPopulation)
     _crossover = pyotl.crossover.real.SimulatedBinaryCrossover(random, 1, problem.GetBoundary(), 20)
     crossover = pyotl.crossover.real.CoupleCoupleCrossoverAdapter(_crossover, random)
     mutation = pyotl.mutation.real.PolynomialMutation(random, 1 / float(len(problem.GetBoundary())),

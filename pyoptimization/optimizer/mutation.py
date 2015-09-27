@@ -51,7 +51,7 @@ def get_mutations_dynamic_bitset(config, problem, random, coding):
     if config.getboolean(coding + '_mutation_switch', 'bitwise_mutation'):
         fetcher = pyoptimization.optimizer.fetcher.mutation.std
         for probability in eval(config.get(coding + '_mutation', 'probability'))(problem):
-            mutation = pyotl.mutation.dynamic_bitset.BitsetBitwiseMutation(random, probability)
+            mutation = pyotl.mutation.dynamic_bitset.BitwiseMutation(random, probability)
             mutations.append([mutation, fetcher])
     return mutations
 

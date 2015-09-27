@@ -30,7 +30,7 @@ def optimization(random, problem, weight):
     weightVectors = pyotl.utility.PyListList2VectorVector_Real(weightVectors)
     for weight in weightVectors:
         pyotl.optimizer.moea_d.NormalizeWeight_Real(weight)
-    initial = pyotl.initial.real.PopulationUniform(random, problem.GetBoundary(), len(weightVectors))
+    initial = pyotl.initial.real.BatchUniform(random, problem.GetBoundary(), len(weightVectors))
     crossover = pyotl.crossover.real.SimulatedBinaryCrossover(random, 1, problem.GetBoundary(), 20)
     mutation = pyotl.mutation.real.PolynomialMutation(random, 1 / float(len(problem.GetBoundary())),
                                                       problem.GetBoundary(), 20)

@@ -60,12 +60,12 @@ def get_crossovers_dynamic_bitset(config, problem, random, coding):
     if config.getboolean(coding + '_crossover_switch', 'single_point_crossover'):
         fetcher = pyoptimization.optimizer.fetcher.crossover.std
         for probability in eval(config.get(coding + '_crossover', 'probability'))(problem):
-            crossover = pyotl.crossover.dynamic_bitset.BitsetSinglePointCrossover(random, probability)
+            crossover = pyotl.crossover.dynamic_bitset.SinglePointCrossover(random, probability)
             crossovers.append([crossover, fetcher])
     elif config.getboolean(coding + '_crossover_switch', 'uniform_crossover'):
         fetcher = pyoptimization.optimizer.fetcher.crossover.std
         for probability in eval(config.get(coding + '_crossover', 'probability'))(problem):
-            crossover = pyotl.crossover.dynamic_bitset.DynamicBitsetUniformCrossover(random, probability)
+            crossover = pyotl.crossover.dynamic_bitset.UniformCrossover(random, probability)
             crossovers.append([crossover, fetcher])
     return crossovers
 
